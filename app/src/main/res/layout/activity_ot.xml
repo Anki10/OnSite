@@ -1,0 +1,925 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:background="#EDECF0">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hospital Name: "
+            android:textStyle="bold"
+            android:textSize="@dimen/assessor_id"/>
+
+        <TextView android:id="@+id/hospital_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="@dimen/assessor_value"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollViewGeneral"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <!-- SECTION Training Centre Detail's -->
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="1. Is pre-anaesthesia assessment done by a qualified/trained anaesthetist?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/anaesthetist_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/anaesthetist_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/remark_OT_anaesthetist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_OT_anaesthetist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:paddingTop="10dp"
+                    android:text="2. Is there a documented anaesthesia plan following pre-anaesthesia assessment?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/documented_anaesthesia_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/documented_anaesthesia_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/remark_documented_anaesthesia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_documented_anaesthesia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="3. Is there immediate preoperative re-evaluation done?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/immediate_preoperative_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/immediate_preoperative_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/remark_immediate_preoperative"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="@dimen/margin_small"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_immediate_preoperative"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:paddingTop="10dp"
+                    android:text="4. Is anaesthesia monitoring done?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/anaesthesia_monitoring_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/anaesthesia_monitoring_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/remark_anaesthesia_monitoring"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_anaesthesia_monitoring"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:paddingTop="10dp"
+                    android:text="5. Is post anaesthesia monitoring done?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/post_anaesthesia_monitoring_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/post_anaesthesia_monitoring_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/remark_post_anaesthesia_monitoring"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="@dimen/margin_small"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_post_anaesthesia_monitoring"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:paddingTop="10dp"
+                    android:text="6. Is WHO Patient Safety Check List used to identify the right patient?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/WHO_Patient_Safety_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/WHO_Patient_Safety_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Note: Check the filled WHO Patient Safety Check list. "/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Upload: Photo of filled WHO check lists (at least 3 spread over 3 separate days)."/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/remark_WHO_Patient_Safety"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="@dimen/margin_small"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_WHO_Patient_Safety"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+                    <ImageView android:id="@+id/Image_WHO_Patient_Safety"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/camera"
+                        android:textColor="@android:color/transparent" />
+
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:paddingTop="10dp"
+                    android:text="7. Is OT Zoning done as Un-sterile, Semi-sterile, Sterile ?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/OT_Zoning_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/OT_Zoning_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Upload: Video of process done"/>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/remark_OT_Zoning"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="@dimen/margin_small"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_OT_Zoning"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+                    <ImageView android:id="@+id/video_OT_Zoning"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="10dp"
+                        android:src="@mipmap/camera" />
+
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:paddingTop="10dp"
+                    android:text="8. Is there monitoring of infection control practices? "
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/infection_control_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/infection_control_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Upload: Photo of sampling report"/>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/remark_infection_control"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="@dimen/margin_small"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_infection_control"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+                    <ImageView android:id="@+id/image_infection_control"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="10dp"
+                        android:src="@mipmap/camera" />
+
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:paddingTop="10dp"
+                    android:text="9. Are narcotic drugs used?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/narcotic_drugs_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/narcotic_drugs_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Upload: Photo of storage area "/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/remark_narcotic_drugs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="@dimen/margin_small"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_narcotic_drugs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+                    <ImageView android:id="@+id/image_narcotic_drugs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="10dp"
+                        android:src="@mipmap/camera" />
+
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:paddingTop="10dp"
+                    android:text="10. Is there a record of usage,administration and disposal of narcotic drugs?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/administration_disposal_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/administration_disposal_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Upload: Photo of narcotic records"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/remark_administration_disposal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="@dimen/margin_small"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_administration_disposal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+                    <ImageView android:id="@+id/image_administration_disposal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="10dp"
+                        android:src="@mipmap/camera" />
+
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:paddingTop="10dp"
+                    android:text="11. Does the OT wash up area have no-touch hand wash facility?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/hand_wash_facility_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/hand_wash_facility_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Upload: Photo of handwashing  area in OT"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/remark_hand_wash_facility"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="@dimen/margin_small"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_hand_wash_facility"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+                    <ImageView android:id="@+id/image_hand_wash_facility"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="10dp"
+                        android:src="@mipmap/camera" />
+
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnSave"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/login_btn"
+                    android:textColor="@color/white"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="Save" />
+
+                <Button
+                    android:id="@+id/btnSync"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/login_btn"
+                    android:textColor="@color/white"
+                    android:layout_weight="1"
+                    android:layout_margin="10dp"
+                    android:text="SYNC" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.qci.onsite">
+
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".activity.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.LaboratoryActivity"
+            android:screenOrientation="portrait"></activity>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <activity android:name=".activity.HospitalListActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".activity.BaseActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.RadiologyActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.EmergencyActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.HighDependencyActivity"
+           android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ObstetricWardActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.OTActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.PharmacyActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.PatientStaffInterviewActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.Ward_OT_EmergencyActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.HRMActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MRDActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.HouseKeepingActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SterilizationAreaActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ManagementActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.BioMedicalEngineeringActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.UniformSignageActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SafetyManagementActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.FacilityChecksActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AmbulanceAccessibilityActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".activity.DocumentationActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".activity.GeneralDetailsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
+
+    </application>
+
+</manifest>

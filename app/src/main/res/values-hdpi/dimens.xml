@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="custom_dialog_padding">30dp</dimen>
+    <dimen name="custom_dialog_header_padding">8dp</dimen>
+    <dimen name="custom_dialog_title">18sp</dimen>
+    <dimen name="custom_header_text_padding">20dp</dimen>
+    <dimen name="custom_dialog_text">16sp</dimen>
+    <dimen name="custom_button_margin">20dp</dimen>
+    <dimen name="custom_button_text_padding">12dp</dimen>
+    <dimen name="custom_dialog_button">15sp</dimen>
+    <dimen name="assessor_id">12sp</dimen>
+    <dimen name="assessor_value">10sp</dimen>
+</resources>

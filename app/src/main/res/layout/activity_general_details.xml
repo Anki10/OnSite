@@ -1,0 +1,393 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
+
+    <ScrollView
+        android:id="@+id/scrollViewGeneral"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <!-- SECTION Training Centre Detail's -->
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@+id/gen_edit1"
+                        android:gravity="center"
+                        android:text="1. Mark your location"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/textHeadColor"
+                        android:textSize="@dimen/font_large"
+                        android:textStyle="bold" />
+
+
+                    <ImageView
+                        android:id="@+id/image_mark_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/mark_location" />
+
+                    <TextView android:id="@+id/tv_latLong"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text=""
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/textHeadColor"
+                        android:textSize="14sp"
+                        android:textStyle="normal" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="2. Your name"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <EditText android:id="@+id/ed_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:inputType="text"
+                    android:hint="Enter your name"
+                    android:layout_marginRight="10dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="3. Click selfie in front of the hospital"
+                        android:textColor="@color/textHeadColor"
+                        android:textSize="@dimen/font_large"
+                        android:textStyle="bold" />
+
+                    <ImageView android:id="@+id/image_selfie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:src="@mipmap/camera" />
+
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4. Name of the hospital"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <EditText android:id="@+id/ed_name_hospital"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:inputType="text"
+                    android:hint="Enter hospitl name"
+                    android:layout_marginRight="10dp" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="5. Address of the hospital"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <EditText android:id="@+id/ed_hospital_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:inputType="text"
+                    android:hint="Enter hospital address"
+                    android:layout_marginRight="10dp" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@+id/gen_edit1"
+                        android:layout_weight="1"
+                        android:text="6. Photograph of front face of the hospital along with hospital board"
+                        android:textColor="@color/textHeadColor"
+                        android:textSize="@dimen/font_large"
+                        android:textStyle="bold" />
+
+
+
+                    <ImageView android:id="@+id/image_hospital_board"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:src="@mipmap/camera" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="7. Name of the authorised person"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <EditText android:id="@+id/ed_name_authorised_person"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:inputType="text"
+                    android:hint="Enter name"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="8. Designation of the authorised person"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <EditText android:id="@+id/ed_designation_authorised"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:inputType="text"
+                    android:hint="Enter designation"
+                    android:layout_marginRight="10dp" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="9. Contact number"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <EditText android:id="@+id/ed_contact_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:inputType="number"
+                    android:hint="Enter number"
+                    android:layout_marginRight="10dp" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnSync"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/login_btn"
+                    android:textColor="@color/white"
+                    android:layout_weight="1"
+                    android:layout_margin="10dp"
+                    android:text="SYNC" />
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,345 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:background="#EDECF0">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hospital Name: "
+            android:textStyle="bold"
+            android:textSize="@dimen/assessor_id"/>
+
+        <TextView android:id="@+id/collection_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="@dimen/assessor_value"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollViewGeneral"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <!-- SECTION Training Centre Detail's -->
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="1. Is Maintenance staff contactable round the clock for emergency repairs? "
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/Maintenance_staff_contactable_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Maintenance_staff_contactable_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="5sp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Note: Check for the contact details of maintenance staff and their availability "/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/remark_Maintenance_staff_contactable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_Maintenance_staff_contactable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:paddingTop="10dp"
+                    android:text="2. Does the hospital plan for equipment in accordance with its services? "
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/equipment_accordance_services_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/equipment_accordance_services_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Note: Check if all services in the scope of service have mandatory equipment listed against them. "/>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/remark_equipment_accordance_services"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_equipment_accordance_services"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="3. Is the documented operational and maintenance (preventive and breakdown) plan adhered?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/BioMedicalEngineeringPojo_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/BioMedicalEngineeringPojo_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+
+                </RadioGroup>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="5dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Note: 1. Check if hospital has annual maintenance contract with the company/vendor who is capable of providing the desired service for preventive aspect.
+\n 2. For breakdown maintenance, hospital can maintain a register of complaints record with columns to enter date-time, breakdown history, call given to, person attendance the call and date and time of actual resolution of the complaint."/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Upload: Photo of preventive maintenance and breakdown register."/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/remark_BioMedicalEngineeringPojo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="@dimen/margin_small"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_BioMedicalEngineeringPojo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                    <ImageView android:id="@+id/image_BioMedicalEngineeringPojo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="10dp"
+                        android:src="@mipmap/camera" />
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnSave"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/login_btn"
+                    android:textColor="@color/white"
+                    android:layout_weight="1"
+                    android:layout_margin="10dp"
+                    android:text="Save" />
+
+
+                <Button
+                    android:id="@+id/btnSync"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/login_btn"
+                    android:textColor="@color/white"
+                    android:layout_weight="1"
+                    android:layout_margin="10dp"
+                    android:text="SYNC" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

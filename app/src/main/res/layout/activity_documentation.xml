@@ -1,0 +1,1571 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:background="#EDECF0">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hospital Name: "
+            android:textStyle="bold"
+            android:textSize="@dimen/assessor_id"/>
+
+        <TextView android:id="@+id/hospital_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="@dimen/assessor_value"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollViewGeneral"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <!-- SECTION Training Centre Detail's -->
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout android:id="@+id/ll_document_related_procedure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="1. Is document related to procedure(s) of collection, identification, handling, safe transportation, processing and disposal of specimens available and properly documented?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/document_related_procedure_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/document_related_procedure_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/remark_document_related_procedure"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_document_related_procedure"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout android:id="@+id/ll_document_showing_process"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="2. Is document showing process addresses discharge of all patients including Medico-legal cases and patients leaving against medical advice available and properly documented?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/document_showing_process_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/document_showing_process_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/remark_document_showing_process"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_document_showing_process"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/ll_document_showing_care_patients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:paddingTop="10dp"
+                    android:text="3. Is document showing care of patients arriving in the emergency including handling of medico-legal cases available and properly documented?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/document_showing_care_patients_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/document_showing_care_patients_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/remark_document_showing_care_patients"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_document_showing_care_patients"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+            <LinearLayout android:id="@+id/ll_document_showing_policies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="4. Is document showing policies and procedures used to guide the rational use of blood and blood products available and properly documented?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/document_showing_policies_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/document_showing_policies_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+
+                </RadioGroup>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/remark_document_showing_policies"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="@dimen/margin_small"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_document_showing_policies"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/ll_document_showing_procedures"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="5. Is document showing procedures to govern transfusion of blood and blood products available and properly documented?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/document_showing_procedures_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/document_showing_procedures_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/remark_document_showing_procedures"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_document_showing_procedures"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/ll_document_showing_procedure_administration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="6. Is document showing procedure for the administration of anaesthesia available and properly documented?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/document_showing_procedure_administration_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/document_showing_procedure_administration_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/remark_document_showing_procedure_administration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_document_showing_procedure_administration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/ll_document_showing_defined_criteria"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="7. Is document showing defined criteria to transfer the patient from the recovery area available and properly documented?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/document_showing_defined_criteria_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/document_showing_defined_criteria_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/remark_document_showing_defined_criteria"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_document_showing_defined_criteria"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/ll_document_showing_procedure_prevention"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="8. Is document showing procedure of prevention of adverse events like wrong site, wrong patient and wrong surgery available and properly documented?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/document_showing_procedure_prevention_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/document_showing_procedure_prevention_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/remark_document_showing_procedure_prevention"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_document_showing_procedure_prevention"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/ll_document_showing_procedure_incorporating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="9. Is document showing procedure for incorporating purchase, storage, prescription and dispensation of medications available and properly documented?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/document_showing_procedure_incorporating_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/document_showing_procedure_incorporating_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/remark_document_showing_procedure_incorporating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_document_showing_procedure_incorporating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/ll_document_showing_procedure_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="10. Is document showing procedure to address procurement and usage of implantable prostheses available and properly documented?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/document_showing_procedure_address_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/document_showing_procedure_address_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/remark_document_showing_procedure_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_document_showing_procedure_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+            <LinearLayout android:id="@+id/ll_document_showing_policies_procedure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="11. Is document showing  policies and procedure exit for storage of medications available and properly documented?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/document_showing_policies_procedure_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/document_showing_policies_procedure_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/remark_document_showing_policies_procedure"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_document_showing_policies_procedure"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+
+                <LinearLayout android:id="@+id/ll_document_showing_drugs_available"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@+id/gen_edit1"
+                        android:text="12. Is document showing policies and procedures to govern usage of radioactive drugs available and properly documented?"
+                        android:textColor="@color/textHeadColor"
+                        android:textSize="@dimen/font_large"
+                        android:textStyle="bold" />
+
+                    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <RadioButton android:id="@+id/document_showing_drugs_available_yes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Yes"
+                            android:onClick="onRadioButtonClicked"/>
+                        <RadioButton android:id="@+id/document_showing_drugs_available_no"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No"
+                            android:onClick="onRadioButtonClicked"/>
+                    </RadioGroup>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:id="@+id/remark_document_showing_drugs_available"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/remark" />
+
+                        <ImageView android:id="@+id/nc_document_showing_drugs_available"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@mipmap/nc"
+                            android:textColor="@android:color/transparent" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/colorPrimaryTransparent"></View>
+
+                </LinearLayout>
+
+
+
+                <LinearLayout android:id="@+id/ll_document_showing_safe_storage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@+id/gen_edit1"
+                        android:text="13. Is document showing Policies and procedures of safe storage, preparation, handling, distribution and disposal of radioactive drugs available and properly documented?"
+                        android:textColor="@color/textHeadColor"
+                        android:textSize="@dimen/font_large"
+                        android:textStyle="bold" />
+
+                    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <RadioButton android:id="@+id/document_showing_safe_storage_yes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Yes"
+                            android:onClick="onRadioButtonClicked"/>
+                        <RadioButton android:id="@+id/document_showing_safe_storage_no"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No"
+                            android:onClick="onRadioButtonClicked"/>
+                    </RadioGroup>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:id="@+id/remark_document_showing_safe_storage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/remark" />
+
+                        <ImageView android:id="@+id/nc_document_showing_safe_storage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@mipmap/nc"
+                            android:textColor="@android:color/transparent" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/colorPrimaryTransparent"></View>
+
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/ll_Infection_control_manual_showing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@+id/gen_edit1"
+                        android:paddingTop="10dp"
+                        android:text="14. Is Infection control manual showing periodic update and surveillance activities available and properly documented?"
+                        android:textColor="@color/textHeadColor"
+                        android:textSize="@dimen/font_large"
+                        android:textStyle="bold" />
+
+                    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <RadioButton android:id="@+id/Infection_control_manual_showing_yes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Yes"
+                            android:onClick="onRadioButtonClicked"/>
+                        <RadioButton android:id="@+id/Infection_control_manual_showing_no"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No"
+                            android:onClick="onRadioButtonClicked"/>
+                    </RadioGroup>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView android:id="@+id/remark_Infection_control_manual_showing"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/remark" />
+
+                        <ImageView android:id="@+id/nc_Infection_control_manual_showing"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@mipmap/nc"
+                            android:textColor="@android:color/transparent" />
+
+                    </LinearLayout>
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/colorPrimaryTransparent"></View>
+
+                </LinearLayout>
+
+
+                <LinearLayout android:id="@+id/ll_document_showing_operational_maintenance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:text="15. Is document  showing operational and maintenance (preventive and breakdown) plan for clinical and support service equipment available and properly documented?"
+                        android:textColor="@color/textHeadColor"
+                        android:textSize="@dimen/font_large"
+                        android:textStyle="bold" />
+
+
+                    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <RadioButton android:id="@+id/document_showing_operational_maintenance_yes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Yes"
+                            android:onClick="onRadioButtonClicked"/>
+                        <RadioButton android:id="@+id/document_showing_operational_maintenance_no"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No"
+                            android:onClick="onRadioButtonClicked"/>
+
+                    </RadioGroup>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView android:id="@+id/remark_document_showing_operational_maintenance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="@dimen/margin_small"
+                            android:src="@mipmap/remark" />
+
+                        <ImageView android:id="@+id/nc_document_showing_operational_maintenance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@mipmap/nc"
+                            android:textColor="@android:color/transparent" />
+
+
+                    </LinearLayout>
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/colorPrimaryTransparent"></View>
+
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/ll_document_showing_safe_exit_plan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@+id/gen_edit1"
+                        android:text="16. Is document showing safe exit plan in case of fire and non-fire emergencies available and properly documented?"
+                        android:textColor="@color/textHeadColor"
+                        android:textSize="@dimen/font_large"
+                        android:textStyle="bold" />
+
+                    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <RadioButton android:id="@+id/document_showing_safe_exit_plan_yes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Yes"
+                            android:onClick="onRadioButtonClicked"/>
+                        <RadioButton android:id="@+id/document_showing_safe_exit_plan_no"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No"
+                            android:onClick="onRadioButtonClicked"/>
+                    </RadioGroup>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:id="@+id/remark_document_showing_safe_exit_plan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/remark" />
+
+                        <ImageView android:id="@+id/nc_document_showing_safe_exit_plan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@mipmap/nc"
+                            android:textColor="@android:color/transparent" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/colorPrimaryTransparent"></View>
+
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/ll_document_showing_well_defined_staff"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@+id/gen_edit1"
+                        android:text="17. Is document showing well defined staff recruitment process available and properly documented?"
+                        android:textColor="@color/textHeadColor"
+                        android:textSize="@dimen/font_large"
+                        android:textStyle="bold" />
+
+                    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <RadioButton android:id="@+id/document_showing_well_defined_staff_yes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Yes"
+                            android:onClick="onRadioButtonClicked"/>
+                        <RadioButton android:id="@+id/document_showing_well_defined_staff_no"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No"
+                            android:onClick="onRadioButtonClicked"/>
+                    </RadioGroup>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:id="@+id/remark_document_showing_well_defined_staff"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/remark" />
+
+                        <ImageView android:id="@+id/nc_document_showing_well_defined_staff"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@mipmap/nc"
+                            android:textColor="@android:color/transparent" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/colorPrimaryTransparent"></View>
+
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/ll_document_showing_disciplinary_grievance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@+id/gen_edit1"
+                        android:text="18. Is document showing disciplinary and grievance handling procedure available and properly documented?"
+                        android:textColor="@color/textHeadColor"
+                        android:textSize="@dimen/font_large"
+                        android:textStyle="bold" />
+
+                    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <RadioButton android:id="@+id/document_showing_disciplinary_grievance_yes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Yes"
+                            android:onClick="onRadioButtonClicked"/>
+                        <RadioButton android:id="@+id/document_showing_disciplinary_grievance_no"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No"
+                            android:onClick="onRadioButtonClicked"/>
+                    </RadioGroup>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:id="@+id/remark_document_showing_disciplinary_grievance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/remark" />
+
+                        <ImageView android:id="@+id/nc_document_showing_disciplinary_grievance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@mipmap/nc"
+                            android:textColor="@android:color/transparent" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/colorPrimaryTransparent"></View>
+
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/ll_document_showing_policies_procedures"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@+id/gen_edit1"
+                        android:text="19. Is document showing policies and procedures for maintaining confidentiality, integrity and security of records, data and information available and properly documented?"
+                        android:textColor="@color/textHeadColor"
+                        android:textSize="@dimen/font_large"
+                        android:textStyle="bold" />
+
+                    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <RadioButton android:id="@+id/document_showing_policies_procedures_yes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Yes"
+                            android:onClick="onRadioButtonClicked"/>
+                        <RadioButton android:id="@+id/document_showing_policies_procedures_no"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No"
+                            android:onClick="onRadioButtonClicked"/>
+                    </RadioGroup>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:id="@+id/remark_document_showing_policies_procedures"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/remark" />
+
+                        <ImageView android:id="@+id/nc_document_showing_policies_procedures"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@mipmap/nc"
+                            android:textColor="@android:color/transparent" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/colorPrimaryTransparent"></View>
+
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/ll_document_showing_retention_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@+id/gen_edit1"
+                        android:text="20. Is document showing procedures  of exist  for  retention  time  of  medical records, data and information available and properly documented?"
+                        android:textColor="@color/textHeadColor"
+                        android:textSize="@dimen/font_large"
+                        android:textStyle="bold" />
+
+                    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <RadioButton android:id="@+id/document_showing_retention_time_yes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Yes"
+                            android:onClick="onRadioButtonClicked"/>
+                        <RadioButton android:id="@+id/document_showing_retention_time_no"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No"
+                            android:onClick="onRadioButtonClicked"/>
+                    </RadioGroup>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:id="@+id/remark_mdocument_showing_retention_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/remark" />
+
+                        <ImageView android:id="@+id/nc_document_showing_retention_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@mipmap/nc"
+                            android:textColor="@android:color/transparent" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/colorPrimaryTransparent"></View>
+
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/ll_document_showing_define_process"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@+id/gen_edit1"
+                        android:text="21. Is document showing define process to whom the patient record can be released available and properly documented?"
+                        android:textColor="@color/textHeadColor"
+                        android:textSize="@dimen/font_large"
+                        android:textStyle="bold" />
+
+                    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <RadioButton android:id="@+id/document_showing_define_process_yes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Yes"
+                            android:onClick="onRadioButtonClicked"/>
+                        <RadioButton android:id="@+id/document_showing_define_process_no"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No"
+                            android:onClick="onRadioButtonClicked"/>
+                    </RadioGroup>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:id="@+id/remark_document_showing_define_process"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/remark" />
+
+                        <ImageView android:id="@+id/nc_document_showing_define_process"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@mipmap/nc"
+                            android:textColor="@android:color/transparent" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/colorPrimaryTransparent"></View>
+
+                </LinearLayout>
+
+
+                <LinearLayout android:id="@+id/ll_document_showing_medical_records"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@+id/gen_edit1"
+                        android:text="22. Is document showing procedure on destruction of medical records available and properly documented?"
+                        android:textColor="@color/textHeadColor"
+                        android:textSize="@dimen/font_large"
+                        android:textStyle="bold" />
+
+                    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <RadioButton android:id="@+id/document_showing_medical_records_yes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Yes"
+                            android:onClick="onRadioButtonClicked"/>
+                        <RadioButton android:id="@+id/document_showing_medical_records_no"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No"
+                            android:onClick="onRadioButtonClicked"/>
+                    </RadioGroup>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:id="@+id/remark_document_showing_medical_records"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/remark" />
+
+                        <ImageView android:id="@+id/nc_document_showing_medical_records"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@mipmap/nc"
+                            android:textColor="@android:color/transparent" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/colorPrimaryTransparent"></View>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnSave"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/login_btn"
+                    android:textColor="@color/white"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="Save" />
+
+                <Button
+                    android:id="@+id/btnSync"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/login_btn"
+                    android:textColor="@color/white"
+                    android:layout_weight="1"
+                    android:layout_margin="10dp"
+                    android:text="SYNC" />
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

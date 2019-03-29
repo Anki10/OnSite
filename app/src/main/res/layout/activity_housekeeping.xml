@@ -1,0 +1,502 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:background="#EDECF0">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hospital Name: "
+            android:textStyle="bold"
+            android:textSize="@dimen/assessor_id"/>
+
+        <TextView android:id="@+id/hospital_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="@dimen/assessor_value"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollViewGeneral"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <!-- SECTION Training Centre Detail's -->
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="1. Does staff know the procedure of cleaning non-infected patient's room? "
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/infected_patient_room_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/infected_patient_room_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Note: Check if housekeeping staff is trained in cleaning procedure of non-infected patient as the hospital policy "/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/remark_infected_patient_room"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_infected_patient_room"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="2. Does staff know the procedure of cleaning infected patient's room?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/procedure_cleaning_room_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/procedure_cleaning_room_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Note: Check if housekeeping staff is trained in cleaning procedure of infected patient as the hospital policy."/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/remark_procedure_cleaning_room"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_procedure_cleaning_room"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:paddingTop="10dp"
+                    android:text="3. Does staff know the procedure of cleaning blood spill?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/procedure_cleaning_blood_spill_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/procedure_cleaning_blood_spill_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Note: Check if housekeeping staff is trained in cleaning blood spill, they know to wear gloves, mask, use paper/cotton to soaked blood, use of disinfectant and discard as per BMW. "/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Upload: Video of demonstration of cleaning blood spill."/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/remark_procedure_cleaning_blood_spill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_procedure_cleaning_blood_spill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+                    <ImageView android:id="@+id/image_procedure_cleaning_blood_spill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:src="@mipmap/camera" />
+
+
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="4. Is the waste collected, segregated, transported and disposed as per the Biomedical Waste regulations?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/Biomedical_Waste_regulations_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/Biomedical_Waste_regulations_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+
+                </RadioGroup>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Note: Check if housekeeping staff is trained in collecting, segregating, transporting and disposing of waste as per the Biomedical Waste regulations. "/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Upload: Photo of BMW segregation from any patient care area."/>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/remark_Biomedical_Waste_regulations"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="@dimen/margin_small"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_Biomedical_Waste_regulations"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+                    <ImageView android:id="@+id/image_Biomedical_Waste_regulations"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:src="@mipmap/camera" />
+
+
+
+
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="5. Does staff know the procedure of cleaning or washing the blood stained linen?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/cleaning_washing_blood_stained_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/cleaning_washing_blood_stained_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Note: Check if housekeeping staff is trained in cleaning blood stained linen, they are aware of wearing gloves, soaked linen in disinfectant and duration of washing procedure"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/remark_cleaning_washing_blood_stained"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_cleaning_washing_blood_stained"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnSave"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/login_btn"
+                    android:textColor="@color/white"
+                    android:layout_weight="1"
+                    android:layout_margin="10dp"
+                    android:text="Save" />
+
+                <Button
+                    android:id="@+id/btnSync"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/login_btn"
+                    android:textColor="@color/white"
+                    android:layout_weight="1"
+                    android:layout_margin="10dp"
+                    android:text="SYNC" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

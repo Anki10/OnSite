@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/custom_dialog"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/custom_dialog_padding">
+
+    <LinearLayout
+        android:id="@+id/custom_dialog_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_bg"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@color/alertdialog_header_color"
+            android:orientation="horizontal"
+            android:padding="@dimen/custom_dialog_header_padding">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@mipmap/cross"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/dialog_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textAllCaps="false"
+                android:textColor="@color/light_black"
+                android:textSize="@dimen/custom_dialog_title" />
+
+            <ImageView
+                android:id="@+id/dialog_header_cross"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:src="@mipmap/cross" />
+
+        </LinearLayout>
+
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+        <RadioButton android:id="@+id/radio_majer"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Yes"
+            android:onClick="onRadioButtonClicked"/>
+        <RadioButton android:id="@+id/radio_minor"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"
+            android:text="No"
+            android:onClick="onRadioButtonClicked"/>
+
+        </RadioGroup>
+
+
+        <EditText
+            android:id="@+id/text_exit"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="@dimen/custom_header_text_padding"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="@dimen/custom_header_text_padding"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:backgroundTint="@color/alertdialog_header_color"
+            android:text=""
+            android:textColor="@color/light_black"
+            android:textSize="@dimen/custom_dialog_text" />
+
+        <LinearLayout
+            android:id="@+id/custom_dialog_bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/transparent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <LinearLayout
+                android:id="@+id/btn_yes_exit_LL"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/custom_button_margin"
+                android:layout_marginRight="@dimen/custom_button_margin"
+                android:layout_weight="1"
+                android:background="@drawable/login_button"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_yes_exit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:gravity="center"
+                    android:padding="@dimen/custom_button_text_padding"
+                    android:text="OK"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/custom_dialog_button" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

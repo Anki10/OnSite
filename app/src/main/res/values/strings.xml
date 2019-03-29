@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">OnSite</string>
+
+    <string name="username">Email</string>
+    <string name="password">Password</string>
+
+    <string name="key_hospital">1</string>
+    <string name="key_hospital_main">2</string>
+    <string name="key_hospital_accept">3</string>
+    <string name="key_hospital_reject">4</string>
+
+    <string name="setup_menu">Menu</string>
+
+    <string name="open_drawer">Open</string>
+    <string name="close_drawer">Close</string>
+
+    <string name="key_image_delete">46</string>
+    <string name="key_from_name">47</string>
+
+    <string name="logout_sucessfuly">You have been successfully logged out</string>
+
+    <string name="logout_alert">Are you sure you want to log out ?</string>
+
+    <string name="back_alert">Want to go back and lose unsaved data ?</string>
+
+    <string name="Data_reset">Data reset will clear all the data from device so please ensure that all the data is synced before data reset</string>
+
+    <string-array name="nav_drawer_items">
+        <item>Home</item>
+        <item>Logout</item>
+        <item>Data Reset</item>
+    </string-array>
+
+    <string-array name="assessement_service">
+        <item>General Details</item>
+        <item>Laboratory</item>
+        <item>Radiology / Imaging</item>
+        <item>Emergency</item>
+        <item>High dependency Areas</item>
+        <item>Obstetric Ward NICU Paediatric</item>
+        <item>OT/ICU</item>
+        <item>Wards and Pharmacy</item>
+        <item>Patient/Staff Interview</item>
+        <item>Wards, OT, ICU, OPD, Emergency</item>
+        <item>HRM</item>
+        <item>MRD</item>
+        <item>Housekeeping</item>
+        <item>Sterilization Area</item>
+        <item>Management</item>
+        <item>Maintenance/Bio-medical engineering</item>
+        <item>Maintenance/Facility Checks</item>
+        <item>Safety Management</item>
+        <item>Ambulance Accessibility</item>
+        <item>Uniform Signage</item>
+        <item>Documentation</item>
+
+
+    </string-array>
+
+</resources>
