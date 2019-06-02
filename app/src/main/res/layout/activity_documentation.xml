@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="1. Is document related to procedure(s) of collection, identification, handling, safe transportation, processing and disposal of specimens available and properly documented?"
+                    android:text="Is document related to procedure(s) of collection, identification, handling, safe transportation, processing and disposal of specimens available and properly documented?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -130,7 +130,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="2. Is document showing process addresses discharge of all patients including Medico-legal cases and patients leaving against medical advice available and properly documented?"
+                    android:text="Is document showing process addresses discharge of all patients including Medico-legal cases and patients leaving against medical advice available and properly documented?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -198,7 +198,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="3. Is document showing care of patients arriving in the emergency including handling of medico-legal cases available and properly documented?"
+                    android:text="Is document showing care of patients arriving in the emergency including handling of medico-legal cases available and properly documented?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -263,7 +263,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:text="4. Is document showing policies and procedures used to guide the rational use of blood and blood products available and properly documented?"
+                    android:text="Is document showing policies and procedures used to guide the rational use of blood and blood products available and properly documented?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -332,7 +332,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="5. Is document showing procedures to govern transfusion of blood and blood products available and properly documented?"
+                    android:text="Is document showing procedures to govern transfusion of blood and blood products available and properly documented?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -399,7 +399,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="6. Is document showing procedure for the administration of anaesthesia available and properly documented?"
+                    android:text="Is document showing procedure for the administration of anaesthesia available and properly documented?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -466,7 +466,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="7. Is document showing defined criteria to transfer the patient from the recovery area available and properly documented?"
+                    android:text="Is document showing defined criteria to transfer the patient from the recovery area available and properly documented?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -534,7 +534,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="8. Is document showing procedure of prevention of adverse events like wrong site, wrong patient and wrong surgery available and properly documented?"
+                    android:text="Is document showing procedure of prevention of adverse events like wrong site, wrong patient and wrong surgery available and properly documented?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -601,7 +601,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="9. Is document showing procedure for incorporating purchase, storage, prescription and dispensation of medications available and properly documented?"
+                    android:text="Is document showing procedure for incorporating purchase, storage, prescription and dispensation of medications available and properly documented?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -668,7 +668,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="10. Is document showing procedure to address procurement and usage of implantable prostheses available and properly documented?"
+                    android:text="Is document showing procedure to address procurement and usage of implantable prostheses available and properly documented?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -730,13 +730,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
+                android:visibility="gone"
                 android:padding="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="11. Is document showing  policies and procedure exit for storage of medications available and properly documented?"
+                    android:text="Is document showing  policies and procedure exit for storage of medications available and properly documented?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -790,6 +791,8 @@
                     android:layout_marginBottom="10dp"
                     android:background="@color/colorPrimaryTransparent"></View>
 
+            </LinearLayout>
+
 
                 <LinearLayout android:id="@+id/ll_document_showing_drugs_available"
                     android:layout_width="match_parent"
@@ -802,7 +805,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:labelFor="@+id/gen_edit1"
-                        android:text="12. Is document showing policies and procedures to govern usage of radioactive drugs available and properly documented?"
+                        android:text="Is document showing policies and procedures to govern usage of radioactive drugs available and properly documented?"
                         android:textColor="@color/textHeadColor"
                         android:textSize="@dimen/font_large"
                         android:textStyle="bold" />
@@ -872,7 +875,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:labelFor="@+id/gen_edit1"
-                        android:text="13. Is document showing Policies and procedures of safe storage, preparation, handling, distribution and disposal of radioactive drugs available and properly documented?"
+                        android:text="Is document showing Policies and procedures of safe storage, preparation, handling, distribution and disposal of radioactive drugs available and properly documented?"
                         android:textColor="@color/textHeadColor"
                         android:textSize="@dimen/font_large"
                         android:textStyle="bold" />
@@ -939,7 +942,7 @@
                         android:layout_height="wrap_content"
                         android:labelFor="@+id/gen_edit1"
                         android:paddingTop="10dp"
-                        android:text="14. Is Infection control manual showing periodic update and surveillance activities available and properly documented?"
+                        android:text="Is Infection control manual showing periodic update and surveillance activities available and properly documented?"
                         android:textColor="@color/textHeadColor"
                         android:textSize="@dimen/font_large"
                         android:textStyle="bold" />
@@ -1004,7 +1007,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="10dp"
-                        android:text="15. Is document  showing operational and maintenance (preventive and breakdown) plan for clinical and support service equipment available and properly documented?"
+                        android:text="Is document  showing operational and maintenance (preventive and breakdown) plan for clinical and support service equipment available and properly documented?"
                         android:textColor="@color/textHeadColor"
                         android:textSize="@dimen/font_large"
                         android:textStyle="bold" />
@@ -1073,7 +1076,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:labelFor="@+id/gen_edit1"
-                        android:text="16. Is document showing safe exit plan in case of fire and non-fire emergencies available and properly documented?"
+                        android:text="Is document showing safe exit plan in case of fire and non-fire emergencies available and properly documented?"
                         android:textColor="@color/textHeadColor"
                         android:textSize="@dimen/font_large"
                         android:textStyle="bold" />
@@ -1139,7 +1142,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:labelFor="@+id/gen_edit1"
-                        android:text="17. Is document showing well defined staff recruitment process available and properly documented?"
+                        android:text="Is document showing well defined staff recruitment process available and properly documented?"
                         android:textColor="@color/textHeadColor"
                         android:textSize="@dimen/font_large"
                         android:textStyle="bold" />
@@ -1206,7 +1209,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:labelFor="@+id/gen_edit1"
-                        android:text="18. Is document showing disciplinary and grievance handling procedure available and properly documented?"
+                        android:text="Is document showing disciplinary and grievance handling procedure available and properly documented?"
                         android:textColor="@color/textHeadColor"
                         android:textSize="@dimen/font_large"
                         android:textStyle="bold" />
@@ -1274,7 +1277,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:labelFor="@+id/gen_edit1"
-                        android:text="19. Is document showing policies and procedures for maintaining confidentiality, integrity and security of records, data and information available and properly documented?"
+                        android:text="Is document showing policies and procedures for maintaining confidentiality, integrity and security of records, data and information available and properly documented?"
                         android:textColor="@color/textHeadColor"
                         android:textSize="@dimen/font_large"
                         android:textStyle="bold" />
@@ -1342,7 +1345,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:labelFor="@+id/gen_edit1"
-                        android:text="20. Is document showing procedures  of exist  for  retention  time  of  medical records, data and information available and properly documented?"
+                        android:text="Is document showing procedures  of exist  for  retention  time  of  medical records, data and information available and properly documented?"
                         android:textColor="@color/textHeadColor"
                         android:textSize="@dimen/font_large"
                         android:textStyle="bold" />
@@ -1408,7 +1411,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:labelFor="@+id/gen_edit1"
-                        android:text="21. Is document showing define process to whom the patient record can be released available and properly documented?"
+                        android:text="Is document showing define process to whom the patient record can be released available and properly documented?"
                         android:textColor="@color/textHeadColor"
                         android:textSize="@dimen/font_large"
                         android:textStyle="bold" />
@@ -1475,7 +1478,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:labelFor="@+id/gen_edit1"
-                        android:text="22. Is document showing procedure on destruction of medical records available and properly documented?"
+                        android:text="Is document showing procedure on destruction of medical records available and properly documented?"
                         android:textColor="@color/textHeadColor"
                         android:textSize="@dimen/font_large"
                         android:textStyle="bold" />
@@ -1533,7 +1536,262 @@
                 </LinearLayout>
 
 
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:layout_weight="1"
+                    android:text="Photograph of signed document of Scope of Services"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Note: 1. Document should be as per the provided format and all the operational services should be ticked in the document \n 2. Document should be properly signed by the competant authority"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+                <ImageView android:id="@+id/image_signed_document"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/camera" />
+
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:layout_weight="1"
+                    android:text="Photograph of signed list of General Duty Medical Officers"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Note: 1. Document should be as per the list provided in the registration form
+\n 2. Document should be properly signed by the competant authority"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+                <ImageView android:id="@+id/image_signed_general_duty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/camera" />
+
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:layout_weight="1"
+                    android:text="Photograph of signed list of Nurses"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Note: 1. Document should be as per the list provided in the registration form
+\n 2. Document should be properly signed by the competant authority"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+                <ImageView android:id="@+id/image_signed_nursesl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/camera" />
+
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:layout_weight="1"
+                    android:text="Photograph of signed list of Paramedical Staff: (OT, ECG, Radiology, PFT, Lab, Optometrist, EMG, Dialysis)"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Note: 1. Document should be as per the list provided in the registration form
+\n 2. Document should be properly signed by the competant authority"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+                <ImageView android:id="@+id/image_signed_paramedical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/camera" />
+
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:layout_weight="1"
+                    android:text="Photograph of signed list of Administrative and Support Staff"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Note: 1. Document should be as per the list provided in the registration form
+\n 2. Document should be properly signed by the competant authority"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+                <ImageView android:id="@+id/image_signed_administrativ"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/camera" />
+
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"

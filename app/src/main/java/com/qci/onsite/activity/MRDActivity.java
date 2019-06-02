@@ -1103,6 +1103,8 @@ public class MRDActivity extends BaseActivity implements View.OnClickListener {
                 e.printStackTrace();
             }
             image1 = json.toString();
+        }else {
+            image1 = null;
         }
 
         if (Local_staffs_personal_files_maintained_list.size() > 0){
@@ -1112,6 +1114,8 @@ public class MRDActivity extends BaseActivity implements View.OnClickListener {
                 e.printStackTrace();
             }
             Local_image1 = json.toString();
+        }else {
+            Local_image1 = null;
         }
 
 
@@ -1332,8 +1336,6 @@ public class MRDActivity extends BaseActivity implements View.OnClickListener {
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(MRDActivity.this,HospitalListActivity.class);
-        startActivity(intent);
-        finish();
+        SavePharmacyData("save");
     }
 }

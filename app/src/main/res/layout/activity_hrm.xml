@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="1. Are staff health related issues/problems taken care by the hospital? "
+                    android:text="Are staff health related issues/problems taken care by the hospital? "
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -140,7 +140,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="2. Are staffs' personal files maintained?"
+                    android:text="Are staffs' personal files maintained?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -230,7 +230,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="3. Are occupational health hazards taken care of?"
+                    android:text="Are occupational health hazards taken care of?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -304,7 +304,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:text="4. Does training occur when job responsibility changes?"
+                    android:text="Does training occur when job responsibility changes?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -385,7 +385,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="5. Are past medical records of doctors retrievable?"
+                    android:text="Are past medical records of doctors retrievable?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -455,7 +455,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="6. In case of grievances, is any action taken to redress the same?"
+                    android:text="In case of grievances, is any action taken to redress the same?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -482,15 +482,8 @@
                     android:padding="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="Note: Check if staff knows grievance procedure "/>
+                    android:text="Note: Check if staff knows grievance procedure by interviewing"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:text="Upload: Record a video"/>
 
 
                 <LinearLayout
@@ -522,6 +515,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
+                        android:visibility="gone"
                         android:src="@mipmap/camera" />
 
 
@@ -546,7 +540,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="7. Is staff aware of disciplinary procedure?"
+                    android:text="Is staff aware of disciplinary procedure?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -573,16 +567,9 @@
                     android:padding="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="Note: Check if staff knows disciplinary procedure"/>
+                    android:text="Note: Check if staff knows grievance procedure by interviewing"/>
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:text="Upload: Record a video"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -613,6 +600,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
+                        android:visibility="gone"
                         android:src="@mipmap/camera" />
 
 
@@ -638,7 +626,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="8. Is staff able to demonstrate and take actions to report and eliminate/minimize risks?"
+                    android:text="Is staff able to demonstrate and take actions to report and eliminate/minimize risks?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />

@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:labelFor="@+id/gen_edit1"
-            android:text="1. Are imaging personnel using appropriate safety equipment/ devices ?"
+            android:text="Are imaging personnel using appropriate safety equipment/ devices ?"
             android:textColor="@color/textHeadColor"
             android:textSize="@dimen/font_large"
             android:textStyle="bold" />
@@ -88,7 +88,7 @@
             android:padding="5dp"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:text="Upload: Photo of staff with appropriate safety equipment."/>
+            android:text="Upload: Photo of aprons and shields"/>
 
 
 
@@ -144,7 +144,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:labelFor="@+id/gen_edit1"
-            android:text="2. Is there any defined turnaround time for test?"
+            android:text="Is there any defined turnaround time for test?"
             android:textColor="@color/textHeadColor"
             android:textSize="@dimen/font_large"
             android:textStyle="bold" />
@@ -171,7 +171,7 @@
             android:padding="5dp"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:text="Upload: Photo of document validating the defined turnaround time for test."/>
+            android:text="Upload: Photo of record of turnaround time for Lab test."/>
 
 
 

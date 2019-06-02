@@ -1,6 +1,7 @@
 package com.qci.onsite.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.qci.onsite.R;
 import com.qci.onsite.activity.HospitalListActivity;
 import com.qci.onsite.pojo.AssessmentStatusPojo;
+import com.qci.onsite.util.AppConstant;
 
 import java.util.ArrayList;
 
@@ -46,8 +48,19 @@ public class HospitalAdapter extends RecyclerView.Adapter<HospitalAdapter.ViewHo
 
         final AssessmentStatusPojo pojo = hospital_list.get(position);
 
-
         holder.tv_hospital_name.setText(pojo.getAssessement_name());
+
+        int num_bed = getINTFromPrefs("Hospital_bed");
+
+        if (num_bed < 51){
+           if (pojo.getAssessement_name().equalsIgnoreCase("Radiology / Imaging")){
+               holder.ll_main_row.setVisibility(View.GONE);
+           }else {
+               holder.ll_main_row.setVisibility(View.VISIBLE);
+           }
+        }
+
+
 
         if (pojo.getAssessement_status().equalsIgnoreCase("Start")) {
             holder.iv_assessment.setImageResource(R.mipmap.start);
@@ -61,6 +74,12 @@ public class HospitalAdapter extends RecyclerView.Adapter<HospitalAdapter.ViewHo
         holder.ll_hospital.setTag(R.string.key_hospital,position);
 
 
+    }
+
+
+    public int getINTFromPrefs(String key){
+        SharedPreferences settings = mContext.getSharedPreferences(AppConstant.PREF_NAME, 0);
+        return settings.getInt(key, 0);
     }
 
     @Override
@@ -78,6 +97,9 @@ public class HospitalAdapter extends RecyclerView.Adapter<HospitalAdapter.ViewHo
 
         @BindView(R.id.iv_assessment)
         ImageView iv_assessment;
+
+        @BindView(R.id.ll_main_row)
+        LinearLayout ll_main_row;
 
       public ViewHolder(View itemView) {
           super(itemView);

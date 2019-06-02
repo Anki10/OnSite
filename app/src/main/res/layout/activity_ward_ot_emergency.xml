@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="1. Does hospital maintain cleanliness and general hygiene of areas/surfaces, furniture, fixtures and items used in patient care? "
+                    android:text="Does hospital maintain cleanliness and general hygiene of areas/surfaces, furniture, fixtures and items used in patient care? "
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -120,7 +120,7 @@
 
 
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_hospital_adhere_standard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -131,7 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="2. Does hospital adhere to standard precautions in all areas?"
+                    android:text="Does hospital adhere to standard precautions in all areas?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -189,9 +189,10 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_hospital_provide_adequate_gloves"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
 
@@ -200,7 +201,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="3. Does hospital provide adequate gloves, masks, soaps, and disinfectants and are they used correctly?"
+                    android:text="Does hospital provide adequate gloves, masks, soaps, and disinfectants and are they used correctly?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -265,7 +266,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:text="4. Are admissions or discharge to home or transfer to another organization is documented in emergency unit?"
+                    android:text="Are admissions or discharge to home or transfer to another organization is documented in emergency unit?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -295,7 +296,7 @@
                     android:padding="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="Upload: Photo of documented evidence"/>
+                    android:text="Upload: Photo of discharge or transfer note in emergency unit"/>
 
 
                 <LinearLayout
@@ -349,7 +350,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="5. Are there adequate staff present in ICU ?"
+                    android:text="Are there adequate staff present in ICU ?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />

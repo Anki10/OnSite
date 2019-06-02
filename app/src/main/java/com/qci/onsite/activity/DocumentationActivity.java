@@ -22,6 +22,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.qci.onsite.R;
 import com.qci.onsite.adapter.ImageShowAdapter;
 import com.qci.onsite.api.APIService;
@@ -57,7 +59,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DocumentationActivity extends BaseActivity {
+public class DocumentationActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.ll_document_related_procedure)
     LinearLayout ll_document_related_procedure;
@@ -392,10 +394,44 @@ public class DocumentationActivity extends BaseActivity {
     @BindView(R.id.hospital_center)
     TextView hospital_center;
 
+    @BindView(R.id.image_signed_document)
+    ImageView image_signed_document;
+
+    @BindView(R.id.image_signed_general_duty)
+    ImageView image_signed_general_duty;
+
+    @BindView(R.id.image_signed_nursesl)
+    ImageView image_signed_nursesl;
+
+    @BindView(R.id.image_signed_paramedical)
+    ImageView image_signed_paramedical;
+
+    @BindView(R.id.image_signed_administrativ)
+    ImageView image_signed_administrativ;
+
+    private static final String CAMERA_DIR = "/dcim/";
+    private Uri picUri;
+    private File imageF;
+
+    private ArrayList<String>img_signed_document_list;
+    private ArrayList<String>img_signed_general_duty_list;
+    private ArrayList<String> img_signed_nursesl_list;
+    private ArrayList<String> img_signed_paramedicall_list;
+    private ArrayList<String>img_signed_administrativ_list;
+
+    private ArrayList<String>img_signed_document_url_list;
+    private ArrayList<String>img_signed_general_duty_url_list;
+    private ArrayList<String>img_signed_nursesl_url_list;
+    private ArrayList<String>img_signed_paramedical_url_list;
+    private ArrayList<String>img_signed_administrativ_url_list;
+
+
     private String remark1, remark2, remark3,remark4,remark5,remark6,remark7,remark8,remark9,remark10,remark11,
     remark12,remark13,remark14,remark15,remark16,remark17,remark18,remark19,remark20,remark21,remark22;
 
     private Dialog dialogLogout;
+
+    int Bed_no = 0;
 
 
 
@@ -408,6 +444,8 @@ public class DocumentationActivity extends BaseActivity {
 
 
     private File outputVideoFile;
+
+    private ImageShowAdapter image_adapter;
 
     private String document_related_procedure = "",document_showing_process ="",document_showing_care_patients="",document_showing_policies = "",document_showing_procedures="",
             document_showing_procedure_administration = "",document_showing_defined_criteria  = "",document_showing_procedure_prevention = "",document_showing_procedure_incorporating="",
@@ -428,6 +466,11 @@ public class DocumentationActivity extends BaseActivity {
 
     DataSyncRequest pojo_dataSync;
 
+    String st_signed_document = "",st_signed_general_duty = "",st_signed_nursesl = "",st_signed_paramedical = "",
+            st_signed_administrativ = "";
+
+    String image1 = "",Local_image1 = "",image2 = "",Local_image2,image3 = "",Local_image3 = "",image4 = "",Local_image4 = "",image5 = "",Local_image5 = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -437,6 +480,19 @@ public class DocumentationActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         setDrawerbackIcon("Documentation");
+
+        img_signed_document_list = new ArrayList<>();
+        img_signed_general_duty_list = new ArrayList<>();
+        img_signed_nursesl_list = new ArrayList<>();
+        img_signed_paramedicall_list = new ArrayList<>();
+        img_signed_administrativ_list = new ArrayList<>();
+
+        img_signed_document_url_list = new ArrayList<>();
+        img_signed_general_duty_url_list = new ArrayList<>();
+        img_signed_nursesl_url_list = new ArrayList<>();
+        img_signed_paramedical_url_list = new ArrayList<>();
+        img_signed_administrativ_url_list = new ArrayList<>();
+
 
 
         assessement_list = new ArrayList<>();
@@ -453,6 +509,24 @@ public class DocumentationActivity extends BaseActivity {
         pojo = new DocumentationPojo();
 
         mAPIService = ApiUtils.getAPIService();
+
+        Bed_no = getINTFromPrefs("Hospital_bed");
+
+        if (Bed_no < 51){
+            ll_document_showing_procedures.setVisibility(View.GONE);
+            ll_document_showing_defined_criteria.setVisibility(View.GONE);
+            ll_document_showing_policies_procedure.setVisibility(View.GONE);
+            ll_document_showing_drugs_available.setVisibility(View.GONE);
+            ll_document_showing_safe_storage.setVisibility(View.GONE);
+            ll_document_showing_well_defined_staff.setVisibility(View.GONE);
+        }else {
+            ll_document_showing_procedures.setVisibility(View.VISIBLE);
+            ll_document_showing_defined_criteria.setVisibility(View.VISIBLE);
+            ll_document_showing_policies_procedure.setVisibility(View.VISIBLE);
+            ll_document_showing_drugs_available.setVisibility(View.VISIBLE);
+            ll_document_showing_safe_storage.setVisibility(View.VISIBLE);
+            ll_document_showing_well_defined_staff.setVisibility(View.VISIBLE);
+        }
 
         getPharmacyData();
 
@@ -883,8 +957,6 @@ public class DocumentationActivity extends BaseActivity {
 
             }
 
-
-
             if (pojo.getInfection_control_manual_showing_remark() != null){
                 remark14 = pojo.getInfection_control_manual_showing_remark();
 
@@ -1032,6 +1104,186 @@ public class DocumentationActivity extends BaseActivity {
                     nc_document_showing_medical_records.setImageResource(R.mipmap.nc_selected);
                 }
             }
+            if(getFromPrefs(AppConstant.scopeofservices).length() > 0){
+                image1 = getFromPrefs(AppConstant.scopeofservices);
+
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(image1);
+                    JSONArray jArray = json.optJSONArray("uniqueArrays");
+                    if (jArray != null){
+                        for (int i=0;i<jArray.length();i++){
+                            img_signed_document_url_list.add(jArray.getString(i));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                image_signed_document.setImageResource(R.mipmap.camera_selected);
+            }
+
+            if (getFromPrefs(AppConstant.scopeofservices_local).length() > 0){
+                Local_image1 = getFromPrefs(AppConstant.scopeofservices_local);
+
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(Local_image1);
+                    JSONArray jArray = json.optJSONArray("uniqueArrays");
+                    if (jArray != null){
+                        for (int i=0;i<jArray.length();i++){
+                            img_signed_document_list.add(jArray.getString(i));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            if(getFromPrefs(AppConstant.gendutymedoffcr).length() > 0){
+                image2 = getFromPrefs(AppConstant.gendutymedoffcr);
+
+                image_signed_general_duty.setImageResource(R.mipmap.camera_selected);
+
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(image2);
+                    JSONArray jArray = json.optJSONArray("uniqueArrays");
+                    if (jArray != null){
+                        for (int i=0;i<jArray.length();i++){
+                            img_signed_general_duty_list.add(jArray.getString(i));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            if (getFromPrefs(AppConstant.gendutymedoffcr_local).length() > 0){
+                Local_image2 = getFromPrefs(AppConstant.gendutymedoffcr_local);
+
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(Local_image2);
+                    JSONArray jArray = json.optJSONArray("uniqueArrays");
+                    if (jArray != null){
+                        for (int i=0;i<jArray.length();i++){
+                            img_signed_general_duty_url_list.add(jArray.getString(i));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if(getFromPrefs(AppConstant.nurses).length() > 0){
+                image3 = getFromPrefs(AppConstant.nurses);
+
+                image_signed_nursesl.setImageResource(R.mipmap.camera_selected);
+
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(image3);
+                    JSONArray jArray = json.optJSONArray("uniqueArrays");
+                    if (jArray != null){
+                        for (int i=0;i<jArray.length();i++){
+                            img_signed_nursesl_url_list.add(jArray.getString(i));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+            if (getFromPrefs(AppConstant.nurses_local).length() > 0){
+                Local_image3 = getFromPrefs(AppConstant.nurses_local);
+
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(Local_image3);
+                    JSONArray jArray = json.optJSONArray("uniqueArrays");
+                    if (jArray != null){
+                        for (int i=0;i<jArray.length();i++){
+                            img_signed_nursesl_list.add(jArray.getString(i));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if(getFromPrefs(AppConstant.paramedstaff).length() > 0){
+                image4 = getFromPrefs(AppConstant.paramedstaff);
+
+                image_signed_paramedical.setImageResource(R.mipmap.camera_selected);
+
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(image4);
+                    JSONArray jArray = json.optJSONArray("uniqueArrays");
+                    if (jArray != null){
+                        for (int i=0;i<jArray.length();i++){
+                            img_signed_paramedical_url_list.add(jArray.getString(i));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (getFromPrefs(AppConstant.paramedstaff_local).length() > 0){
+                Local_image4 = getFromPrefs(AppConstant.paramedstaff_local);
+
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(Local_image4);
+                    JSONArray jArray = json.optJSONArray("uniqueArrays");
+                    if (jArray != null){
+                        for (int i=0;i<jArray.length();i++){
+                            img_signed_paramedicall_list.add(jArray.getString(i));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if(getFromPrefs(AppConstant.adminsupportstaff).length() > 0){
+                image5 = getFromPrefs(AppConstant.adminsupportstaff);
+
+                image_signed_administrativ.setImageResource(R.mipmap.camera_selected);
+
+
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(image5);
+                    JSONArray jArray = json.optJSONArray("uniqueArrays");
+                    if (jArray != null){
+                        for (int i=0;i<jArray.length();i++){
+                            img_signed_administrativ_url_list.add(jArray.getString(i));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (getFromPrefs(AppConstant.adminsupportstaff_local).length() > 0){
+                Local_image5 = getFromPrefs(AppConstant.adminsupportstaff_local);
+
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(Local_image5);
+                    JSONArray jArray = json.optJSONArray("uniqueArrays");
+                    if (jArray != null){
+                        for (int i=0;i<jArray.length();i++){
+                            img_signed_administrativ_list.add(jArray.getString(i));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
 
         }else {
@@ -1049,7 +1301,9 @@ public class DocumentationActivity extends BaseActivity {
             R.id.remark_Infection_control_manual_showing,R.id.nc_Infection_control_manual_showing,R.id.remark_document_showing_operational_maintenance,R.id.nc_document_showing_operational_maintenance,R.id.remark_document_showing_safe_exit_plan,
             R.id.nc_document_showing_safe_exit_plan,R.id.remark_document_showing_well_defined_staff,R.id.nc_document_showing_well_defined_staff,R.id.remark_document_showing_disciplinary_grievance,R.id.nc_document_showing_disciplinary_grievance,
             R.id.remark_document_showing_policies_procedures,R.id.nc_document_showing_policies_procedures,R.id.remark_mdocument_showing_retention_time,R.id.nc_document_showing_retention_time,R.id.remark_document_showing_define_process,R.id.nc_document_showing_define_process,
-            R.id.remark_document_showing_medical_records,R.id.nc_document_showing_medical_records,R.id.btnSave,R.id.btnSync})
+            R.id.remark_document_showing_medical_records,R.id.nc_document_showing_medical_records,R.id.btnSave,R.id.btnSync,
+    R.id.image_signed_document,R.id.image_signed_general_duty,R.id.image_signed_nursesl,R.id.image_signed_paramedical,
+    R.id.image_signed_administrativ})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.remark_document_related_procedure:
@@ -1230,6 +1484,51 @@ public class DocumentationActivity extends BaseActivity {
                 displayNCDialog("NC", 22);
                 break;
 
+            case R.id.image_signed_document:
+
+                if (img_signed_document_list.size() > 0) {
+                    showImageListDialog(img_signed_document_list, 1,"signed_document");
+                } else {
+                    captureImage(1);
+                }
+                break;
+
+            case R.id.image_signed_general_duty:
+                if (img_signed_general_duty_list.size()> 0) {
+                    showImageListDialog(img_signed_general_duty_list, 2,"signed_general_duty");
+                } else {
+                    captureImage(2);
+                }
+
+                break;
+
+            case R.id.image_signed_nursesl:
+                if (img_signed_nursesl_list.size()> 0) {
+                    showImageListDialog(img_signed_nursesl_list, 3,"signed_nursesl");
+                } else {
+                    captureImage(3);
+                }
+
+                break;
+
+            case R.id.image_signed_paramedical:
+                if (img_signed_paramedicall_list.size() > 0) {
+                    showImageListDialog(img_signed_paramedicall_list, 4,"signed_paramedicall");
+                } else {
+                    captureImage(4);
+                }
+                break;
+
+            case R.id.image_signed_administrativ:
+
+                if (img_signed_administrativ_list.size() > 0) {
+                    showImageListDialog(img_signed_administrativ_list, 5,"signed_administrativ");
+                } else {
+                    captureImage(5);
+                }
+
+                break;
+
 
 
             case R.id.btnSave:
@@ -1238,7 +1537,11 @@ public class DocumentationActivity extends BaseActivity {
 
             case R.id.btnSync:
 
-                PostLaboratoryData();
+                if(Bed_no < 51){
+                    Post_SHCO_LaboratoryData();
+                }else {
+                    PostLaboratoryData();
+                }
 
                 break;
 
@@ -1440,7 +1743,6 @@ public class DocumentationActivity extends BaseActivity {
             case R.id.document_showing_medical_records_no:
                 document_showing_medical_records = "No";
                 break;
-
 
         }
     }
@@ -3406,6 +3708,143 @@ public class DocumentationActivity extends BaseActivity {
         pojo.setDocument_showing_medical_records_remark(remark22);
         pojo.setDocument_showing_medical_records_nc(nc22);
 
+        JSONObject json = new JSONObject();
+
+
+
+
+        if (img_signed_document_url_list.size() > 0){
+            try {
+                json.put("uniqueArrays", new JSONArray(img_signed_document_url_list));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            image1 = json.toString();
+        }else {
+            image1 = null;
+        }
+
+
+        if (img_signed_document_list.size() > 0){
+            try {
+                json.put("uniqueArrays", new JSONArray(img_signed_document_list));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Local_image1 = json.toString();
+        }else {
+            Local_image1 = null;
+        }
+
+        if (img_signed_general_duty_url_list.size() > 0){
+            try {
+                json.put("uniqueArrays", new JSONArray(img_signed_general_duty_url_list));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            image2 = json.toString();
+        }else {
+            image2 = null;
+        }
+
+
+        if (img_signed_general_duty_list.size() > 0){
+            try {
+                json.put("uniqueArrays", new JSONArray(img_signed_general_duty_list));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Local_image2 = json.toString();
+        }else {
+            Local_image2 = null;
+        }
+
+        if (img_signed_nursesl_url_list.size() > 0){
+            try {
+                json.put("uniqueArrays", new JSONArray(img_signed_nursesl_url_list));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            image3 = json.toString();
+        }else {
+            image3 = null;
+        }
+
+
+        if (img_signed_nursesl_list.size() > 0){
+            try {
+                json.put("uniqueArrays", new JSONArray(img_signed_nursesl_list));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Local_image3 = json.toString();
+        }else {
+            Local_image3 = null;
+        }
+
+        if (img_signed_paramedical_url_list.size() > 0){
+            try {
+                json.put("uniqueArrays", new JSONArray(img_signed_paramedical_url_list));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            image4 = json.toString();
+        }else {
+            image4 = null;
+        }
+
+
+        if (img_signed_paramedicall_list.size() > 0){
+            try {
+                json.put("uniqueArrays", new JSONArray(img_signed_paramedicall_list));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Local_image4 = json.toString();
+        }else {
+            Local_image4 = null;
+        }
+
+        if (img_signed_administrativ_url_list.size() > 0){
+            try {
+                json.put("uniqueArrays", new JSONArray(img_signed_administrativ_url_list));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            image5 = json.toString();
+        }else {
+            image5 = null;
+        }
+
+
+        if (img_signed_administrativ_list.size() > 0){
+            try {
+                json.put("uniqueArrays", new JSONArray(img_signed_administrativ_list));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Local_image5 = json.toString();
+        }else {
+            Local_image5 = null;
+        }
+
+
+
+        saveIntoPrefs(AppConstant.scopeofservices,image1);
+        saveIntoPrefs(AppConstant.scopeofservices_local,Local_image1);
+
+        saveIntoPrefs(AppConstant.gendutymedoffcr,image2);
+        saveIntoPrefs(AppConstant.gendutymedoffcr_local,Local_image2);
+
+        saveIntoPrefs(AppConstant.nurses,image3);
+        saveIntoPrefs(AppConstant.nurses_local,Local_image3);
+
+        saveIntoPrefs(AppConstant.paramedstaff,image4);
+        saveIntoPrefs(AppConstant.paramedstaff_local,Local_image4);
+
+        saveIntoPrefs(AppConstant.adminsupportstaff,image5);
+        saveIntoPrefs(AppConstant.adminsupportstaff_local,Local_image5);
+
 
         if (sql_status) {
             databaseHandler.UPDATE_DOCUMENTATION(pojo);
@@ -3442,7 +3881,8 @@ public class DocumentationActivity extends BaseActivity {
                 document_showing_procedures.length() > 0 && document_showing_procedure_administration.length() > 0 && document_showing_defined_criteria.length() > 0 && document_showing_procedure_prevention.length() > 0 && document_showing_procedure_incorporating.length() > 0 &&
                 document_showing_procedure_address.length() > 0 && document_showing_policies_procedure.length() > 0 && document_showing_drugs_available.length() >0 && document_showing_safe_storage.length() > 0 &&
                 Infection_control_manual_showing.length() > 0 && document_showing_operational_maintenance.length() > 0 && document_showing_safe_exit_plan.length() > 0 && document_showing_well_defined_staff.length() > 0 && document_showing_disciplinary_grievance.length() > 0 &&
-                document_showing_policies_procedures.length() > 0 && document_showing_retention_time.length() > 0 && document_showing_define_process.length() > 0 && document_showing_medical_records.length() > 0){
+                document_showing_policies_procedures.length() > 0 && document_showing_retention_time.length() > 0 && document_showing_define_process.length() > 0 && document_showing_medical_records.length() > 0
+        && img_signed_document_url_list.size() > 0 && img_signed_general_duty_url_list.size() > 0 && img_signed_nursesl_url_list.size() > 0 &&  img_signed_paramedical_url_list.size() > 0 && img_signed_administrativ_url_list.size() > 0){
 
             pojo_dataSync.setTabName("Documentation");
             pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
@@ -3454,7 +3894,164 @@ public class DocumentationActivity extends BaseActivity {
             }
 
 
-           pojo_dataSync.setDocumentation(pojo);
+
+            for (int i=0;i<img_signed_document_url_list.size();i++){
+                String value_signed_do = img_signed_document_url_list.get(i);
+
+                st_signed_document = value_signed_do + st_signed_document;
+            }
+
+            for (int i = 0;i<img_signed_general_duty_url_list.size();i++){
+                String value_general_duty = img_signed_general_duty_url_list.get(i);
+
+                st_signed_general_duty = value_general_duty + st_signed_general_duty;
+            }
+
+            for (int i=0;i<img_signed_nursesl_url_list.size();i++){
+                String value_signed_nursesl = img_signed_nursesl_url_list.get(i);
+
+                st_signed_nursesl = value_signed_nursesl + st_signed_nursesl;
+            }
+            for (int i=0;i< img_signed_paramedical_url_list.size();i++){
+                String value_signed_paramedical = img_signed_paramedical_url_list.get(i);
+
+                st_signed_paramedical = value_signed_paramedical + st_signed_paramedical;
+            }
+
+            for (int i=0;i<img_signed_administrativ_url_list.size();i++){
+                String value_signed_administrativ = img_signed_administrativ_url_list.get(i);
+
+                st_signed_administrativ = value_signed_administrativ + st_signed_administrativ;
+
+            }
+
+            pojo.setSigndocscopeofservices_image(st_signed_document);
+            pojo.setSignlistgendutymedoffcr_image(st_signed_general_duty);
+            pojo.setSignlistnurses_image(st_signed_nursesl);
+            pojo.setSignlistparamedstaff_image(st_signed_paramedical);
+            pojo.setSignlistadminsupportstaff_image(st_signed_administrativ);
+
+
+            pojo_dataSync.setDocumentation(pojo);
+
+            final ProgressDialog d = AppDialog.showLoading(DocumentationActivity.this);
+            d.setCanceledOnTouchOutside(false);
+
+            mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
+                @Override
+                public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
+                    System.out.println("xxx sucess");
+
+                    d.dismiss();
+
+                    if (response.message().equalsIgnoreCase("Unauthorized")) {
+                        Intent intent = new Intent(DocumentationActivity.this, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+
+                        Toast.makeText(DocumentationActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                    }else {
+                        if (response.body() != null){
+                            if (response.body().getSuccess()){
+                                Intent intent = new Intent(DocumentationActivity.this,HospitalListActivity.class);
+                                startActivity(intent);
+                                finish();
+
+                                saveIntoPrefs("Pharmacy_tabId"+Hospital_id, String.valueOf(response.body().getTabId()));
+
+                                saveIntoPrefs("asmtId"+Hospital_id, String.valueOf(response.body().getAsmtId()));
+
+                                assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                                AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                                pojo.setHospital_id(assessement_list.get(20).getHospital_id());
+                                pojo.setAssessement_name("Documentation");
+                                pojo.setAssessement_status("Done");
+                                pojo.setLocal_id(assessement_list.get(20).getLocal_id());
+
+                                databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                                Toast.makeText(DocumentationActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DataSyncResponse> call, Throwable t) {
+                    System.out.println("xxx failed");
+
+                    d.dismiss();
+                }
+            });
+        }else {
+            Toast.makeText(DocumentationActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void Post_SHCO_LaboratoryData(){
+
+        SavePharmacyData("sync");
+
+        if (document_related_procedure.length() > 0 && document_showing_process.length() > 0 && document_showing_care_patients.length() >0 && document_showing_policies.length() > 0 &&
+                document_showing_procedure_administration.length() > 0 && document_showing_procedure_prevention.length() > 0 && document_showing_procedure_incorporating.length() > 0 &&
+                document_showing_procedure_address.length() > 0 &&
+                Infection_control_manual_showing.length() > 0 && document_showing_operational_maintenance.length() > 0 && document_showing_safe_exit_plan.length() > 0 && document_showing_disciplinary_grievance.length() > 0 &&
+                document_showing_policies_procedures.length() > 0 && document_showing_retention_time.length() > 0 && document_showing_define_process.length() > 0 && document_showing_medical_records.length() > 0
+                && img_signed_document_url_list.size() > 0 && img_signed_general_duty_url_list.size() > 0 && img_signed_nursesl_url_list.size() > 0 &&  img_signed_paramedical_url_list.size() > 0 && img_signed_administrativ_url_list.size() > 0){
+
+            pojo_dataSync.setTabName("Documentation");
+            pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
+            pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
+            if (getFromPrefs("asmtId"+Hospital_id).length() > 0){
+                pojo_dataSync.setAssessment_id(Integer.parseInt(getFromPrefs("asmtId"+Hospital_id)));
+            }else {
+                pojo_dataSync.setAssessment_id(0);
+            }
+
+
+
+
+            for (int i=0;i<img_signed_document_url_list.size();i++){
+                String value_signed_do = img_signed_document_url_list.get(i);
+
+                st_signed_document = value_signed_do + st_signed_document;
+            }
+
+            for (int i = 0;i<img_signed_general_duty_url_list.size();i++){
+                String value_general_duty = img_signed_general_duty_url_list.get(i);
+
+                st_signed_general_duty = value_general_duty + st_signed_general_duty;
+            }
+
+            for (int i=0;i<img_signed_nursesl_url_list.size();i++){
+                String value_signed_nursesl = img_signed_nursesl_url_list.get(i);
+
+                st_signed_nursesl = value_signed_nursesl + st_signed_nursesl;
+            }
+            for (int i=0;i< img_signed_paramedical_url_list.size();i++){
+                String value_signed_paramedical = img_signed_paramedical_url_list.get(i);
+
+                st_signed_paramedical = value_signed_paramedical + st_signed_paramedical;
+            }
+
+            for (int i=0;i<img_signed_administrativ_url_list.size();i++){
+                String value_signed_administrativ = img_signed_administrativ_url_list.get(i);
+
+                st_signed_administrativ = value_signed_administrativ + st_signed_administrativ;
+
+            }
+
+            pojo.setSigndocscopeofservices_image(st_signed_document);
+            pojo.setSignlistgendutymedoffcr_image(st_signed_general_duty);
+            pojo.setSignlistnurses_image(st_signed_nursesl);
+            pojo.setSignlistparamedstaff_image(st_signed_paramedical);
+            pojo.setSignlistadminsupportstaff_image(st_signed_administrativ);
+
+
+            pojo_dataSync.setDocumentation(pojo);
 
             final ProgressDialog d = AppDialog.showLoading(DocumentationActivity.this);
             d.setCanceledOnTouchOutside(false);
@@ -3514,13 +4111,324 @@ public class DocumentationActivity extends BaseActivity {
     }
 
 
+    private void captureImage(int CAMERA_REQUEST) {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        try {
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "bmh" + timeStamp + "_";
+            File albumF = getAlbumDir();
+            imageF = File.createTempFile(imageFileName, "bmh", albumF);
+            picUri = Uri.fromFile(imageF);
+
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageF));
+            } else {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(DocumentationActivity.this, getApplicationContext().getPackageName() + ".provider", imageF));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        startActivityForResult(takePictureIntent, CAMERA_REQUEST);
+
+    }
+
+    private File getAlbumDir() {
+        File storageDir = null;
+
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
+                storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "CameraPicture");
+            } else {
+                storageDir = new File(Environment.getExternalStorageDirectory() + CAMERA_DIR + "CameraPicture");
+            }
+
+            if (storageDir != null) {
+                if (!storageDir.mkdirs()) {
+                    if (!storageDir.exists()) {
+                        //		Log.d("CameraSample", "failed to create directory");
+                        return null;
+                    }
+                }
+            }
+
+        } else {
+            //		Log.v(getString(R.string.app_name), "External storage is not mounted READ/WRITE.");
+        }
+
+        return storageDir;
+    }
+
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 1) {
+                if (picUri != null) {
+                    Uri uri = picUri;
+                    String image2 = compressImage(uri.toString());
+                    //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
+
+                    ImageUpload(image2,"selfie");
+
+                }
+            }else if (requestCode == 2) {
+                if (picUri != null) {
+                    Uri uri = picUri;
+                    String image2 = compressImage(uri.toString());
+                    //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
+
+                    ImageUpload(image2,"hospital_board");
+
+                }
+            }
+            else if (requestCode == 3) {
+                if (picUri != null) {
+                    Uri uri = picUri;
+                    String image2 = compressImage(uri.toString());
+                    //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
+
+                    ImageUpload(image2,"authorised_person");
+
+                }
+            }
+
+            else if (requestCode == 4) {
+                if (picUri != null) {
+                    Uri uri = picUri;
+                    String image2 = compressImage(uri.toString());
+                    //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
+
+                    ImageUpload(image2,"front_hospital");
+
+                }
+            }
+            else if (requestCode == 5) {
+                if (picUri != null) {
+                    Uri uri = picUri;
+                    String image2 = compressImage(uri.toString());
+                    //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
+
+                    ImageUpload(image2,"back_hospital");
+
+                }
+            }
+
+        }
+    }
+
+    private void ImageUpload(final String image_path,final String from){
+        File file = new File(image_path);
+
+        //pass it like this
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+// MultipartBody.Part is used to send also the actual file name
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+
+        final ProgressDialog d = ImageDialog.showLoading(DocumentationActivity.this);
+        d.setCanceledOnTouchOutside(false);
+
+        mAPIService.ImageUploadRequest("Bearer " + getFromPrefs(AppConstant.ACCESS_Token),body).enqueue(new Callback<ImageUploadResponse>() {
+            @Override
+            public void onResponse(Call<ImageUploadResponse> call, Response<ImageUploadResponse> response) {
+                d.cancel();
+                if (response.message().equalsIgnoreCase("Unauthorized")) {
+                    Intent intent = new Intent(DocumentationActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+
+                    Toast.makeText(DocumentationActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                }else {
+                    if (response.body() != null){
+                        if (response.body().getSuccess()){
+
+                            System.out.println("xxx scucess");
+
+                            if (from.equalsIgnoreCase("selfie")){
+                                img_signed_document_url_list.add(response.body().getMessage());
+                                img_signed_document_list.add(image_path);
+                                image_signed_document.setImageResource(R.mipmap.camera_selected);
+                            }else if (from.equalsIgnoreCase("hospital_board")){
+                                img_signed_general_duty_url_list.add(response.body().getMessage());
+                                img_signed_general_duty_list.add(image_path);
+                                image_signed_general_duty.setImageResource(R.mipmap.camera_selected);
+                            }else if (from.equalsIgnoreCase("authorised_person")){
+                                img_signed_nursesl_url_list.add(response.body().getMessage());
+                                img_signed_nursesl_list.add(image_path);
+                                image_signed_nursesl.setImageResource(R.mipmap.camera_selected);
+                            }else if (from.equalsIgnoreCase("front_hospital")){
+                                img_signed_paramedical_url_list.add(response.body().getMessage());
+                                img_signed_paramedicall_list.add(image_path);
+                                image_signed_paramedical.setImageResource(R.mipmap.camera_selected);
+                            }else if (from.equalsIgnoreCase("back_hospital")){
+                                img_signed_administrativ_url_list.add(response.body().getMessage());
+                                img_signed_administrativ_list.add(image_path);
+                                image_signed_administrativ.setImageResource(R.mipmap.camera_selected);
+                            }
+
+                            Toast.makeText(DocumentationActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
+
+                        }else {
+                            Toast.makeText(DocumentationActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                        }
+                    }else {
+                        Toast.makeText(DocumentationActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ImageUploadResponse> call, Throwable t) {
+                System.out.println("xxx fail");
+
+                d.cancel();
+
+                Toast.makeText(DocumentationActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void showImageListDialog(ArrayList<String> list, final int position, String from) {
+        dialogLogout = new Dialog(DocumentationActivity.this, android.R.style.Theme_Translucent_NoTitleBar);
+        dialogLogout.setContentView(R.layout.image_list_dialog);
+        Button ll_ok = (Button) dialogLogout.findViewById(R.id.btn_yes_ok);
+        Button btn_add_more = (Button) dialogLogout.findViewById(R.id.btn_add_more);
+        ImageView dialog_header_cross = (ImageView) dialogLogout.findViewById(R.id.dialog_header_cross);
+        RecyclerView image_recycler_view = (RecyclerView) dialogLogout.findViewById(R.id.image_recycler_view);
+
+        dialogLogout.show();
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),3);
+        image_recycler_view.setLayoutManager(gridLayoutManager);
+
+        image_adapter = new ImageShowAdapter(DocumentationActivity.this,list,from,"Documentation");
+        image_recycler_view.setAdapter(image_adapter);
+
+        ll_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogLogout.dismiss();
+            }
+        });
+
+        dialog_header_cross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogLogout.dismiss();
+            }
+        });
+
+        btn_add_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogLogout.dismiss();
+                captureImage(position);
+            }
+        });
+    }
+
+
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(DocumentationActivity.this,HospitalListActivity.class);
-        startActivity(intent);
-        finish();
+        SavePharmacyData("save");
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.iv_delete:
+
+                int pos = (int) v.getTag(R.string.key_image_delete);
+
+                String from = (String)v.getTag(R.string.key_from_name);
+
+                DeleteList(pos,from);
+
+                break;
+        }
+    }
+
+    private void DeleteList(int position,String from){
+        try {
+            if (from.equalsIgnoreCase("signed_document")){
+                img_signed_document_list.remove(position);
+                img_signed_document_url_list.remove(position);
+
+                image_adapter.notifyItemRemoved(position);
+                image_adapter.notifyDataSetChanged();
+
+                if (img_signed_document_list.size() == 0){
+                    image_signed_document.setImageResource(R.mipmap.camera);
+
+                    dialogLogout.dismiss();
+                }
+
+            }else if (from.equalsIgnoreCase("signed_general_duty")){
+                img_signed_general_duty_list.remove(position);
+                img_signed_general_duty_url_list.remove(position);
+
+                image_adapter.notifyItemRemoved(position);
+                image_adapter.notifyDataSetChanged();
+
+                if (img_signed_general_duty_list.size() == 0){
+                    image_signed_general_duty.setImageResource(R.mipmap.camera);
+
+                    dialogLogout.dismiss();
+                }
+
+            }
+            else if (from.equalsIgnoreCase("signed_nursesl")){
+                img_signed_nursesl_list.remove(position);
+                img_signed_nursesl_url_list.remove(position);
+
+                image_adapter.notifyItemRemoved(position);
+                image_adapter.notifyDataSetChanged();
+
+                if (img_signed_nursesl_list.size() == 0){
+                    image_signed_nursesl.setImageResource(R.mipmap.camera);
+
+                    dialogLogout.dismiss();
+                }
+
+            }
+            else if (from.equalsIgnoreCase("signed_paramedicall")){
+                img_signed_paramedicall_list.remove(position);
+                img_signed_paramedical_url_list.remove(position);
+
+                image_adapter.notifyItemRemoved(position);
+                image_adapter.notifyDataSetChanged();
+
+                if (img_signed_paramedicall_list.size() == 0){
+                    image_signed_paramedical.setImageResource(R.mipmap.camera);
+
+                    dialogLogout.dismiss();
+                }
+
+            }
+            else if (from.equalsIgnoreCase("nurses_available_ambulances")){
+                img_signed_administrativ_list.remove(position);
+                img_signed_administrativ_url_list.remove(position);
+
+                image_adapter.notifyItemRemoved(position);
+                image_adapter.notifyDataSetChanged();
+
+                if (img_signed_administrativ_list.size() == 0){
+                    image_signed_administrativ.setImageResource(R.mipmap.camera);
+
+                    dialogLogout.dismiss();
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

@@ -1930,6 +1930,8 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
             image3 = json.toString();
+        }else {
+            image3 = null;
         }
 
         if (Local_hospital_mission_present_list.size() > 0){
@@ -1939,6 +1941,8 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
             Local_image3 = json.toString();
+        }else {
+            Local_image3 = null;
         }
 
         pojo.setHospital_mission_present_Image(image3);
@@ -1954,6 +1958,8 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
             image4 = json.toString();
+        }else {
+            image4 = null;
         }
 
         if (Local_patient_maintained_OPD_list.size() > 0){
@@ -1963,6 +1969,8 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
             Local_image4 = json.toString();
+        }else {
+            Local_image4 = null;
         }
         pojo.setPatient_maintained_OPD_image(image4);
         pojo.setLocal_patient_maintained_OPD_image(Local_image4);
@@ -1978,6 +1986,8 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
             image5 = json.toString();
+        }else {
+            image5 = null;
         }
 
         if (Local_patient_maintained_IPD_list.size() > 0){
@@ -1987,6 +1997,8 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
             Local_image5 = json.toString();
+        }else {
+            Local_image5 = null;
         }
         pojo.setPatient_maintained_IPD_image(image5);
         pojo.setLocal_patient_maintained_IPD_image(Local_image5);
@@ -2003,6 +2015,8 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
             image6 = json.toString();
+        }else {
+            image6 = null;
         }
 
         if (Local_patient_maintained_Emergency_list.size() > 0){
@@ -2012,6 +2026,8 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
             Local_image6 = json.toString();
+        }else {
+            Local_image6 = null;
         }
 
         pojo.setPatient_maintained_Emergency_image(image6);
@@ -2028,6 +2044,8 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
             image7 = json.toString();
+        }else {
+            image7 = null;
         }
 
         if (Local_basic_Tariff_List_list.size() > 0){
@@ -2037,6 +2055,8 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
             Local_image7 = json.toString();
+        }else {
+            Local_image7 = null;
         }
 
         pojo.setBasic_Tariff_List_image(image7);
@@ -2366,9 +2386,7 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(ManagementActivity.this,HospitalListActivity.class);
-        startActivity(intent);
-        finish();
+        SavePharmacyData("save");
     }
 
 }

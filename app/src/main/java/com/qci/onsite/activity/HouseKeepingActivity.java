@@ -151,10 +151,14 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
     private ArrayList<String>staffs_personal_files_maintained_list;
     private ArrayList<String>Local_staffs_personal_files_maintained_list;
 
+
+    private ArrayList<String>procedure_cleaning_blood_spill_list;
+    private ArrayList<String>Local_procedure_cleaning_blood_spill_list;
+
     private HousekeepingPojo pojo;
 
-    private String image1,video1;
-    private String Local_image1,Local_video1;
+    private String image1,image2;
+    private String Local_image1,Local_image2;
 
     private File outputVideoFile;
 
@@ -168,6 +172,9 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
 
     @BindView(R.id.hospital_center)
     TextView hospital_center;
+
+    String admissions_discharge_home_view = "",procedure_cleaning_blood_spill_view = "";
+
 
     DataSyncRequest pojo_dataSync;
 
@@ -184,6 +191,11 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
 
         staffs_personal_files_maintained_list = new ArrayList<>();
         Local_staffs_personal_files_maintained_list = new ArrayList<>();
+
+        procedure_cleaning_blood_spill_list = new ArrayList<>();
+        Local_procedure_cleaning_blood_spill_list = new ArrayList<>();
+
+
 
         pojo_dataSync = new DataSyncRequest();
 
@@ -296,16 +308,42 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
                     nc_procedure_cleaning_blood_spill.setImageResource(R.mipmap.nc_selected);
                 }
             }
-            if (pojo.getProcedure_cleaning_blood_spill_video() != null){
-                video1 = pojo.getProcedure_cleaning_blood_spill_video();
 
+            if (pojo.getProcedure_cleaning_blood_spill_video() != null){
                 image_procedure_cleaning_blood_spill.setImageResource(R.mipmap.camera_selected);
+
+                image2 = pojo.getProcedure_cleaning_blood_spill_video();
+
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(image2);
+                    JSONArray jArray = json.optJSONArray("uniqueArrays");
+                    if (jArray != null){
+                        for (int i=0;i<jArray.length();i++){
+                            procedure_cleaning_blood_spill_list.add(jArray.getString(i));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             if (pojo.getLocal_procedure_cleaning_blood_spill_video() != null){
-                Local_video1 = pojo.getLocal_procedure_cleaning_blood_spill_video();
 
-                image_procedure_cleaning_blood_spill.setImageResource(R.mipmap.camera_selected);
+                Local_image2 = pojo.getLocal_procedure_cleaning_blood_spill_video();
+
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(Local_image2);
+                    JSONArray jArray = json.optJSONArray("uniqueArrays");
+                    if (jArray != null){
+                        for (int i=0;i<jArray.length();i++){
+                            Local_procedure_cleaning_blood_spill_list.add(jArray.getString(i));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             if (pojo.getBiomedical_Waste_regulations_remark() != null){
@@ -414,10 +452,10 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
                 break;
 
             case R.id.image_procedure_cleaning_blood_spill:
-                if (Local_video1 != null){
-                    showVideoDialog(Local_video1);
+                if (Local_procedure_cleaning_blood_spill_list.size() > 0){
+                    showImageListDialog(Local_procedure_cleaning_blood_spill_list,2,"procedure_cleaning_blood_spill");
                 }else {
-                    captureVideo();
+                    captureImage(2);
                 }
                 break;
 
@@ -656,16 +694,12 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
                 }
 
             } if (requestCode == 2) {
-                if (resultCode == RESULT_OK) {
+                if (picUri != null) {
+                    Uri uri = picUri;
+                    String image2 = compressImage(uri.toString());
+                    //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                    VideoUpload(String.valueOf(outputVideoFile));
-
-                } else if (resultCode == RESULT_CANCELED) {
-                    Toast.makeText(this, "Video recording cancelled.",
-                            Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(this, "Failed to record video",
-                            Toast.LENGTH_LONG).show();
+                    ImageUpload(image2,"procedure_cleaning_blood_spill_list");
                 }
             }
         }
@@ -1212,14 +1246,39 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
 
         pojo.setProcedure_cleaning_blood_spill_remark(remark3);
         pojo.setProcedure_cleaning_blood_spill_nc(nc3);
-        pojo.setProcedure_cleaning_blood_spill_video(video1);
-        pojo.setLocal_procedure_cleaning_blood_spill_video(Local_video1);
+
+        JSONObject json = new JSONObject();
+
+        if (procedure_cleaning_blood_spill_list.size() > 0){
+            try {
+                json.put("uniqueArrays", new JSONArray(procedure_cleaning_blood_spill_list));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            image2 = json.toString();
+        }else {
+            image2 = null;
+        }
+
+        if (Local_procedure_cleaning_blood_spill_list.size() > 0){
+            try {
+                json.put("uniqueArrays", new JSONArray(Local_procedure_cleaning_blood_spill_list));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Local_image2 = json.toString();
+        }else {
+            Local_image2 = null;
+        }
+
+        pojo.setProcedure_cleaning_blood_spill_video(image2);
+        pojo.setLocal_procedure_cleaning_blood_spill_video(Local_image2);
 
 
         pojo.setBiomedical_Waste_regulations_remark(remark4);
         pojo.setBiomedical_Waste_regulations_nc(nc4);
 
-        JSONObject json = new JSONObject();
+
 
         if (staffs_personal_files_maintained_list.size() > 0){
             try {
@@ -1228,6 +1287,8 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
                 e.printStackTrace();
             }
             image1 = json.toString();
+        }else {
+            image1 = null;
         }
 
         if (Local_staffs_personal_files_maintained_list.size() > 0){
@@ -1237,6 +1298,8 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
                 e.printStackTrace();
             }
             Local_image1 = json.toString();
+        }else {
+            Local_image1 = null;
         }
 
         pojo.setBiomedical_Waste_regulations_image(image1);
@@ -1289,7 +1352,7 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
                  pojo_dataSync.setAssessment_id(0);
              }
 
-             String admissions_discharge_home_view = "";
+
 
              for (int i=0;i<staffs_personal_files_maintained_list.size();i++){
                  String value = staffs_personal_files_maintained_list.get(i);
@@ -1298,6 +1361,18 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
              }
 
              pojo.setBiomedical_Waste_regulations_image(admissions_discharge_home_view);
+
+             for (int i=0;i<procedure_cleaning_blood_spill_list.size();i++){
+                 String value = procedure_cleaning_blood_spill_list.get(i);
+
+                 procedure_cleaning_blood_spill_view = value + procedure_cleaning_blood_spill_view;
+             }
+              pojo.setProcedure_cleaning_blood_spill_video(procedure_cleaning_blood_spill_view);
+
+
+
+
+
 
              pojo_dataSync.setHousekeeping(pojo);
 
@@ -1360,7 +1435,7 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-    private void VideoUpload(final String image_path){
+  /*  private void VideoUpload(final String image_path){
         File videoFile = new File(image_path);
 
         RequestBody videoBody = RequestBody.create(MediaType.parse("video/*"), videoFile);
@@ -1381,8 +1456,7 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
                     if (response.body().getSuccess()){
                         Toast.makeText(HouseKeepingActivity.this,"Video upload successfully",Toast.LENGTH_LONG).show();
 
-                        video1 = response.body().getMessage();
-                        Local_video1 = image_path;
+
                         image_procedure_cleaning_blood_spill.setImageResource(R.mipmap.camera_selected);
 
                     }else {
@@ -1403,7 +1477,7 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
             }
         });
     }
-
+*/
 
     private void ImageUpload(final String image_path,final String from){
         File file = new File(image_path);
@@ -1440,6 +1514,12 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
                                 staffs_personal_files_maintained_list.add(response.body().getMessage());
                                 Local_staffs_personal_files_maintained_list.add(image_path);
                                 image_Biomedical_Waste_regulations.setImageResource(R.mipmap.camera_selected);
+                            }else if (from.equalsIgnoreCase("procedure_cleaning_blood_spill_list")){
+                                procedure_cleaning_blood_spill_list.add(response.body().getMessage());
+                                Local_procedure_cleaning_blood_spill_list.add(image_path);
+
+                                image_procedure_cleaning_blood_spill.setImageResource(R.mipmap.camera_selected);
+
                             }
 
                             Toast.makeText(HouseKeepingActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
@@ -1495,6 +1575,20 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
                     dialogLogout.dismiss();
                 }
 
+            }else if (from.equalsIgnoreCase("procedure_cleaning_blood_spill_list")){
+                procedure_cleaning_blood_spill_list.remove(position);
+                Local_procedure_cleaning_blood_spill_list.remove(position);
+
+                image_adapter.notifyItemRemoved(position);
+                image_adapter.notifyDataSetChanged();
+
+                if (Local_procedure_cleaning_blood_spill_list.size() == 0){
+                    image_procedure_cleaning_blood_spill.setImageResource(R.mipmap.camera);
+
+                    dialogLogout.dismiss();
+                }
+
+
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -1505,8 +1599,6 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(HouseKeepingActivity.this,HospitalListActivity.class);
-        startActivity(intent);
-        finish();
+        SavePharmacyData("save");
     }
 }

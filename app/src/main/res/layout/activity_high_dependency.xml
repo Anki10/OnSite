@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="1. Is patient care given as per the HCO’s documented procedure?"
+                    android:text="Is patient care given as per the HCO’s documented procedure?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -88,16 +88,7 @@
                     android:padding="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="Note: 1.Check high dependency Areas departmental checklist/SOP/manual
-\n 2.Staff is well versed with the procedure for care of critically ill patients."/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:text="Upload: Video of Staff interview"/>
+                    android:text="Note: Interview the staff on awareness of HCO's documented procedures for High Dependency area"/>
 
 
                 <LinearLayout
@@ -129,6 +120,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
+                        android:visibility="gone"
                         android:src="@mipmap/camera" />
 
 
@@ -145,6 +137,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
 
@@ -153,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="2. Are staff in High dependency Areas adequate?"
+                    android:text="Are staff in High dependency Areas adequate?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -236,13 +229,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:text="3. Do high dependency areas have adequate equipment (monitors, suction equipment, oxygen cylinders/central oxygen supply)?"
+                    android:text="Do high dependency areas have adequate equipment (monitors, suction equipment, oxygen cylinders/central oxygen supply)?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />

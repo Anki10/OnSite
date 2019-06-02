@@ -13,6 +13,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.qci.onsite.R;
 import com.qci.onsite.activity.AmbulanceAccessibilityActivity;
 import com.qci.onsite.activity.BioMedicalEngineeringActivity;
+import com.qci.onsite.activity.DocumentationActivity;
 import com.qci.onsite.activity.FacilityChecksActivity;
 import com.qci.onsite.activity.HRMActivity;
 import com.qci.onsite.activity.HighDependencyActivity;
@@ -144,6 +145,10 @@ public class ImageShowAdapter extends RecyclerView.Adapter<ImageShowAdapter.View
             holder.iv_delete.setTag(R.string.key_from_name,from_name);
         }else if (activity_name.equalsIgnoreCase("Ward_Emergency")){
             holder.iv_delete.setOnClickListener((Ward_OT_EmergencyActivity)mcontext);
+            holder.iv_delete.setTag(R.string.key_image_delete,position);
+            holder.iv_delete.setTag(R.string.key_from_name,from_name);
+        }else if (activity_name.equalsIgnoreCase("Documentation")){
+            holder.iv_delete.setOnClickListener((DocumentationActivity)mcontext);
             holder.iv_delete.setTag(R.string.key_image_delete,position);
             holder.iv_delete.setTag(R.string.key_from_name,from_name);
         }

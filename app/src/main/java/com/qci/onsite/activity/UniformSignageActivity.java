@@ -1345,6 +1345,8 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             image1 = json.toString();
+        }else {
+            image1 = null;
         }
 
         if (Local_safety_device_lab_list.size() > 0){
@@ -1354,6 +1356,8 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             Local_image1 = json.toString();
+        }else {
+            Local_image1 = null;
         }
 
 
@@ -1370,6 +1374,8 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             image2 = json.toString();
+        }else {
+            image2 = null;
         }
 
         if (Local_body_parts_staff_patients_list.size() > 0){
@@ -1379,6 +1385,8 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             Local_image2 = json.toString();
+        }else {
+            Local_image2 = null;
         }
 
 
@@ -1394,6 +1402,8 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             image3 = json.toString();
+        }else {
+            image3 = null;
         }
 
         if (Local_staff_member_radiation_area_list.size() > 0){
@@ -1403,6 +1413,8 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             Local_image3 = json.toString();
+        }else {
+            Local_image3 = null;
         }
 
 
@@ -1418,6 +1430,8 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             image4 = json.toString();
+        }else {
+            image4 = null;
         }
 
         if (Local_standardised_colur_coding_list.size() > 0){
@@ -1427,6 +1441,8 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             Local_image4 = json.toString();
+        }else {
+            Local_image4 = null;
         }
 
 
@@ -1443,6 +1459,8 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             image5 = json.toString();
+        }else {
+            image5 = null;
         }
 
         if (Local_safe_storage_medical_list.size() > 0){
@@ -1452,6 +1470,8 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             Local_image5 = json.toString();
+        }else {
+            Local_image5 = null;
         }
 
 
@@ -1776,8 +1796,6 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(UniformSignageActivity.this,HospitalListActivity.class);
-        startActivity(intent);
-        finish();
+        SaveLaboratoryData("save");
     }
 }

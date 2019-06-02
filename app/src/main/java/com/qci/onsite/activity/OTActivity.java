@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -219,6 +220,29 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.hospital_center)
     TextView hospital_center;
 
+    @BindView(R.id.ll_anaesthetist)
+    LinearLayout ll_anaesthetist;
+
+    @BindView(R.id.ll_documented_anaesthesia)
+    LinearLayout ll_documented_anaesthesia;
+
+    @BindView(R.id.ll_immediate_preoperative)
+    LinearLayout ll_immediate_preoperative;
+
+    @BindView(R.id.ll_anaesthesia_monitoring)
+    LinearLayout ll_anaesthesia_monitoring;
+
+    @BindView(R.id.ll_post_anaesthesia_monitoring)
+    LinearLayout ll_post_anaesthesia_monitoring;
+
+
+    @BindView(R.id.ll_OT_Zoning)
+    LinearLayout ll_OT_Zoning;
+
+    int Bed_no = 0;
+
+
+
 
 
     private String remark1, remark2, remark3, remark4, remark5,remark6,remark7,remark8,remark9,remark10,remark11;
@@ -235,6 +259,8 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
     private ArrayList<String>WHO_Patient_Safety_List;
     private ArrayList<String>Local_WHO_Patient_Safety_List;
     private ArrayList<String>Local_infection_control_List;
+    private ArrayList<String>Local_OT_Zoning_List;
+    private ArrayList<String>OT_Zoning_List;
     private ArrayList<String>narcotic_drugs_list;
     private ArrayList<String>Local_narcotic_drugs_list;
     private ArrayList<String>administration_disposal_list;
@@ -249,8 +275,8 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
 
     private DatabaseHandler databaseHandler;
 
-    private String image6,image8,image9,image10,video7,image11;
-    private String Local_image6,Local_image8,Local_image9,Local_image10,Local_video7,Local_image11;
+    private String image6,image7,image8,image9,image10,image11;
+    private String Local_image6,Local_image7,Local_image8,Local_image9,Local_image10,Local_image11;
 
     private File outputVideoFile;
 
@@ -270,7 +296,8 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
 
     private String Hospital_id;
 
-    String WHO_Patient_Safety = "", infection_control = "",narcotic_drugs ="",administration_disposal="",hand_wash_facility="";
+    String WHO_Patient_Safety = "", infection_control = "",narcotic_drugs ="",administration_disposal="",hand_wash_facility="",
+    OT_ZOING;
 
     private ArrayList<AssessmentStatusPojo> assessement_list;
 
@@ -299,6 +326,8 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
         WHO_Patient_Safety_List = new ArrayList<>();
         Local_WHO_Patient_Safety_List = new ArrayList<>();
         Local_infection_control_List = new ArrayList<>();
+        Local_OT_Zoning_List = new ArrayList<>();
+        OT_Zoning_List = new ArrayList<>();
         narcotic_drugs_list = new ArrayList<>();
         Local_narcotic_drugs_list = new ArrayList<>();
         administration_disposal_list = new ArrayList<>();
@@ -307,6 +336,24 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
         Local_hand_wash_facility_list = new ArrayList<>();
 
         pojo_dataSync = new DataSyncRequest();
+
+        Bed_no = getINTFromPrefs("Hospital_bed");
+
+        if (Bed_no < 51){
+            ll_anaesthetist.setVisibility(View.GONE);
+            ll_documented_anaesthesia.setVisibility(View.GONE);
+            ll_immediate_preoperative.setVisibility(View.GONE);
+            ll_anaesthesia_monitoring.setVisibility(View.GONE);
+            ll_post_anaesthesia_monitoring.setVisibility(View.GONE);
+            ll_OT_Zoning.setVisibility(View.GONE);
+        }else {
+            ll_anaesthetist.setVisibility(View.VISIBLE);
+            ll_documented_anaesthesia.setVisibility(View.VISIBLE);
+            ll_immediate_preoperative.setVisibility(View.VISIBLE);
+            ll_anaesthesia_monitoring.setVisibility(View.VISIBLE);
+            ll_post_anaesthesia_monitoring.setVisibility(View.VISIBLE);
+            ll_OT_Zoning.setVisibility(View.VISIBLE);
+        }
 
         getOTData();
     }
@@ -389,11 +436,11 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                     narcotic_drugs_no.setChecked(true);
                 }
             }
-            if (pojo.getAnaesthesia_monitoring_status() != null) {
-                administration_disposal_status = pojo.getAnaesthesia_monitoring_status();
-                if (pojo.getAnaesthesia_monitoring_status().equalsIgnoreCase("Yes")) {
+            if (pojo.getAdministration_disposal_status() != null) {
+                administration_disposal_status = pojo.getAdministration_disposal_status();
+                if (pojo.getAdministration_disposal_status().equalsIgnoreCase("Yes")) {
                     administration_disposal_yes.setChecked(true);
-                } else if (pojo.getAnaesthesia_monitoring_status().equalsIgnoreCase("No")) {
+                } else if (pojo.getAdministration_disposal_status().equalsIgnoreCase("No")) {
                     administration_disposal_no.setChecked(true);
                 }
             }
@@ -518,17 +565,45 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
 
 
             }
-            if (pojo.getVideo_OT_Zoning() != null) {
-                video7 = pojo.getVideo_OT_Zoning();
 
+            if (pojo.getLocal_video_OT_Zoning() != null){
                 video_OT_Zoning.setImageResource(R.mipmap.camera_selected);
+
+                Local_image7 = pojo.getLocal_video_OT_Zoning();
+
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(Local_image7);
+                    JSONArray jArray = json.optJSONArray("uniqueArrays");
+                    if (jArray != null){
+                        for (int i=0;i<jArray.length();i++){
+                            Local_OT_Zoning_List.add(jArray.getString(i));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
-            if (pojo.getLocal_video_OT_Zoning() != null) {
-                Local_video7 = pojo.getLocal_video_OT_Zoning();
 
-                video_OT_Zoning.setImageResource(R.mipmap.camera_selected);
+            if (pojo.getVideo_OT_Zoning() != null){
+
+                image7 = pojo.getVideo_OT_Zoning();
+
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(image7);
+                    JSONArray jArray = json.optJSONArray("uniqueArrays");
+                    if (jArray != null){
+                        for (int i=0;i<jArray.length();i++){
+                            OT_Zoning_List.add(jArray.getString(i));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
+
 
             if (pojo.getRemark_infection_control() != null) {
                 remark8 = pojo.getRemark_infection_control();
@@ -861,10 +936,10 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 displayNCDialog("NC", 7);
                 break;
             case R.id.video_OT_Zoning:
-                if (Local_video7 != null){
-                    showVideoDialog(Local_video7,7);
+                if (Local_OT_Zoning_List.size() > 0){
+                    showImageListDialog(Local_OT_Zoning_List,7,"OT_Zoning");
                 }else {
-                    captureVideo(7);
+                    captureImage(7);
                 }
                 break;
 
@@ -937,7 +1012,12 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 break;
 
             case R.id.btnSync:
-                PostLaboratoryData();
+                if (Bed_no < 51){
+                    Post_SHCO_LaboratoryData();
+                }else {
+                    PostLaboratoryData();
+                }
+
                 break;
         }
     }
@@ -1205,6 +1285,18 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 }
 
             }
+            if (requestCode == 7) {
+                if (picUri != null) {
+                    Uri uri = picUri;
+                    String image2 = compressImage(uri.toString());
+                    //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
+
+
+                    ImageUpload(image2,"OT_Zoning");
+
+                }
+
+            }
             if (requestCode == 8) {
                 if (picUri != null) {
                     Uri uri = picUri;
@@ -1250,24 +1342,12 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
 
                 }
             }
-            else if (requestCode == 7) {
-                if (resultCode == RESULT_OK) {
 
-                    VideoUpload(String.valueOf(outputVideoFile),"case_of_grievances");
-
-                } else if (resultCode == RESULT_CANCELED) {
-                    Toast.makeText(this, "Video recording cancelled.",
-                            Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(this, "Failed to record video",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
 
         }
     }
 
-    private void VideoUpload(final String image_path, final String from){
+   /* private void VideoUpload(final String image_path, final String from){
         File videoFile = new File(image_path);
 
         RequestBody videoBody = RequestBody.create(MediaType.parse("video/*"), videoFile);
@@ -1312,7 +1392,7 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 d.cancel();
             }
         });
-    }
+    }*/
 
     public void displayNCDialog(final String header, final int position) {
         Button OkButtonLogout;
@@ -2379,6 +2459,8 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 e.printStackTrace();
             }
             image6 = json.toString();
+        }else {
+            image6 = null;
         }
 
         if (Local_WHO_Patient_Safety_List.size() > 0){
@@ -2388,16 +2470,42 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 e.printStackTrace();
             }
             Local_image6 = json.toString();
+        }else {
+            Local_image6 = null;
         }
         pojo.setImage_WHO_Patient_Safety_day1(image6);
         pojo.setLocal_image_WHO_Patient_Safety_day1(Local_image6);
+
+        if (OT_Zoning_List.size() > 0){
+            try {
+                json.put("uniqueArrays", new JSONArray(OT_Zoning_List));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            image7 = json.toString();
+        }else {
+            image7 = null;
+        }
+
+        if (Local_OT_Zoning_List.size() > 0){
+            try {
+                json.put("uniqueArrays", new JSONArray(Local_OT_Zoning_List));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Local_image7 = json.toString();
+        }else {
+            Local_image7 = null;
+        }
 
 
 
         pojo.setRemark_OT_Zoning(remark7);
         pojo.setNc_OT_Zoning(nc7);
-        pojo.setVideo_OT_Zoning(video7);
-        pojo.setLocal_video_OT_Zoning(Local_video7);
+        pojo.setVideo_OT_Zoning(image7);
+
+
+        pojo.setLocal_video_OT_Zoning(Local_image7);
 
 
         pojo.setRemark_infection_control(remark8);
@@ -2411,6 +2519,8 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 e.printStackTrace();
             }
             image8 = json.toString();
+        }else {
+            image8 = null;
         }
 
 
@@ -2422,6 +2532,8 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 e.printStackTrace();
             }
             Local_image8 = json.toString();
+        }else {
+            Local_image8 = null;
         }
 
         pojo.setImage_infection_control(image8);
@@ -2437,6 +2549,8 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 e.printStackTrace();
             }
             image9 = json.toString();
+        }else {
+            image9 = null;
         }
 
 
@@ -2447,6 +2561,8 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 e.printStackTrace();
             }
             Local_image9 = json.toString();
+        }else {
+            Local_image9 = null;
         }
 
         pojo.setImage_narcotic_drugs(image9);
@@ -2464,6 +2580,8 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 e.printStackTrace();
             }
             image10 = json.toString();
+        }else {
+            image10 = null;
         }
 
 
@@ -2475,6 +2593,8 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 e.printStackTrace();
             }
             Local_image10 = json.toString();
+        }else {
+            Local_image10 = null;
         }
 
         pojo.setImage_administration_disposal(image10);
@@ -2490,6 +2610,8 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 e.printStackTrace();
             }
             image11 = json.toString();
+        }else {
+            image11 = null;
         }
 
 
@@ -2501,6 +2623,8 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 e.printStackTrace();
             }
             Local_image11 = json.toString();
+        }else {
+            Local_image11 = null;
         }
 
         pojo.setImage_hand_wash_facility(image11);
@@ -2520,7 +2644,7 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
 
             AssessmentStatusPojo pojo = new AssessmentStatusPojo();
             pojo.setHospital_id(assessement_list.get(6).getHospital_id());
-            pojo.setAssessement_name("OT/ICU");
+            pojo.setAssessement_name(assessement_list.get(6).getAssessement_name());
             pojo.setAssessement_status("Draft");
             pojo.setLocal_id(assessement_list.get(6).getLocal_id());
 
@@ -2590,6 +2714,10 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                                 WHO_Patient_Safety_List.add(response.body().getMessage());
                                 Local_WHO_Patient_Safety_List.add(image_path);
                                 Image_WHO_Patient_Safety.setImageResource(R.mipmap.camera_selected);
+                            }else if (from.equalsIgnoreCase("OT_Zoning")){
+                                OT_Zoning_List.add(response.body().getMessage());
+                                Local_OT_Zoning_List.add(image_path);
+                                video_OT_Zoning.setImageResource(R.mipmap.camera_selected);
                             }
 
 
@@ -2620,8 +2748,9 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
 
         SaveLaboratoryData("sync");
 
-        if (anaesthetist_status.length() > 0 && documented_anaesthesia_status.length() > 0 && immediate_preoperative_status.length() >0 && anaesthesia_monitoring_status.length() > 0 &&
-                WHO_Patient_Safety_status.length() > 0 && OT_Zoning_status.length() > 0 && infection_control_status.length() > 0 && narcotic_drugs_status.length() > 0 && administration_disposal_status.length() > 0 ){
+        if (anaesthetist_status.length() > 0 && documented_anaesthesia_status.length() > 0 && immediate_preoperative_status.length() >0 && anaesthesia_monitoring_status.length() > 0 && post_anaesthesia_monitoring.length() > 0 &&
+                WHO_Patient_Safety_status.length() > 0 && OT_Zoning_status.length() > 0 && infection_control_status.length() > 0 && narcotic_drugs_status.length() > 0 && administration_disposal_status.length() > 0
+        && hand_wash_facility_status.length() > 0){
 
             if (image6 != null && image8 != null && image9 != null  && image10 != null && image11 != null){
                 pojo_dataSync.setTabName("oticu");
@@ -2671,6 +2800,15 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 pojo.setImage_hand_wash_facility(hand_wash_facility);
 
 
+                for (int i=0;i<OT_Zoning_List.size();i++){
+                    String value_ot_zoing = OT_Zoning_List.get(i);
+
+                    OT_ZOING = value_ot_zoing + OT_ZOING;
+                }
+
+                pojo.setVideo_OT_Zoning(OT_ZOING);
+
+
                 pojo_dataSync.setOticu(pojo);
 
                 final ProgressDialog d = AppDialog.showLoading(OTActivity.this);
@@ -2705,7 +2843,133 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
 
                                     AssessmentStatusPojo pojo = new AssessmentStatusPojo();
                                     pojo.setHospital_id(assessement_list.get(6).getHospital_id());
-                                    pojo.setAssessement_name("OT/ICU");
+                                    pojo.setAssessement_name(assessement_list.get(6).getAssessement_name());
+                                    pojo.setAssessement_status("Done");
+                                    pojo.setLocal_id(assessement_list.get(6).getLocal_id());
+
+                                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                                    Toast.makeText(OTActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<DataSyncResponse> call, Throwable t) {
+                        System.out.println("xxx failed");
+
+                        d.dismiss();
+                    }
+                });
+            }else {
+                Toast.makeText(OTActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+            }
+
+        }else {
+            Toast.makeText(OTActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void Post_SHCO_LaboratoryData(){
+
+        SaveLaboratoryData("sync");
+
+        if (WHO_Patient_Safety_status.length() > 0 && infection_control_status.length() > 0 && narcotic_drugs_status.length() > 0 && administration_disposal_status.length() > 0
+                && hand_wash_facility_status.length() > 0){
+
+            if (image6 != null && image8 != null && image9 != null  && image10 != null && image11 != null){
+                pojo_dataSync.setTabName("oticu");
+                pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
+                pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
+                if (getFromPrefs("asmtId"+Hospital_id).length() > 0){
+                    pojo_dataSync.setAssessment_id(Integer.parseInt(getFromPrefs("asmtId"+Hospital_id)));
+                }else {
+                    pojo_dataSync.setAssessment_id(0);
+                }
+
+                for (int i=0;i<WHO_Patient_Safety_List.size();i++){
+                    String value_WHO_Patient_Safety= WHO_Patient_Safety_List.get(i);
+
+                    WHO_Patient_Safety = value_WHO_Patient_Safety + WHO_Patient_Safety;
+                }
+                pojo.setImage_WHO_Patient_Safety_day1(WHO_Patient_Safety);
+
+                for (int i=0;i<infection_control_List.size();i++){
+                    String value_rail = infection_control_List.get(i);
+
+                    infection_control = value_rail + infection_control;
+                }
+                pojo.setImage_infection_control(infection_control);
+
+                for (int i=0;i<narcotic_drugs_list.size();i++){
+                    String value_transported = narcotic_drugs_list.get(i);
+
+                    narcotic_drugs = value_transported + narcotic_drugs;
+                }
+
+                pojo.setImage_narcotic_drugs(narcotic_drugs);
+
+                for (int i=0;i<administration_disposal_list.size();i++){
+                    String value_transported = administration_disposal_list.get(i);
+
+                    administration_disposal = value_transported + administration_disposal;
+                }
+
+                pojo.setImage_administration_disposal(administration_disposal);
+
+                for (int i=0;i<hand_wash_facility_list.size();i++){
+                    String value_hand_wash_facility = hand_wash_facility_list.get(i);
+
+                    hand_wash_facility = value_hand_wash_facility + hand_wash_facility;
+                }
+                pojo.setImage_hand_wash_facility(hand_wash_facility);
+
+                for (int i=0;i<OT_Zoning_List.size();i++){
+                    String value_ot_zoing = OT_Zoning_List.get(i);
+
+                    OT_ZOING = value_ot_zoing + OT_ZOING;
+                }
+
+                pojo.setVideo_OT_Zoning(OT_ZOING);
+
+
+                pojo_dataSync.setOticu(pojo);
+
+                final ProgressDialog d = AppDialog.showLoading(OTActivity.this);
+                d.setCanceledOnTouchOutside(false);
+
+                mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
+                    @Override
+                    public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
+                        System.out.println("xxx sucess");
+
+                        d.dismiss();
+
+                        if (response.message().equalsIgnoreCase("Unauthorized")) {
+                            Intent intent = new Intent(OTActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+
+                            Toast.makeText(OTActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                        }else {
+                            if (response.body() != null){
+                                if (response.body().getSuccess()){
+                                    Intent intent = new Intent(OTActivity.this,HospitalListActivity.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                    saveIntoPrefs("OT_tabId"+Hospital_id, String.valueOf(response.body().getTabId()));
+
+                                    saveIntoPrefs("asmtId"+Hospital_id, String.valueOf(response.body().getAsmtId()));
+
+                                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                                    pojo.setHospital_id(assessement_list.get(6).getHospital_id());
+                                    pojo.setAssessement_name(assessement_list.get(6).getAssessement_name());
                                     pojo.setAssessement_status("Done");
                                     pojo.setLocal_id(assessement_list.get(6).getLocal_id());
 
@@ -2819,6 +3083,18 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                     dialogLogout.dismiss();
                 }
 
+            }else if (from.equalsIgnoreCase("OT_Zoning")){
+                OT_Zoning_List.remove(position);
+                Local_OT_Zoning_List.remove(position);
+
+                image_adapter.notifyItemRemoved(position);
+                image_adapter.notifyDataSetChanged();
+
+                if (Local_OT_Zoning_List.size() == 0){
+                    video_OT_Zoning.setImageResource(R.mipmap.camera);
+
+                    dialogLogout.dismiss();
+                }
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -2829,9 +3105,7 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(OTActivity.this,HospitalListActivity.class);
-        startActivity(intent);
-        finish();
+        SaveLaboratoryData("save");
     }
 
 

@@ -10,6 +10,160 @@ public class DocumentationPojo {
     public String document_related_procedure;
     public String document_related_procedure_remark;
     public String document_related_procedure_nc;
+    public Boolean document_showing_process_status;
+    public String document_showing_process;
+    public String document_showing_process_remark;
+    public String document_showing_process_nc;
+
+    public Boolean document_showing_care_patients_status;
+    public String document_showing_care_patients;
+    public String document_showing_care_patients_remark;
+    public String document_showing_care_patients_nc;
+
+    public Boolean document_showing_policies_status;
+    public String document_showing_policies;
+    public String document_showing_policies_remark;
+    public String document_showing_policies_nc;
+
+    public Boolean document_showing_procedures_status;
+    public String document_showing_procedures;
+    public String document_showing_procedures_remark;
+    public String document_showing_procedures_nc;
+
+    public Boolean document_showing_procedure_administration_status;
+    public String document_showing_procedure_administration;
+    public String document_showing_procedure_administration_remark;
+    public String document_showing_procedure_administration_nc;
+
+    public Boolean document_showing_defined_criteria_status;
+    public String document_showing_defined_criteria;
+    public String document_showing_defined_criteria_remark;
+    public String document_showing_defined_criteria_nc;
+
+    public Boolean document_showing_procedure_prevention_status;
+    public String document_showing_procedure_prevention;
+    public String document_showing_procedure_prevention_remark;
+    public String document_showing_procedure_prevention_nc;
+
+    public Boolean document_showing_procedure_incorporating_status;
+    public String document_showing_procedure_incorporating;
+    public String document_showing_procedure_incorporating_remark;
+    public String document_showing_procedure_incorporating_nc;
+
+    public Boolean document_showing_procedure_address_status;
+    public String document_showing_procedure_address;
+    public String document_showing_procedure_address_remark;
+    public String document_showing_procedure_address_nc;
+
+    public Boolean document_showing_policies_procedure_status;
+    public String document_showing_policies_procedure;
+    public String document_showing_policies_procedure_remark;
+    public String document_showing_policies_procedure_nc;
+
+    public Boolean document_showing_drugs_available_status;
+    public String document_showing_drugs_available;
+    public String document_showing_drugs_available_remark;
+    public String document_showing_drugs_available_nc;
+
+    public Boolean document_showing_safe_storage_status;
+    public String document_showing_safe_storage;
+    public String document_showing_safe_storage_remark;
+    public String document_showing_safe_storage_nc;
+
+    public Boolean infection_control_manual_showing_status;
+    public String infection_control_manual_showing;
+    public String infection_control_manual_showing_remark;
+    public String infection_control_manual_showing_nc;
+
+    public Boolean document_showing_operational_maintenance_status;
+    public String document_showing_operational_maintenance;
+    public String document_showing_operational_maintenance_remark;
+    public String document_showing_operational_maintenance_nc;
+
+    public Boolean document_showing_safe_exit_plan_status;
+    public String document_showing_safe_exit_plan;
+    public String document_showing_safe_exit_plan_remark;
+    public String document_showing_safe_exit_plan_nc;
+
+    public Boolean document_showing_well_defined_staff_status;
+    public String document_showing_well_defined_staff;
+    public String document_showing_well_defined_staff_remark;
+    public String document_showing_well_defined_staff_nc;
+
+    public Boolean document_showing_disciplinary_grievance_status;
+    public String document_showing_disciplinary_grievance;
+    public String document_showing_disciplinary_grievance_remark;
+    public String document_showing_disciplinary_grievance_nc;
+
+    public Boolean document_showing_policies_procedures_status;
+    public String document_showing_policies_procedures;
+    public String document_showing_policies_procedures_remark;
+    public String document_showing_policies_procedures_nc;
+
+    public Boolean document_showing_retention_time_status;
+    public String document_showing_retention_time;
+    public String document_showing_retention_time_remark;
+    public String document_showing_retention_time_nc;
+
+    public Boolean document_showing_define_process_status;
+    public String document_showing_define_process;
+    public String document_showing_define_process_remark;
+    public String document_showing_define_process_nc;
+
+    public Boolean document_showing_medical_records_status;
+    public String document_showing_medical_records;
+    public String document_showing_medical_records_remark;
+    public String document_showing_medical_records_nc;
+
+    private String signdocscopeofservices_image;
+    private String signlistgendutymedoffcr_image;
+    private String signlistnurses_image;
+    private String signlistparamedstaff_image;
+    private String signlistadminsupportstaff_image;
+
+
+    public String getSigndocscopeofservices_image() {
+        return signdocscopeofservices_image;
+    }
+
+    public void setSigndocscopeofservices_image(String signdocscopeofservices_image) {
+        this.signdocscopeofservices_image = signdocscopeofservices_image;
+    }
+
+    public String getSignlistgendutymedoffcr_image() {
+        return signlistgendutymedoffcr_image;
+    }
+
+    public void setSignlistgendutymedoffcr_image(String signlistgendutymedoffcr_image) {
+        this.signlistgendutymedoffcr_image = signlistgendutymedoffcr_image;
+    }
+
+    public String getSignlistnurses_image() {
+        return signlistnurses_image;
+    }
+
+    public void setSignlistnurses_image(String signlistnurses_image) {
+        this.signlistnurses_image = signlistnurses_image;
+    }
+
+    public String getSignlistparamedstaff_image() {
+        return signlistparamedstaff_image;
+    }
+
+    public void setSignlistparamedstaff_image(String signlistparamedstaff_image) {
+        this.signlistparamedstaff_image = signlistparamedstaff_image;
+    }
+
+    public String getSignlistadminsupportstaff_image() {
+        return signlistadminsupportstaff_image;
+    }
+
+    public void setSignlistadminsupportstaff_image(String signlistadminsupportstaff_image) {
+        this.signlistadminsupportstaff_image = signlistadminsupportstaff_image;
+    }
+
+
+
 
     public long getId() {
         return id;
@@ -747,110 +901,7 @@ public class DocumentationPojo {
         this.document_showing_medical_records_nc = document_showing_medical_records_nc;
     }
 
-    public Boolean document_showing_process_status;
-    public String document_showing_process;
-    public String document_showing_process_remark;
-    public String document_showing_process_nc;
 
-    public Boolean document_showing_care_patients_status;
-    public String document_showing_care_patients;
-    public String document_showing_care_patients_remark;
-    public String document_showing_care_patients_nc;
-
-    public Boolean document_showing_policies_status;
-    public String document_showing_policies;
-    public String document_showing_policies_remark;
-    public String document_showing_policies_nc;
-
-    public Boolean document_showing_procedures_status;
-    public String document_showing_procedures;
-    public String document_showing_procedures_remark;
-    public String document_showing_procedures_nc;
-
-    public Boolean document_showing_procedure_administration_status;
-    public String document_showing_procedure_administration;
-    public String document_showing_procedure_administration_remark;
-    public String document_showing_procedure_administration_nc;
-
-    public Boolean document_showing_defined_criteria_status;
-    public String document_showing_defined_criteria;
-    public String document_showing_defined_criteria_remark;
-    public String document_showing_defined_criteria_nc;
-
-    public Boolean document_showing_procedure_prevention_status;
-    public String document_showing_procedure_prevention;
-    public String document_showing_procedure_prevention_remark;
-    public String document_showing_procedure_prevention_nc;
-
-    public Boolean document_showing_procedure_incorporating_status;
-    public String document_showing_procedure_incorporating;
-    public String document_showing_procedure_incorporating_remark;
-    public String document_showing_procedure_incorporating_nc;
-
-    public Boolean document_showing_procedure_address_status;
-    public String document_showing_procedure_address;
-    public String document_showing_procedure_address_remark;
-    public String document_showing_procedure_address_nc;
-
-    public Boolean document_showing_policies_procedure_status;
-    public String document_showing_policies_procedure;
-    public String document_showing_policies_procedure_remark;
-    public String document_showing_policies_procedure_nc;
-
-    public Boolean document_showing_drugs_available_status;
-    public String document_showing_drugs_available;
-    public String document_showing_drugs_available_remark;
-    public String document_showing_drugs_available_nc;
-
-    public Boolean document_showing_safe_storage_status;
-    public String document_showing_safe_storage;
-    public String document_showing_safe_storage_remark;
-    public String document_showing_safe_storage_nc;
-
-    public Boolean infection_control_manual_showing_status;
-    public String infection_control_manual_showing;
-    public String infection_control_manual_showing_remark;
-    public String infection_control_manual_showing_nc;
-
-    public Boolean document_showing_operational_maintenance_status;
-    public String document_showing_operational_maintenance;
-    public String document_showing_operational_maintenance_remark;
-    public String document_showing_operational_maintenance_nc;
-
-    public Boolean document_showing_safe_exit_plan_status;
-    public String document_showing_safe_exit_plan;
-    public String document_showing_safe_exit_plan_remark;
-    public String document_showing_safe_exit_plan_nc;
-
-    public Boolean document_showing_well_defined_staff_status;
-    public String document_showing_well_defined_staff;
-    public String document_showing_well_defined_staff_remark;
-    public String document_showing_well_defined_staff_nc;
-
-    public Boolean document_showing_disciplinary_grievance_status;
-    public String document_showing_disciplinary_grievance;
-    public String document_showing_disciplinary_grievance_remark;
-    public String document_showing_disciplinary_grievance_nc;
-
-    public Boolean document_showing_policies_procedures_status;
-    public String document_showing_policies_procedures;
-    public String document_showing_policies_procedures_remark;
-    public String document_showing_policies_procedures_nc;
-
-    public Boolean document_showing_retention_time_status;
-    public String document_showing_retention_time;
-    public String document_showing_retention_time_remark;
-    public String document_showing_retention_time_nc;
-
-    public Boolean document_showing_define_process_status;
-    public String document_showing_define_process;
-    public String document_showing_define_process_remark;
-    public String document_showing_define_process_nc;
-
-    public Boolean document_showing_medical_records_status;
-    public String document_showing_medical_records;
-    public String document_showing_medical_records_remark;
-    public String document_showing_medical_records_nc;
 
 
 

@@ -6,6 +6,11 @@
     android:layout_marginRight="10dp"
     android:orientation="vertical">
 
+    <LinearLayout android:id="@+id/ll_main_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
     <LinearLayout android:id="@+id/ll_hospital"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,6 +38,6 @@
         android:layout_height="1dp"
         android:background="@color/bag_color" />
 
-
+    </LinearLayout>
 
 </LinearLayout>

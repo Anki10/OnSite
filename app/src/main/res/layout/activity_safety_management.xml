@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="1. Are adequate safety devices available in the lab ?"
+                    android:text="Are adequate safety devices available in the lab ?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -81,13 +81,14 @@
                         android:onClick="onRadioButtonClicked"/>
                 </RadioGroup>
 
-                <TextView
+                <TextView android:id="@+id/tv_safety_device"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="Upload: Photo of safety devices including PPE, dressing materials, disinfectants, fire extinguishers etc."/>
+                    android:visibility="gone"
+                    android:text="Upload: Photo of safety devices including PPE, dressing materials, disinfectants, fire extinguishers etc"/>
 
 
                 <LinearLayout
@@ -119,6 +120,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
+                        android:visibility="gone"
                         android:src="@mipmap/camera" />
 
 
@@ -135,6 +137,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
 
@@ -143,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="2. Are aprons and shields used for shielding of body parts of staff and patients? "
+                    android:text="Are aprons and shields used for shielding of body parts of staff and patients? "
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -164,13 +167,14 @@
                         android:onClick="onRadioButtonClicked"/>
                 </RadioGroup>
 
-                <TextView
+                <TextView android:id="@+id/tv_body_parts_staff"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="Upload: Photo of aprons and shields "/>
+                    android:visibility="gone"
+                    android:text="Upload: Photo of aprons and shields"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -199,6 +203,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
+                        android:visibility="gone"
                         android:src="@mipmap/camera" />
 
                 </LinearLayout>
@@ -216,13 +221,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:text="3. Are TLD badges/dosimeters (as applicable) provided to each staff member in the radiation area? "
+                    android:text="Are TLD badges/dosimeters (as applicable) provided to each staff member in the radiation area? "
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -299,6 +305,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -306,7 +313,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="4. Are there standardised colur coding of cylinders and medical gas pilelines?"
+                    android:text="Are there standardised colur coding of cylinders and medical gas pilelines?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -334,7 +341,7 @@
                     android:padding="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="Upload: Photo of evidences"/>
+                    android:text="Upload: Photo of colour coded medical gas pipelines"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -380,6 +387,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -387,7 +395,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="5. Are there safe storage of medical gas cyclinders? "
+                    android:text="Are there safe storage of medical gas cyclinders? "
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />

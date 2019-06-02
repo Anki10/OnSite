@@ -53,8 +53,36 @@
         <item>Ambulance Accessibility</item>
         <item>Uniform Signage</item>
         <item>Documentation</item>
+        <item>Scope of Services</item>
 
 
     </string-array>
+
+    <string-array name="assessement_service_SHCO">
+    <item>General Details</item>
+    <item>Laboratory</item>
+    <item>Radiology / Imaging</item>
+    <item>Emergency</item>
+    <item>High dependency Areas</item>
+    <item>Obstetric Ward NICU Paediatric</item>
+    <item>OT</item>
+    <item>Wards and Pharmacy</item>
+    <item>Patient Interview</item>
+    <item>Wards, OT, ICU, OPD, Emergency</item>
+    <item>HRM</item>
+    <item>MRD</item>
+    <item>Housekeeping</item>
+    <item>Sterilization Area</item>
+    <item>Management</item>
+    <item>Maintenance/Bio-medical engineering</item>
+    <item>Maintenance/Facility Checks</item>
+    <item>Safety Management</item>
+    <item>Ambulance Accessibility</item>
+    <item>Uniform Signage</item>
+    <item>Documentation</item>
+    <item>Scope of Services</item>
+
+    </string-array>
+
 
 </resources>

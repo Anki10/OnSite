@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -188,6 +189,9 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.nc_medication_order_checked)
     ImageView nc_medication_order_checked;
 
+    @BindView(R.id.Image_medication_order_checked)
+    ImageView Image_medication_order_checked;
+
     @BindView(R.id.medication_administration_yes)
     RadioButton medication_administration_yes;
 
@@ -221,6 +225,16 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.hospital_center)
     TextView hospital_center;
 
+    @BindView(R.id.ll_emergency_medications)
+    LinearLayout ll_emergency_medications;
+
+    @BindView(R.id.ll_risk_medications_verified)
+    LinearLayout ll_risk_medications_verified;
+
+    int Bed_no = 0;
+
+
+
 
     private String remark1, remark2, remark3,remark4,remark5,remark6,remark7,remark8,remark9,remark10,remark11;
 
@@ -239,8 +253,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
 
     private DatabaseHandler databaseHandler;
 
-    private String image1,image2,image3,image5,image6,image8,image10,image11;
-    private String Local_image1,Local_image2,Local_image3,Local_image5,Local_image6,Local_image8,Local_image10,Local_image11;
+    private String image1,image2,image3,image5,image6,image8,image9,image10,image11;
+    private String Local_image1,Local_image2,Local_image3,Local_image5,Local_image6,Local_image8,Local_image9,Local_image10,Local_image11;
 
     private File outputVideoFile;
 
@@ -264,6 +278,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
 
     private ArrayList<String>medication_administration_imageList;
     private ArrayList<String>Local_medication_administration_imageList;
+    private ArrayList<String>medication_order_checked_imagelist;
+    private ArrayList<String>Local_medication_order_checkedt_imagelist;
     private ArrayList<String>fridge_temperature_imageList;
     private ArrayList<String>Local_fridge_temperature_imageList;
 
@@ -308,6 +324,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
         Local_labelling_of_drug_imageList = new ArrayList<>();
         medication_administration_imageList = new ArrayList<>();
         Local_medication_administration_imageList = new ArrayList<>();
+        medication_order_checked_imagelist = new ArrayList<>();
+        Local_medication_order_checkedt_imagelist = new ArrayList<>();
         fridge_temperature_imageList = new ArrayList<>();
         Local_fridge_temperature_imageList = new ArrayList<>();
 
@@ -325,6 +343,16 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
         pojo = new Wards_PharmacyPojo();
 
         mAPIService = ApiUtils.getAPIService();
+
+        Bed_no = getINTFromPrefs("Hospital_bed");
+
+        if (Bed_no < 51){
+            ll_emergency_medications.setVisibility(View.GONE);
+            ll_risk_medications_verified.setVisibility(View.GONE);
+        }else {
+            ll_emergency_medications.setVisibility(View.VISIBLE);
+            ll_risk_medications_verified.setVisibility(View.VISIBLE);
+        }
 
         getPharmacyData();
 
@@ -821,6 +849,46 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 }
             }
 
+            if (pojo.getMedication_order_checked_image() != null){
+                Image_medication_order_checked.setImageResource(R.mipmap.camera_selected);
+
+                image9 = pojo.getMedication_order_checked_image();
+
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(image9);
+                    JSONArray jArray = json.optJSONArray("uniqueArrays");
+                    if (jArray != null){
+                        for (int i=0;i<jArray.length();i++){
+                            medication_order_checked_imagelist.add(jArray.getString(i));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            if (pojo.getLocal_medication_order_checked_image() != null){
+
+
+                Local_image9 = pojo.getLocal_medication_order_checked_image();
+
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(Local_image9);
+                    JSONArray jArray = json.optJSONArray("uniqueArrays");
+                    if (jArray != null){
+                        for (int i=0;i<jArray.length();i++){
+                            Local_medication_order_checkedt_imagelist.add(jArray.getString(i));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
             if (pojo.getMedication_administration_documented_image() != null){
                 Image_medication_administration.setImageResource(R.mipmap.camera_selected);
 
@@ -928,7 +996,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
             R.id.nc_emergency_medications,R.id.Image_emergency_medications,R.id.remark_high_risk_medications,R.id.nc_high_risk_medications,R.id.Image_high_risk_medications,
             R.id.remark_risk_medications_verified,R.id.nc_risk_medications_verified,R.id.remark_labelling_of_drug,R.id.nc_labelling_of_drug,R.id.Image_labelling_of_drug,
             R.id.remark_medication_order_checked,R.id.nc_medication_order_checked,R.id.remark_medication_administration,
-            R.id.nc_medication_administration,R.id.Image_medication_administration,R.id.remark_fridge_temperature,R.id.nc_fridge_temperature,R.id.Image_fridge_temperature,R.id.btnSave,R.id.btnSync})
+            R.id.nc_medication_administration,R.id.Image_medication_administration,R.id.remark_fridge_temperature,R.id.nc_fridge_temperature,R.id.Image_fridge_temperature,R.id.btnSave,R.id.btnSync,
+    R.id.Image_medication_order_checked})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.remark_patient_care_area:
@@ -1054,6 +1123,15 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 displayNCDialog("NC", 9);
                 break;
 
+            case R.id.Image_medication_order_checked:
+
+                if (Local_medication_order_checkedt_imagelist.size() > 0){
+                    showImageListDialog(Local_medication_order_checkedt_imagelist,9,"medication_order_checked");
+                }else {
+                    captureImage(9);
+                }
+                break;
+
 
             case R.id.remark_medication_administration:
                 displayCommonDialogWithHeader("Remark", 10);
@@ -1096,7 +1174,11 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
 
             case R.id.btnSync:
 
-                PostLaboratoryData();
+                if (Bed_no < 51){
+                    Post_SHCO_LaboratoryData();
+                }else {
+                    PostLaboratoryData();
+                }
 
                 break;
 
@@ -2412,6 +2494,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
             image1 = json.toString();
+        }else {
+            image1 = null;
         }
 
         if (Local_patientCareArea_imageList.size() > 0) {
@@ -2421,6 +2505,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
             Local_image1 = json.toString();
+        }else {
+            Local_image1 = null;
         }
 
         pojo.setPatient_care_area_Image(image1);
@@ -2436,6 +2522,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
             image2 = json.toString();
+        }else {
+            image2 = null;
         }
 
         if (Local_pharmacyStores_present_imageList.size() > 0) {
@@ -2445,6 +2533,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
             Local_image2 = json.toString();
+        }else {
+            Local_image2 = null;
         }
 
         pojo.setPharmacyStores_present_Image(image2);
@@ -2461,6 +2551,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
             image3 = json.toString();
+        }else {
+            image3 = null;
         }
 
         if (Local_drugs_pharmacy_imageList.size() > 0) {
@@ -2470,6 +2562,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
             Local_image3 = json.toString();
+        }else {
+            Local_image3 = null;
         }
 
 
@@ -2491,6 +2585,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
             image5 = json.toString();
+        }else {
+            image5 = null;
         }
 
         if (Local_emergency_medications_imageList.size() > 0) {
@@ -2500,6 +2596,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
             Local_image5 = json.toString();
+        }else {
+            Local_image5 = null;
         }
         pojo.setEmergency_medications_Image(image5);
         pojo.setLocal_emergency_medications_Image(Local_image5);
@@ -2515,6 +2613,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
             image6 = json.toString();
+        }else {
+            image6 = null;
         }
 
         if (Local_high_risk_medications_imageList.size() > 0) {
@@ -2524,6 +2624,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
             Local_image6 = json.toString();
+        }else {
+            Local_image6 = null;
         }
 
         pojo.setRisk_medications_image(image6);
@@ -2547,6 +2649,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
             image8 = json.toString();
+        }else {
+            image8 = null;
         }
 
         if (Local_labelling_of_drug_imageList.size() > 0) {
@@ -2556,6 +2660,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
             Local_image8 = json.toString();
+        }else {
+            Local_image8 = null;
         }
         pojo.setLabelling_of_drug_image(image8);
         pojo.setLocal_labelling_of_drug_image(Local_image8);
@@ -2563,9 +2669,30 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
         pojo.setMedication_order_checked_remark(remark9);
         pojo.setMedication_order_checked_nc(nc9);
 
+        if (medication_order_checked_imagelist.size() > 0) {
+            try {
+                json.put("uniqueArrays", new JSONArray(medication_order_checked_imagelist));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            image9 = json.toString();
+        }else {
+            image9 = null;
+        }
 
-      /*  pojo.setMedication_order_checked_image(image9);
-        pojo.setLocal_medication_order_checked_image(Local_image9);*/
+        if (Local_medication_order_checkedt_imagelist.size() > 0) {
+            try {
+                json.put("uniqueArrays", new JSONArray(Local_medication_order_checkedt_imagelist));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Local_image9 = json.toString();
+        }else {
+            Local_image9 = null;
+        }
+
+        pojo.setMedication_order_checked_image(image9);
+        pojo.setLocal_medication_order_checked_image(Local_image9);
 
         pojo.setMedication_administration_documented_remark(remark10);
         pojo.setMedication_administration_documented_nc(nc10);
@@ -2578,6 +2705,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
             image10 = json.toString();
+        }else {
+            image10 = null;
         }
 
         if (Local_medication_administration_imageList.size() > 0) {
@@ -2587,6 +2716,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
             Local_image10 = json.toString();
+        }else {
+            Local_image10 = null;
         }
 
         pojo.setMedication_administration_documented_image(image10);
@@ -2602,6 +2733,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
             image11 = json.toString();
+        }else {
+            image11 = null;
         }
 
         if (Local_fridge_temperature_imageList.size() > 0) {
@@ -2611,6 +2744,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
             Local_image11 = json.toString();
+        }else {
+            Local_image11 = null;
         }
 
 
@@ -2649,10 +2784,11 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
         SavePharmacyData("sync");
 
         if (patient_care_area.length() > 0 && pharmacyStores_present.length() > 0 && drugs_pharmacy.length() >0 && medication_expiry.length() > 0 &&
-                emergency_medications.length() > 0 && high_risk_medications.length() > 0 && risk_medications_verified.length() > 0 && labelling_of_drug.length() > 0 && medication_order_checked.length() > 0 ){
+                emergency_medications.length() > 0 && high_risk_medications.length() > 0 && risk_medications_verified.length() > 0 && labelling_of_drug.length() > 0 && medication_order_checked.length() > 0
+        && medication_administration.length() > 0 && fridge_temperature.length() > 0){
 
        if (image1 != null && image2 != null && image3!= null && image5!= null && image6!= null
-       && image8!= null  && image10 != null && image11!= null){
+       && image8!= null  && image9 != null &&  image10 != null && image11!= null){
            pojo_dataSync.setTabName("wardspharmacy");
            pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
            pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -2705,6 +2841,12 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                labelling_of_drug_imageList_view = value_labelling_of_drug_imageList_view + labelling_of_drug_imageList_view;
            }
            pojo.setLabelling_of_drug_image(labelling_of_drug_imageList_view);
+
+           for (int i=0;i<medication_order_checked_imagelist.size();i++){
+               String value_medication_order_checked = medication_order_checked_imagelist.get(i);
+
+               medication_order_checked_imageList_view = value_medication_order_checked + medication_order_checked_imageList_view;
+           }
 
            pojo.setMedication_order_checked_image(medication_order_checked_imageList_view);
 
@@ -2786,6 +2928,149 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
+    private void Post_SHCO_LaboratoryData(){
+
+        SavePharmacyData("sync");
+
+        if (patient_care_area.length() > 0 && pharmacyStores_present.length() > 0 && drugs_pharmacy.length() >0 && medication_expiry.length() > 0 &&
+                 high_risk_medications.length() > 0 &&  labelling_of_drug.length() > 0 && medication_order_checked.length() > 0
+                && medication_administration.length() > 0 && fridge_temperature.length() > 0){
+
+            if (image1 != null && image2 != null && image3!= null && image6!= null
+                    && image8!= null  && image10 != null && image11!= null){
+                pojo_dataSync.setTabName("wardspharmacy");
+                pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
+                pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
+                if (getFromPrefs("asmtId"+Hospital_id).length() > 0){
+                    pojo_dataSync.setAssessment_id(Integer.parseInt(getFromPrefs("asmtId"+Hospital_id)));
+                }else {
+                    pojo_dataSync.setAssessment_id(0);
+                }
+
+                for (int i=0;i< patientCareArea_imageList.size();i++){
+                    String value_patientCareArea = patientCareArea_imageList.get(i);
+
+                    patientCareArea = value_patientCareArea + patientCareArea;
+                }
+                pojo.setPatient_care_area_Image(patientCareArea);
+
+                for (int i = 0; i< pharmacyStores_present_imageList.size();i++){
+                    String value_pharmacyStores_present = pharmacyStores_present_imageList.get(i);
+
+                    pharmacyStores_present_view = value_pharmacyStores_present + pharmacyStores_present_view;
+                }
+
+                pojo.setPharmacyStores_present_Image(pharmacyStores_present_view);
+
+                for (int i = 0; i< drugs_pharmacy_imageList.size();i++){
+                    String value_drugs_pharmacy_view = drugs_pharmacy_imageList.get(i);
+
+                    drugs_pharmacy_view = value_drugs_pharmacy_view + drugs_pharmacy_view;
+                }
+                pojo.setExpired_drugs_image(drugs_pharmacy_view);
+
+                for (int i = 0; i< emergency_medications_imageList.size();i++){
+                    String value_emergency_medications_view = emergency_medications_imageList.get(i);
+
+                    emergency_medications_view = value_emergency_medications_view + emergency_medications_view;
+                }
+
+                pojo.setEmergency_medications_Image(emergency_medications_view);
+
+                for (int i = 0; i< high_risk_medications_imageList.size();i++){
+                    String value_high_risk_medications_imageList_view = high_risk_medications_imageList.get(i);
+
+                    high_risk_medications_imageList_view = value_high_risk_medications_imageList_view + high_risk_medications_imageList_view;
+                }
+                pojo.setRisk_medications_image(high_risk_medications_imageList_view);
+
+                for (int i = 0; i< labelling_of_drug_imageList.size();i++){
+                    String value_labelling_of_drug_imageList_view = labelling_of_drug_imageList.get(i);
+
+                    labelling_of_drug_imageList_view = value_labelling_of_drug_imageList_view + labelling_of_drug_imageList_view;
+                }
+                pojo.setLabelling_of_drug_image(labelling_of_drug_imageList_view);
+
+                pojo.setMedication_order_checked_image(medication_order_checked_imageList_view);
+
+                for (int i = 0; i< medication_administration_imageList.size();i++){
+                    String value_medication_administration_image = medication_administration_imageList.get(i);
+
+                    medication_administration_imageView = value_medication_administration_image + medication_administration_imageView;
+                }
+
+                pojo.setMedication_administration_documented_image(medication_administration_imageView);
+
+                for (int i = 0; i< fridge_temperature_imageList.size();i++){
+                    String value_fridge_temperature_View = fridge_temperature_imageList.get(i);
+
+                    fridge_temperature_View = value_fridge_temperature_View + fridge_temperature_View;
+                }
+
+                pojo.setFridge_temperature_record_Image(fridge_temperature_View);
+
+                pojo_dataSync.setWardspharmacy(pojo);
+
+                final ProgressDialog d = AppDialog.showLoading(PharmacyActivity.this);
+                d.setCanceledOnTouchOutside(false);
+
+                mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
+                    @Override
+                    public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
+                        System.out.println("xxx sucess");
+
+                        d.dismiss();
+
+                        if (response.message().equalsIgnoreCase("Unauthorized")) {
+                            Intent intent = new Intent(PharmacyActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+
+                            Toast.makeText(PharmacyActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                        }else {
+                            if (response.body() != null){
+                                if (response.body().getSuccess()){
+                                    Intent intent = new Intent(PharmacyActivity.this,HospitalListActivity.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                    saveIntoPrefs("Pharmacy_tabId"+Hospital_id, String.valueOf(response.body().getTabId()));
+
+                                    saveIntoPrefs("asmtId"+Hospital_id, String.valueOf(response.body().getAsmtId()));
+
+                                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                                    pojo.setHospital_id(assessement_list.get(7).getHospital_id());
+                                    pojo.setAssessement_name("Wards and Pharmacy");
+                                    pojo.setAssessement_status("Done");
+                                    pojo.setLocal_id(assessement_list.get(7).getLocal_id());
+
+                                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                                    Toast.makeText(PharmacyActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<DataSyncResponse> call, Throwable t) {
+                        System.out.println("xxx failed");
+
+                        d.dismiss();
+                    }
+                });
+            }else {
+                Toast.makeText(PharmacyActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+            }
+        }else {
+            Toast.makeText(PharmacyActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void ImageUpload(final String image_path,final String from){
         File file = new File(image_path);
 
@@ -2848,6 +3133,11 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                                 labelling_of_drug_imageList.add(response.body().getMessage());
                                 Local_labelling_of_drug_imageList.add(image_path);
                                 Image_labelling_of_drug.setImageResource(R.mipmap.camera_selected);
+                            }else if (from.equalsIgnoreCase("medication_order_checked")){
+                                medication_order_checked_imagelist.add(response.body().getMessage());
+                                Local_medication_order_checkedt_imagelist.add(image_path);
+
+                                Image_medication_order_checked.setImageResource(R.mipmap.camera_selected);
                             }
                             else if (from.equalsIgnoreCase("medication_administration")){
 
@@ -3001,6 +3291,20 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                     dialogLogout.dismiss();
                 }
 
+            }else if (from.equalsIgnoreCase("medication_order_checked")){
+                Local_medication_order_checkedt_imagelist.remove(position);
+                medication_order_checked_imagelist.remove(position);
+
+                image_adapter.notifyItemRemoved(position);
+                image_adapter.notifyDataSetChanged();
+
+                if (Local_medication_order_checkedt_imagelist.size() == 0){
+                    Image_medication_order_checked.setImageResource(R.mipmap.camera);
+
+                    dialogLogout.dismiss();
+                }
+
+
             }
             else if (from.equalsIgnoreCase("fridge_temperature")){
                 Local_fridge_temperature_imageList.remove(position);
@@ -3025,9 +3329,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(PharmacyActivity.this,HospitalListActivity.class);
-        startActivity(intent);
-        finish();
+        SavePharmacyData("save");
     }
 
 }

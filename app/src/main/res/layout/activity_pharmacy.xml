@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="1. Are there expired drugs in any patient care area?"
+                    android:text="Are there expired drugs in any patient care area?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -154,7 +154,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="2. Is there any pharmacy/Stores present?"
+                    android:text="Is there any pharmacy/Stores present?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -229,6 +229,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
 
@@ -237,7 +238,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="3. Are there any expired drugs in pharmacy?"
+                    android:text="Are there any expired drugs in pharmacy?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -264,7 +265,7 @@
                     android:padding="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="Upload: Photo of expired drugs."/>
+                    android:text="Upload: Photo of expired drugs stored seperately"/>
 
 
                 <LinearLayout
@@ -311,13 +312,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:text="4. Is the medication expiry date checked before dispensing? "
+                    android:text="Is the medication expiry date checked before dispensing? "
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -375,7 +377,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_emergency_medications"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -386,7 +388,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="5. Is there a list of emergency medications?"
+                    android:text="Is there a list of emergency medications?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -481,7 +483,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="6. Is there a list of high risk medications?"
+                    android:text="Is there a list of high risk medications?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -563,7 +565,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_risk_medications_verified"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -574,7 +576,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="7. Are high risk medications verified before dispensing?"
+                    android:text="Are high risk medications verified before dispensing?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -642,7 +644,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="8. Does the labelling of drug have name, UHID, dose, date strength when more than one drug is loaded before administration?"
+                    android:text="Does the labelling of drug have name, UHID, dose, date strength when more than one drug is loaded before administration?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -732,7 +734,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="9. Is medication order checked for name, dosages, route and timings before administration?"
+                    android:text="Is medication order checked for name, dosages, route and timings before administration?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -765,10 +767,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:visibility="gone"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="Upload: (Photo) observation"/>
+                    android:text="Upload: Photo of medication labelled for name, dosages, route and timings"/>
 
 
                 <LinearLayout
@@ -795,6 +796,13 @@
                         android:background="@mipmap/nc"
                         android:textColor="@android:color/transparent" />
 
+                    <ImageView android:id="@+id/Image_medication_order_checked"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:src="@mipmap/camera" />
+
+
 
 
                 </LinearLayout>
@@ -818,7 +826,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="10. Is medication administration documented?"
+                    android:text="Is medication administration documented?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -910,7 +918,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="11. Is fridge temperature record present?"
+                    android:text="Is fridge temperature record present?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />

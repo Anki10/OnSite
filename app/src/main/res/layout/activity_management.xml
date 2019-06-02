@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="1. Are requisite fee for BMW, related documents and reports submitted to competent authorities on stipulated date?"
+                    android:text="Are requisite fee for BMW, related documents and reports submitted to competent authorities on stipulated date?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -139,7 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="2. Do leaders/management guide the organization to function in an ethical manner?"
+                    android:text="Do leaders/management guide the organization to function in an ethical manner?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -208,6 +208,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
 
@@ -216,7 +217,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="3. Is any documented hospital mission present?"
+                    android:text="Is any documented hospital mission present?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -290,13 +291,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:text="4. Are document for registration and admission of patient being maintained in OPD? "
+                    android:text="Are document for registration and admission of patient being maintained in OPD? "
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -388,7 +390,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="5. Are document for registration and admission of patient being maintained in IPD?"
+                    android:text="Are document for registration and admission of patient being maintained in IPD?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -416,7 +418,7 @@
                     android:padding="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="Note: Check filled admission note/ front sheet of IP case record (any 3 note / record)"/>
+                    android:text="Note: Check filled admission note/ front sheet of IPD case record (any 3 note / record)"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -482,7 +484,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="6. Are document for registration and admission of patient being maintained in Emergency?"
+                    android:text="Are document for registration and admission of patient being maintained in Emergency?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -509,7 +511,7 @@
                     android:padding="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="Note: Check filled registration form/emergency register/Admission note/ front sheet of IP case record (any 3 form / record)"/>
+                    android:text="Note: Check Filled Admission Slip (any 3)"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -574,7 +576,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="7. Is copy of basic Tariff List including bed charges, OT charges, ICU bed charges, packages, etc. present?"
+                    android:text="Is copy of basic Tariff List including bed charges, OT charges, ICU bed charges, packages, etc. present?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -665,7 +667,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="8. What is the parameter for patient identification?"
+                    android:text="What is the parameter for patient identification?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -733,7 +735,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="9. Does the continous process of quality improvement programme and patient safety programme gets updated atleast once in a year"
+                    android:text="Does the continous process of quality improvement programme and patient safety programme gets updated atleast once in a year"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />

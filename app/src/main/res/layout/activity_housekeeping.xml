@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="1. Does staff know the procedure of cleaning non-infected patient's room? "
+                    android:text="Does staff know the procedure of cleaning non-infected patient's room? "
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -139,7 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="2. Does staff know the procedure of cleaning infected patient's room?"
+                    android:text="Does staff know the procedure of cleaning infected patient's room?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -215,7 +215,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="3. Does staff know the procedure of cleaning blood spill?"
+                    android:text="Does staff know the procedure of cleaning blood spill?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -250,7 +250,7 @@
                     android:padding="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="Upload: Video of demonstration of cleaning blood spill."/>
+                    android:text="Upload: Photo of demonstration of cleaning blood spill"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -303,7 +303,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:text="4. Is the waste collected, segregated, transported and disposed as per the Biomedical Waste regulations?"
+                    android:text="Is the waste collected, segregated, transported and disposed as per the Biomedical Waste regulations?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -398,7 +398,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="5. Does staff know the procedure of cleaning or washing the blood stained linen?"
+                    android:text="Does staff know the procedure of cleaning or washing the blood stained linen?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />

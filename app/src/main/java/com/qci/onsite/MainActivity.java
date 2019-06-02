@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.qci.onsite.activity.BaseActivity;
 import com.qci.onsite.activity.HospitalListActivity;
+import com.qci.onsite.activity.LaboratoryActivity;
 import com.qci.onsite.activity.LoginActivity;
 import com.qci.onsite.adapter.HospitalAdapter;
 import com.qci.onsite.adapter.MainHospitalListAdapter;
@@ -97,14 +98,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             public void onResponse(Call<AllocatedHospitalResponse> call, Response<AllocatedHospitalResponse> response) {
 
                 d.cancel();
-                if (response.body() != null){
-                    if (response.body().getRows() != null){
-                        list_hospital = response.body().getRows();
+                if (response.message().equalsIgnoreCase("Unauthorized")) {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
 
-                        adapter = new MainHospitalListAdapter(MainActivity.this,list_hospital);
-                        hospital_list_recycler_view.setAdapter(adapter);
+                    saveIntoPrefs(AppConstant.Login_status,"logout");
+
+                    Toast.makeText(MainActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                }else {
+                    if (response.body() != null){
+                        if (response.body().getRows() != null){
+                            list_hospital = response.body().getRows();
+
+                            adapter = new MainHospitalListAdapter(MainActivity.this,list_hospital);
+                            hospital_list_recycler_view.setAdapter(adapter);
+                        }
                     }
                 }
+
 
             }
 
@@ -124,6 +136,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 int position = (int) view.getTag(R.string.key_hospital_main);
 
                 String hospital_id = String.valueOf(list_hospital.get(position).getHospitalid());
+
+                int hospital_bedNo = list_hospital.get(position).getHospitalnoOfBed();
+
+                SAVEINTPrefs("Hospital_bed",hospital_bedNo);
 
                 String date = new SimpleDateFormat("M/dd/yyyy", Locale.getDefault()).format(new Date());
 
@@ -157,44 +173,32 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                     startActivity(intent);
 
                                     saveIntoPrefs("asmtId" + hospital_id, String.valueOf(list_hospital.get(position).getAssessment_id()));
+
+
+
+
                                 }else {
                                     Toast.makeText(MainActivity.this,"Please complete and sync assessment which is currently 'In progress'. Once this assessment is completed, then you can start with new assessment.",Toast.LENGTH_LONG).show();
                                 }
                             }else {
-                                Intent intent = new Intent(MainActivity.this, HospitalListActivity.class);
-                                startActivity(intent);
-
-                                saveIntoPrefs("asmtId" + hospital_id, String.valueOf(list_hospital.get(position).getAssessment_id()));
-                            }
-
-
-
-                        }else {
-                            if (date_staus.equalsIgnoreCase("1")){
-
-                                if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS).length() > 0){
-                                    if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS).equalsIgnoreCase(hospital_id)){
-                                        Intent intent = new Intent(MainActivity.this,HospitalListActivity.class);
-                                        intent.putExtra("Hospital_id",hospital_id);
-                                        startActivity(intent);
-
-                                        saveIntoPrefs("asmtId"+hospital_id, String.valueOf(list_hospital.get(position).getAssessment_id()));
-
-                                        saveIntoPrefs(AppConstant.Hospital_Name,list_hospital.get(position).getHospitalname());
-                                    }else {
-                                        Toast.makeText(MainActivity.this,"Please complete and sync assessment which is currently 'In progress'. Once this assessment is completed, then you can start with new assessment.",Toast.LENGTH_LONG).show();
-                                    }
-                                }else {
-                                    Intent intent = new Intent(MainActivity.this,HospitalListActivity.class);
-                                    intent.putExtra("Hospital_id",hospital_id);
+                                if (date_staus.equalsIgnoreCase("1")){
+                                    Intent intent = new Intent(MainActivity.this, HospitalListActivity.class);
                                     startActivity(intent);
 
-                                    saveIntoPrefs("asmtId"+hospital_id, String.valueOf(list_hospital.get(position).getAssessment_id()));
+                                    saveIntoPrefs("asmtId" + hospital_id, String.valueOf(list_hospital.get(position).getAssessment_id()));
+                                }else if (date_staus.equalsIgnoreCase("2")){
+                                    Intent intent = new Intent(MainActivity.this, HospitalListActivity.class);
+                                    startActivity(intent);
 
-                                    saveIntoPrefs(AppConstant.Hospital_Name,list_hospital.get(position).getHospitalname());
+                                    saveIntoPrefs("asmtId" + hospital_id, String.valueOf(list_hospital.get(position).getAssessment_id()));
+                                }else {
+                                    Toast.makeText(MainActivity.this,"You can't start assessment",Toast.LENGTH_LONG).show();
                                 }
 
-                            }else if (date_staus.equalsIgnoreCase("0")){
+                            }
+
+                        }else {
+                          if (date_staus.equalsIgnoreCase("0")){
                                 if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS).length() > 0){
                                     if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS).equalsIgnoreCase(hospital_id)){
                                         Intent intent = new Intent(MainActivity.this,HospitalListActivity.class);
@@ -220,7 +224,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
                             }else {
-                                Toast.makeText(MainActivity.this,"You can't start assessment one day before",Toast.LENGTH_LONG).show();
+                                Toast.makeText(MainActivity.this,"Assessment alloted to the assessor shall not start before the alloted date - Assessment can be initiated on Allocated date of assessment only.",Toast.LENGTH_LONG).show();
 
                             }
                         }

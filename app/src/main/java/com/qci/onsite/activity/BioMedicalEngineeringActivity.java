@@ -140,6 +140,9 @@ public class BioMedicalEngineeringActivity extends BaseActivity implements View.
 
     String DoHigh_view = "";
 
+    @BindView(R.id.hospital_center)
+    TextView hospital_center;
+
 
 
     @Override
@@ -161,6 +164,9 @@ public class BioMedicalEngineeringActivity extends BaseActivity implements View.
         Hospital_id = getFromPrefs(AppConstant.Hospital_ID);
 
         assessement_list = new ArrayList<>();
+
+        hospital_center.setText(getFromPrefs(AppConstant.Hospital_Name));
+
 
         pojo_dataSync = new DataSyncRequest();
 
@@ -821,6 +827,8 @@ public class BioMedicalEngineeringActivity extends BaseActivity implements View.
                 e.printStackTrace();
             }
             image3 = json.toString();
+        }else {
+            image3 = null;
         }
 
         if (Local_DoHigh_imageList.size() > 0){
@@ -830,6 +838,8 @@ public class BioMedicalEngineeringActivity extends BaseActivity implements View.
                 e.printStackTrace();
             }
             Local_image3 = json.toString();
+        }else {
+            Local_image3 = null;
         }
 
         pojo.setDocumented_operational_maintenance_remark(remark3);
@@ -1057,8 +1067,6 @@ public class BioMedicalEngineeringActivity extends BaseActivity implements View.
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(BioMedicalEngineeringActivity.this,HospitalListActivity.class);
-        startActivity(intent);
-        finish();
+        SaveLaboratoryData("");
     }
 }

@@ -49,7 +49,7 @@
             android:orientation="vertical">
 
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_anaesthetist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="1. Is pre-anaesthesia assessment done by a qualified/trained anaesthetist?"
+                    android:text="Is pre-anaesthesia assessment done by a qualified/trained anaesthetist?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -118,9 +118,10 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_documented_anaesthesia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
 
@@ -129,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="2. Is there a documented anaesthesia plan following pre-anaesthesia assessment?"
+                    android:text="Is there a documented anaesthesia plan following pre-anaesthesia assessment?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -184,16 +185,17 @@
             </LinearLayout>
 
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_immediate_preoperative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:text="3. Is there immediate preoperative re-evaluation done?"
+                    android:text="Is there immediate preoperative re-evaluation done?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -251,9 +253,10 @@
 
 
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_anaesthesia_monitoring"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -261,7 +264,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="4. Is anaesthesia monitoring done?"
+                    android:text="Is anaesthesia monitoring done?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -317,9 +320,10 @@
             </LinearLayout>
 
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_post_anaesthesia_monitoring"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -327,7 +331,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="5. Is post anaesthesia monitoring done?"
+                    android:text="Is post anaesthesia monitoring done?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -386,6 +390,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -393,7 +398,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="6. Is WHO Patient Safety Check List used to identify the right patient?"
+                    android:text="Is WHO Patient Safety Check List used to identify the right patient?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -474,9 +479,10 @@
             </LinearLayout>
 
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_OT_Zoning"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -484,7 +490,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="7. Is OT Zoning done as Un-sterile, Semi-sterile, Sterile ?"
+                    android:text="Is OT Zoning done as Un-sterile, Semi-sterile, Sterile ?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -513,7 +519,7 @@
                     android:padding="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="Upload: Video of process done"/>
+                    android:text="Upload: Photos of OT Zoning"/>
 
 
                 <LinearLayout
@@ -561,6 +567,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -568,7 +575,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="8. Is there monitoring of infection control practices? "
+                    android:text="Is there monitoring of infection control practices? "
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -645,6 +652,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -652,7 +660,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="9. Are narcotic drugs used?"
+                    android:text="Are narcotic drugs used?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -728,6 +736,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -735,7 +744,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="10. Is there a record of usage,administration and disposal of narcotic drugs?"
+                    android:text="Is there a record of usage,administration and disposal of narcotic drugs?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -810,6 +819,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -817,7 +827,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="11. Does the OT wash up area have no-touch hand wash facility?"
+                    android:text="Does the OT wash up area have no-touch hand wash facility?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />

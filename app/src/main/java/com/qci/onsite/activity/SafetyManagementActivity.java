@@ -133,6 +133,15 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
     @BindView(R.id.image_safe_storage_medical)
     ImageView image_safe_storage_medical;
 
+    @BindView(R.id.tv_safety_device)
+    TextView tv_safety_device;
+
+    @BindView(R.id.tv_body_parts_staff)
+    TextView tv_body_parts_staff;
+
+    int Bed_no = 0;
+
+
     private String remark1, remark2, remark3, remark4, remark5;
 
     private Dialog dialogLogout;
@@ -225,6 +234,24 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
         assessement_list = new ArrayList<>();
 
         laboratory_hospital_name.setText(getFromPrefs(AppConstant.Hospital_Name));
+
+        Bed_no = getINTFromPrefs("Hospital_bed");
+
+        if (Bed_no < 51){
+            tv_safety_device.setVisibility(View.VISIBLE);
+            tv_body_parts_staff.setVisibility(View.VISIBLE);
+
+            image_body_parts_staff_patients.setVisibility(View.VISIBLE);
+
+            image_safety_device_lab.setVisibility(View.VISIBLE);
+        }else {
+            tv_safety_device.setVisibility(View.GONE);
+            tv_body_parts_staff.setVisibility(View.GONE);
+
+            image_body_parts_staff_patients.setVisibility(View.GONE);
+
+            image_safety_device_lab.setVisibility(View.GONE);
+        }
 
         getLaboratoryData();
 
@@ -1343,6 +1370,8 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                 e.printStackTrace();
             }
             image1 = json.toString();
+        }else {
+            image1 = null;
         }
 
         if (Local_safety_device_lab_list.size() > 0){
@@ -1352,6 +1381,8 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                 e.printStackTrace();
             }
             Local_image1 = json.toString();
+        }else {
+            Local_image1 = null;
         }
 
 
@@ -1368,6 +1399,8 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                 e.printStackTrace();
             }
             image2 = json.toString();
+        }else {
+            image2 = null;
         }
 
         if (Local_body_parts_staff_patients_list.size() > 0){
@@ -1377,6 +1410,8 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                 e.printStackTrace();
             }
             Local_image2 = json.toString();
+        }else {
+            Local_image2 = null;
         }
 
 
@@ -1392,6 +1427,8 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                 e.printStackTrace();
             }
             image3 = json.toString();
+        }else {
+            image3 = null;
         }
 
         if (Local_staff_member_radiation_area_list.size() > 0){
@@ -1401,6 +1438,8 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                 e.printStackTrace();
             }
             Local_image3 = json.toString();
+        }else {
+            Local_image3 = null;
         }
 
 
@@ -1416,6 +1455,8 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                 e.printStackTrace();
             }
             image4 = json.toString();
+        }else {
+            image4 = null;
         }
 
         if (Local_standardised_colur_coding_list.size() > 0){
@@ -1425,6 +1466,8 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                 e.printStackTrace();
             }
             Local_image4 = json.toString();
+        }else {
+            Local_image4 = null;
         }
 
 
@@ -1441,6 +1484,8 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                 e.printStackTrace();
             }
             image5 = json.toString();
+        }else {
+            image5 = null;
         }
 
         if (Local_safe_storage_medical_list.size() > 0){
@@ -1450,6 +1495,8 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                 e.printStackTrace();
             }
             Local_image5 = json.toString();
+        }else {
+            Local_image5 = null;
         }
 
 
@@ -1571,7 +1618,7 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
         if (safety_device_lab.length() > 0 && body_parts_staff_patients.length() > 0 && staff_member_radiation_area.length() > 0 && standardised_colur_coding.length() > 0
                 && safe_storage_medical.length() > 0){
 
-            if (image1 != null && image2 != null && image3 != null && image4 != null && image5 != null){
+            if (image3 != null && image4 != null && image5 != null){
                 pojo_dataSync.setTabName("safetymanagement");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -1773,8 +1820,6 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(SafetyManagementActivity.this,HospitalListActivity.class);
-        startActivity(intent);
-        finish();
+        SaveLaboratoryData("save");
     }
 }

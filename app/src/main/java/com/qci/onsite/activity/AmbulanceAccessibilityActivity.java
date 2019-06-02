@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -151,6 +152,30 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
     @BindView(R.id.hospital_center)
     TextView hospital_center;
 
+    @BindView(R.id.ll_ownership_the_ambulance)
+    LinearLayout ll_ownership_the_ambulance;
+
+    @BindView(R.id.ll_ambulance_available)
+    LinearLayout ll_ambulance_available;
+
+    @BindView(R.id.ll_appropriately_equiped)
+    LinearLayout ll_appropriately_equiped;
+
+    @BindView(R.id.ll_driver_ambulances_available)
+    LinearLayout ll_driver_ambulances_available;
+
+    @BindView(R.id.ll_doctor_available)
+    LinearLayout ll_doctor_available;
+
+    @BindView(R.id.ll_nurses_available)
+    LinearLayout ll_nurses_available;
+
+    int Bed_no = 0;
+
+
+
+
+
     private String remark1, remark2, remark3,remark4,remark5,remark6,remark8;
 
     private Dialog dialogLogout;
@@ -248,6 +273,25 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
         pojo_dataSync = new DataSyncRequest();
 
         pojo = new AmbulanceAccessibilityPojo();
+
+        Bed_no = getINTFromPrefs("Hospital_bed");
+
+
+        if (Bed_no < 51){
+            ll_ownership_the_ambulance.setVisibility(View.GONE);
+            ll_ambulance_available.setVisibility(View.GONE);
+            ll_appropriately_equiped.setVisibility(View.GONE);
+            ll_driver_ambulances_available.setVisibility(View.GONE);
+            ll_doctor_available.setVisibility(View.GONE);
+            ll_nurses_available.setVisibility(View.GONE);
+        }else {
+            ll_ownership_the_ambulance.setVisibility(View.VISIBLE);
+            ll_ambulance_available.setVisibility(View.VISIBLE);
+            ll_appropriately_equiped.setVisibility(View.VISIBLE);
+            ll_driver_ambulances_available.setVisibility(View.VISIBLE);
+            ll_doctor_available.setVisibility(View.VISIBLE);
+            ll_nurses_available.setVisibility(View.VISIBLE);
+        }
 
         getPharmacyData();
 
@@ -717,7 +761,12 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 break;
 
             case R.id.btnSync:
-                PostLaboratoryData();
+                if (Bed_no < 51){
+                     Post_SHCO_LaboratoryData();
+                }else {
+                    PostLaboratoryData();
+                }
+
                 break;
         }
     }
@@ -1554,8 +1603,6 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
     }
 
 
-
-
     public void SavePharmacyData(String from){
 
         pojo.setHospital_name("Hospital1");
@@ -1588,6 +1635,8 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 e.printStackTrace();
             }
             image3 = json.toString();
+        }else {
+            image3 = null;
         }
 
         if (Local_hospital_mission_present_list.size() > 0){
@@ -1597,6 +1646,8 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 e.printStackTrace();
             }
             Local_image3 = json.toString();
+        }else {
+            Local_image3 = null;
         }
 
         pojo.setTotal_number_ambulance_available_image(image3);
@@ -1612,6 +1663,8 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 e.printStackTrace();
             }
             image4 = json.toString();
+        }else {
+            image4 = null;
         }
 
         if (Local_patient_maintained_OPD_list.size() > 0){
@@ -1621,6 +1674,8 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 e.printStackTrace();
             }
             Local_image4 = json.toString();
+        }else {
+            Local_image4 = null;
         }
         pojo.setAmbulance_appropriately_equiped_image(image4);
         pojo.setLocal_ambulance_appropriately_equiped_image(Local_image4);
@@ -1636,6 +1691,8 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 e.printStackTrace();
             }
             image5 = json.toString();
+        }else {
+            image5 = null;
         }
 
         if (Local_patient_maintained_IPD_list.size() > 0){
@@ -1645,6 +1702,8 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 e.printStackTrace();
             }
             Local_image5 = json.toString();
+        }else {
+            Local_image5 = null;
         }
         pojo.setDrivers_ambulances_available_image(image5);
         pojo.setLocal_drivers_ambulances_available_image(Local_image5);
@@ -1661,6 +1720,8 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 e.printStackTrace();
             }
             image6 = json.toString();
+        }else {
+            image6 = null;
         }
 
         if (Local_patient_maintained_Emergency_list.size() > 0){
@@ -1670,6 +1731,8 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 e.printStackTrace();
             }
             Local_image6 = json.toString();
+        }else {
+            Local_image6 = null;
         }
 
         pojo.setDoctors_available_ambulances_image(image6);
@@ -1685,6 +1748,8 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 e.printStackTrace();
             }
             image8 = json.toString();
+        }else {
+            image8 = null;
         }
 
         if (Local_nurses_available_ambulances_list.size() > 0){
@@ -1694,6 +1759,8 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 e.printStackTrace();
             }
             Local_image8 = json.toString();
+        }else {
+            Local_image8 = null;
         }
 
         pojo.setNurses_available_ambulances_image(image8);
@@ -1845,6 +1912,119 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
             Toast.makeText(AmbulanceAccessibilityActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
         }
     }
+
+    private void Post_SHCO_LaboratoryData(){
+
+        SavePharmacyData("sync");
+
+        if (ambulance_patient_drop.length() > 0 ){
+
+                pojo_dataSync.setTabName("AmbulanceAccessibility");
+                pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
+                pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
+                if (getFromPrefs("asmtId"+Hospital_id).length() > 0){
+                    pojo_dataSync.setAssessment_id(Integer.parseInt(getFromPrefs("asmtId"+Hospital_id)));
+                }else {
+                    pojo_dataSync.setAssessment_id(0);
+                }
+
+
+                for (int i=0;i<hospital_mission_present_list.size();i++){
+                    String value_rail = hospital_mission_present_list.get(i);
+
+                    hospital_mission_present_view = value_rail + hospital_mission_present_view;
+                }
+                pojo.setTotal_number_ambulance_available_image(hospital_mission_present_view);
+
+                for (int i=0;i<patient_maintained_OPD_list.size();i++){
+                    String value_transported = patient_maintained_OPD_list.get(i);
+
+                    patient_maintained_OPD_view = value_transported + patient_maintained_OPD_view;
+                }
+                pojo.setAmbulance_appropriately_equiped_image(patient_maintained_OPD_view);
+
+                for (int i=0;i<patient_maintained_IPD_list.size();i++){
+                    String value_specimen = patient_maintained_IPD_list.get(i);
+
+                    patient_maintained_IPD_view = value_specimen + patient_maintained_IPD_view;
+                }
+
+                pojo.setDrivers_ambulances_available_image(patient_maintained_IPD_view);
+
+                for (int i=0;i<patient_maintained_Emergency_list.size();i++){
+                    String value_specimen = patient_maintained_Emergency_list.get(i);
+
+                    patient_maintained_Emergency_view = value_specimen + patient_maintained_Emergency_view;
+                }
+                pojo.setDoctors_available_ambulances_image(patient_maintained_Emergency_view);
+
+
+                for (int i=0;i<nurses_available_ambulances_list.size();i++){
+                    String value_specimen = nurses_available_ambulances_list.get(i);
+
+                    nurses_available_ambulances_view = value_specimen + nurses_available_ambulances_view;
+                }
+                pojo.setNurses_available_ambulances_image(nurses_available_ambulances_view);
+
+
+                pojo_dataSync.setAmbulanceaccessibility(pojo);
+
+                final ProgressDialog d = AppDialog.showLoading(AmbulanceAccessibilityActivity.this);
+                d.setCanceledOnTouchOutside(false);
+
+                mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
+                    @Override
+                    public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
+                        System.out.println("xxx sucess");
+
+                        d.dismiss();
+
+                        if (response.message().equalsIgnoreCase("Unauthorized")) {
+                            Intent intent = new Intent(AmbulanceAccessibilityActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+
+                            Toast.makeText(AmbulanceAccessibilityActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                        }else {
+                            if (response.body() != null){
+                                if (response.body().getSuccess()){
+                                    Intent intent = new Intent(AmbulanceAccessibilityActivity.this,HospitalListActivity.class);
+                                    startActivity(intent);
+                                    finish();
+
+
+                                    saveIntoPrefs("asmtId"+Hospital_id, String.valueOf(response.body().getAsmtId()));
+
+
+                                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                                    pojo.setHospital_id(assessement_list.get(18).getHospital_id());
+                                    pojo.setAssessement_name("Ambulance Accessibility");
+                                    pojo.setAssessement_status("Done");
+                                    pojo.setLocal_id(assessement_list.get(18).getLocal_id());
+
+                                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                                    Toast.makeText(AmbulanceAccessibilityActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                }
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<DataSyncResponse> call, Throwable t) {
+                        System.out.println("xxx failed");
+
+                        d.dismiss();
+                    }
+                });
+        }else {
+            Toast.makeText(AmbulanceAccessibilityActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+        }
+    }
+
 
 
     private void ImageUpload(final String image_path,final String from){
@@ -2018,9 +2198,7 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(AmbulanceAccessibilityActivity.this,HospitalListActivity.class);
-        startActivity(intent);
-        finish();
+        SavePharmacyData("save");
     }
 
 }

@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -52,6 +53,12 @@ import com.qci.onsite.pojo.LaboratoryPojo;
 import com.qci.onsite.util.AppConstant;
 import com.qci.onsite.util.AppDialog;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -120,6 +127,10 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
     private String latitude;
     private String longitude;
 
+    private static final String DATABASE_NAME = "OnSite";
+
+    int Bed_no = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +153,8 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
 
         mAPIService = ApiUtils.getAPIService();
 
+        Bed_no = getINTFromPrefs("Hospital_bed");
+
 
         mRequestingLocationUpdates = false;
 
@@ -158,10 +171,63 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
 
         startUpdatesButtonHandler();
 
+
         tv_final_Submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (int i= 0;i<assessement_list.size();i++){
+
+          //      datbase();
+
+        //        exportDB();
+
+                if (Bed_no < 51){
+                    if (assessement_list.get(0).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(1).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(2).getAssessement_status().equalsIgnoreCase("Start") && assessement_list.get(3).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(4).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(5).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(6).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(7).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(8).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(9).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(10).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(11).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(12).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(13).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(14).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(15).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(16).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(17).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(18).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(19).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(20).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(21).getAssessement_status().equalsIgnoreCase("Done")) {
+                        System.out.println("xx sucess");
+
+                        PostAssessmentData();
+                    }else {
+                        System.out.println("xx faill");
+
+                        Toast.makeText(HospitalListActivity.this,"Please fill and sync all the above sections before marking the assessment as complete",Toast.LENGTH_LONG).show();
+                    }
+                }else {
+                    if (assessement_list.get(0).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(1).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(2).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(3).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(4).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(5).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(6).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(7).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(8).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(9).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(10).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(11).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(12).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(13).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(14).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(15).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(16).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(17).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(18).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(19).getAssessement_status().equalsIgnoreCase("Done") &&
+                            assessement_list.get(20).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(21).getAssessement_status().equalsIgnoreCase("Done")) {
+                        System.out.println("xx sucess");
+
+                        PostAssessmentData();
+                    }else {
+                        System.out.println("xx faill");
+
+                        Toast.makeText(HospitalListActivity.this,"Please fill and sync all the above sections before marking the assessment as complete",Toast.LENGTH_LONG).show();
+                    }
+                }
+
+
+
+
+
+
+              /*  for (int i= 0;i<assessement_list.size();i++){
                     if (assessement_list.get(i).getAssessement_status().equalsIgnoreCase("Done")){
                         Assess_Status = true;
                     }else {
@@ -169,20 +235,84 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
                     }
                 }
                 if (Assess_Status){
-                    PostAssessmentData();
+    //                PostAssessmentData();
+
+         //           datbase();
+
+                    System.out.println("xxx success");
+
+
                 }else {
                     Toast.makeText(HospitalListActivity.this,"Please fill and sync all the above sections before marking the assessment as complete",Toast.LENGTH_LONG).show();
-                }
+                }*/
 
             }
         });
 
     }
 
+    private void exportDB() {
+        File sd = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "OnSiteDB");
+        ;
+        File data = Environment.getDataDirectory();
+        FileChannel source = null;
+        FileChannel destination = null;
+        String currentDBPath = "/data/user/0/com.qci.onsite/databases/" + DATABASE_NAME;
+        String backupDBPath = DATABASE_NAME;
+        File currentDB = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "OnSiteDB");
+        File backupDB = new File(currentDBPath);
+        try {
+            source = new FileInputStream(currentDB).getChannel();
+            destination = new FileOutputStream(backupDB).getChannel();
+            destination.transferFrom(source, 0, source.size());
+            source.close();
+            destination.close();
+            Toast.makeText(HospitalListActivity.this, "DB Exported!", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void datbase() {
+        final String inFileName = "/data/user/0/com.qci.onsite/databases/" + DATABASE_NAME;
+        File dbFile = new File(inFileName);
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(dbFile);
+            String outFileName = Environment.getExternalStorageDirectory() + "/OnSite.db";
+
+            // Open the empty db as the output stream
+            OutputStream output = new FileOutputStream(outFileName);
+
+            // Transfer bytes from the inputfile to the outputfile
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer)) > 0) {
+                output.write(buffer, 0, length);
+            }
+
+            // Close the streams
+            output.flush();
+            output.close();
+            fis.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     private void getDBSET() {
 
-        String[] Assessement_Service = getResources().getStringArray(R.array.assessement_service);
+        String[] Assessement_Service = null;
+
+        if (Bed_no < 51){
+            Assessement_Service = getResources().getStringArray(R.array.assessement_service_SHCO);
+        }else {
+            Assessement_Service = getResources().getStringArray(R.array.assessement_service);
+        }
+
+
 
         list = new ArrayList<>(Arrays.asList(Assessement_Service));
 
@@ -212,6 +342,8 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
             System.out.println("xxx" + status);
         }
 
+
+
         adapter = new HospitalAdapter(HospitalListActivity.this,assessement_list);
         hospital_recycler_view.setAdapter(adapter);
     }
@@ -224,20 +356,16 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
 
                 int position = (int) view.getTag(R.string.key_hospital);
 
+                startLocationUpdates();
+
                 String hospital_name = list.get(position);
 
-                if (hospital_name.equalsIgnoreCase("General Details")) {
-                    if (getFromPrefs(AppConstant.General_status).length() == 0 ){
+                    if (hospital_name.equalsIgnoreCase("General Details") ){
                         Intent intent = new Intent(HospitalListActivity.this, GeneralDetailsActivity.class);
                         startActivity(intent);
                         finish();
 
-                    }else {
-                        Toast.makeText(HospitalListActivity.this,"You have already sync the data of this session",Toast.LENGTH_LONG).show();
-                    }
-
-                }else {
-                        if (hospital_name.equalsIgnoreCase("Laboratory")){
+                    }else if (hospital_name.equalsIgnoreCase("Laboratory")){
                                 Intent intent = new Intent(HospitalListActivity.this,LaboratoryActivity.class);
                                 intent.putExtra("Hospital_id",Hospital_id);
                                 startActivity(intent);
@@ -262,7 +390,12 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
                                 Intent intent = new Intent(HospitalListActivity.this,OTActivity.class);
                                 startActivity(intent);
                                 finish();
-                            }else if (hospital_name.equalsIgnoreCase("Wards and Pharmacy")){
+                            }else if (hospital_name.equalsIgnoreCase("OT")){
+                                Intent intent = new Intent(HospitalListActivity.this,OTActivity.class);
+                                startActivity(intent);
+                                finish();
+                        }
+                            else if (hospital_name.equalsIgnoreCase("Wards and Pharmacy")){
                                 Intent intent = new Intent(HospitalListActivity.this,PharmacyActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -270,7 +403,12 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
                                 Intent intent = new Intent(HospitalListActivity.this,PatientStaffInterviewActivity.class);
                                 startActivity(intent);
                                 finish();
-                            } else if (hospital_name.equalsIgnoreCase("Wards, OT, ICU, OPD, Emergency")) {
+                            }
+                        else if (hospital_name.equalsIgnoreCase("Patient Interview")){
+                            Intent intent = new Intent(HospitalListActivity.this,PatientStaffInterviewActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else if (hospital_name.equalsIgnoreCase("Wards, OT, ICU, OPD, Emergency")) {
                                 Intent intent = new Intent(HospitalListActivity.this,Ward_OT_EmergencyActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -318,9 +456,11 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
                                 Intent intent = new Intent(HospitalListActivity.this,DocumentationActivity.class);
                                 startActivity(intent);
                                 finish();
-                            }
-                }
-
+                            }else if (hospital_name.equalsIgnoreCase("Scope of Services")){
+                            Intent intent = new Intent(HospitalListActivity.this,ScopeOfServiceActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
 
                 break;
         }

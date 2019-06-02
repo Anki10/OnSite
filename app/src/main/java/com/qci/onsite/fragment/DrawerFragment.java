@@ -188,6 +188,8 @@ public class DrawerFragment extends Fragment {
                         startActivity(intent);
                         getActivity().finish();
                         Toast.makeText(getActivity(), getResources().getString(R.string.logout_sucessfuly), Toast.LENGTH_SHORT).show();
+
+                        saveIntoPrefs(AppConstant.Login_status,"logout");
                     }
                 })
                 .setNegativeButton("No",new DialogInterface.OnClickListener() {
@@ -202,6 +204,13 @@ public class DrawerFragment extends Fragment {
         AlertDialog alertDialog = alertDialogBuilder.create();
         // show it
         alertDialog.show();
+    }
+
+    public void saveIntoPrefs(String key, String value) {
+        SharedPreferences prefs = getActivity().getSharedPreferences(AppConstant.PREF_NAME, getActivity().MODE_PRIVATE);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putString(key, value);
+        edit.commit();
     }
 
     public void DeleteSharedPrfernce() {

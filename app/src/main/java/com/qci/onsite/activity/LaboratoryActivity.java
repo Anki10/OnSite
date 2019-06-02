@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -103,7 +104,7 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
     private LaboratoryPojo pojo;
 
     private String properly_status = "",identified_status = "",transported_status = "",specimen_status = "",
-            appropriate_status = "",laboratory_defined_turnaround ="";
+            appropriate_status = "",laboratory_defined_turnaround ="",shco_specimen_done_status;
 
     @BindView(R.id.properly_yes)
     RadioButton properly_yes;
@@ -145,11 +146,30 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
     @BindView(R.id.image_laboratory_defined_turnaround)
     ImageView image_laboratory_defined_turnaround;
 
+    @BindView(R.id.ll_collected_properly)
+    LinearLayout ll_collected_properly;
+
+    @BindView(R.id.ll_identified_properly)
+    LinearLayout ll_identified_properly;
+
+    @BindView(R.id.ll_transported)
+    LinearLayout ll_transported;
+
+    @BindView(R.id.ll_specimen)
+    LinearLayout ll_specimen;
+
+    @BindView(R.id.ll_laboratory_defined_turnaround)
+    LinearLayout ll_laboratory_defined_turnaround;
+
+    @BindView(R.id.ll_appropriate)
+    LinearLayout ll_appropriate;
+
+
 
     @BindView(R.id.btnSave)
     Button btnSave;
 
-    private String remark1, remark2, remark3, remark4, remark5,remark6;
+    private String remark1, remark2, remark3, remark4, remark5,remark6,remark7;
 
     private Dialog dialogLogout;
 
@@ -171,13 +191,16 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
     private ArrayList<String>Local_equipment_list;
     private ArrayList<String>Local_laboratory_defined_turnaround_list;
 
-    private String nc1, nc2, nc3, nc4, nc5,nc6;
-    private String radio_status1, radio_status2, radio_status3, radio_status4, radio_status5,radio_status6;
+    private ArrayList<String>shco_specimen_done_list;
+    private ArrayList<String>Local_shco_specimen_done_list;
+
+    private String nc1, nc2, nc3, nc4, nc5,nc6,nc7;
+    private String radio_status1, radio_status2, radio_status3, radio_status4, radio_status5,radio_status6,radio_status7;
 
     private DatabaseHandler databaseHandler;
 
-    private String video1,image2,image3,image4,image5,image6;
-    private String Local_video1,Local_image2,Local_image3,Local_image4,Local_image5,Local_image6;
+    private String video1,image2,image3,image4,image5,image6,image7;
+    private String Local_video1,Local_image2,Local_image3,Local_image4,Local_image5,Local_image6,Local_image7;
 
     private File outputVideoFile;
 
@@ -197,6 +220,8 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
     TextView laboratory_hospital_name;
 
     private String Identified = "",transported ="",specimen = "",equipment ="",laboratory_defined_turnaround_view ="";
+
+    int Bed_no = 0;
 
 
 
@@ -232,6 +257,16 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
         Hospital_id = getFromPrefs(AppConstant.Hospital_ID);
 
         assessement_list = new ArrayList<>();
+
+        Bed_no = getINTFromPrefs("Hospital_bed");
+
+        if (Bed_no < 51){
+            ll_collected_properly.setVisibility(View.GONE);
+            ll_identified_properly.setVisibility(View.GONE);
+            ll_transported.setVisibility(View.GONE);
+            ll_laboratory_defined_turnaround.setVisibility(View.GONE);
+            ll_appropriate.setVisibility(View.GONE);
+        }
 
         laboratory_hospital_name.setText(getFromPrefs(AppConstant.Hospital_Name));
 
@@ -290,6 +325,8 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                     laboratory_defined_turnaround_no.setChecked(true);
                 }
             }
+
+
 
 
             if (pojo.getCollected_properly_remark() != null){
@@ -584,6 +621,7 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                     e.printStackTrace();
                 }
             }
+
         }else {
             pojo = new LaboratoryPojo();
         }
@@ -595,7 +633,8 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
     @OnClick({R.id.remark_collected,R.id.video_collected,R.id.remark_Identified,R.id.image_Identified,R.id.remark_transported,
     R.id.image_transported,R.id.remark_specimen,R.id.image_specimen,R.id.remark_equipment,R.id.image_equipment,
     R.id.nc_collected,R.id.nc_Identified,R.id.nc_transported,R.id.nc_specimen,R.id.nc_equipment,R.id.remark_laboratory_defined_turnaround,
-            R.id.nc_laboratory_defined_turnaround,R.id.image_laboratory_defined_turnaround,R.id.btnSave,R.id.btnSync})
+            R.id.nc_laboratory_defined_turnaround,R.id.image_laboratory_defined_turnaround,R.id.btnSave,R.id.btnSync,
+   })
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.remark_collected:
@@ -701,7 +740,12 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
 
             case R.id.btnSync:
 
-                PostLaboratoryData();
+                if (Bed_no < 51){
+                     PostSHCO_LaboratoryData();
+                }else {
+                    PostLaboratoryData();
+                }
+
 
 
                 break;
@@ -923,6 +967,18 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                 }
 
             }
+
+            else if (requestCode == 7) {
+                if (picUri != null) {
+                    Uri uri = picUri;
+                    String image7 = compressImage(uri.toString());
+                    //                 saveIntoPrefs(AppConstant.statutory_Registration_MTP,image5);
+
+                    ImageUpload(image7,"shco_specimen_done");
+
+                }
+
+            }
         }
     }
 
@@ -1006,6 +1062,9 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                     if (position == 6) {
                         radio_status6 = "Yes";
                     }
+                    if (position == 7) {
+                        radio_status7 = "Yes";
+                    }
 
                 }
             });
@@ -1039,6 +1098,9 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                     }
                     if (position == 6) {
                         radio_status6 = "close";
+                    }
+                    if (position == 7) {
+                        radio_status7 = "close";
                     }
 
 
@@ -1165,6 +1227,26 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
 
             }
 
+            if (position == 7) {
+                if (nc7 != null) {
+                    try {
+                        String nc_total = nc7;
+                        String[] separated = nc_total.split(",", 2);
+                        String radio = separated[0];
+                        radio_status7 = radio;
+                        if (radio.equalsIgnoreCase("Yes"))
+                            rd_major.setChecked(true);
+                        else if (radio.equalsIgnoreCase("close"))
+                            rd_miner.setChecked(true);
+                        String nc = separated[1];
+                        edit_text.setText(nc);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }
 
             ImageView dialog_header_cross = (ImageView) DialogLogOut.findViewById(R.id.dialog_header_cross);
             dialog_header_cross.setOnClickListener(new View.OnClickListener() {
@@ -1427,6 +1509,14 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                 }
             }
 
+            if (position == 7) {
+                if (remark7 != null) {
+                    edit_text.setText(remark7);
+                }
+            }
+
+
+
 
             OkButtonLogout.setOnClickListener(new View.OnClickListener() {
 
@@ -1514,12 +1604,6 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                             Toast.makeText(LaboratoryActivity.this, "Please capture Remark details", Toast.LENGTH_LONG).show();
                         }
 
-
-
-                    }
-
-                    else {
-                        Toast.makeText(LaboratoryActivity.this, "Please capture Remark details", Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -1593,6 +1677,8 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
             image2 = json.toString();
+        }else {
+            image2 = null;
         }
 
         if (Local_Identified_List.size() > 0){
@@ -1602,6 +1688,8 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
             Local_image2 = json.toString();
+        }else {
+            Local_image2 = null;
         }
 
 
@@ -1617,6 +1705,8 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
             image3 = json.toString();
+        }else {
+            image3 = null;
         }
 
         if (Local_transported_list.size() > 0){
@@ -1626,6 +1716,8 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
             Local_image3 = json.toString();
+        }else {
+            Local_image3 = null;
         }
 
 
@@ -1641,6 +1733,8 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
             image4 = json.toString();
+        }else {
+            image4 = null;
         }
 
         if (Local_specimen_list.size() > 0){
@@ -1650,6 +1744,8 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
             Local_image4 = json.toString();
+        }else {
+            Local_image4 = null;
         }
 
 
@@ -1665,6 +1761,8 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
              image5 = json.toString();
+        }else {
+            image5 = null;
         }
 
         if (Local_equipment_list.size() > 0){
@@ -1674,6 +1772,8 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
             Local_image5 = json.toString();
+        }else {
+            Local_image5 = null;
         }
 
         pojo.setAppropriate_safety_equipment_remark(remark5);
@@ -1692,6 +1792,8 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
             image6 = json.toString();
+        }else {
+            image6 = null;
         }
 
 
@@ -1702,6 +1804,8 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
             Local_image6 = json.toString();
+        }else {
+            Local_image6 = null;
         }
 
 
@@ -1884,10 +1988,10 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
 
         SaveLaboratoryData("sync");
 
-        if (properly_status.length() > 0 && identified_status.length() > 0 && transported_status.length() > 0 && specimen_status.length() > 0
+        if (identified_status.length() > 0 && transported_status.length() > 0 && specimen_status.length() > 0
         && appropriate_status.length() > 0 && laboratory_defined_turnaround.length() >0){
 
-            if (image2 != null && image3 != null && image4 != null && image5 != null && image6 != null){
+            if (image3 != null && image4 != null && image5 != null && image6 != null){
                 pojo_dataSync.setTabName("laboratory");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -1935,6 +2039,97 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                 }
 
                 pojo.setLaboratory_defined_turnaround_image(laboratory_defined_turnaround_view);
+
+
+                pojo_dataSync.setLaboratory(pojo);
+
+                final ProgressDialog d = AppDialog.showLoading(LaboratoryActivity.this);
+                d.setCanceledOnTouchOutside(false);
+
+                mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
+                    @Override
+                    public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
+                        System.out.println("xxx sucess");
+
+                        d.dismiss();
+
+                        if (response.message().equalsIgnoreCase("Unauthorized")) {
+                            Intent intent = new Intent(LaboratoryActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+
+                            Toast.makeText(LaboratoryActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                        }else {
+                            if (response.body() != null){
+                                if (response.body().getSuccess()){
+                                    Intent intent = new Intent(LaboratoryActivity.this,HospitalListActivity.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                    saveIntoPrefs("Laboratory_tabId"+Hospital_id, String.valueOf(response.body().getTabId()));
+
+                                    saveIntoPrefs("asmtId"+Hospital_id, String.valueOf(response.body().getAsmtId()));
+
+
+                                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                                    pojo.setHospital_id(assessement_list.get(1).getHospital_id());
+                                    pojo.setAssessement_name("Laboratory");
+                                    pojo.setAssessement_status("Done");
+                                    pojo.setLocal_id(assessement_list.get(1).getLocal_id());
+
+                                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                                    Toast.makeText(LaboratoryActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                }
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<DataSyncResponse> call, Throwable t) {
+                        System.out.println("xxx failed");
+
+                        d.dismiss();
+                    }
+                });
+            }else {
+                Toast.makeText(LaboratoryActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+            }
+
+
+        }else {
+            Toast.makeText(LaboratoryActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void PostSHCO_LaboratoryData(){
+
+        SaveLaboratoryData("sync");
+
+        if ( specimen_status.length() > 0 ){
+
+            if ( image4 != null){
+                pojo_dataSync.setTabName("laboratory");
+                pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
+                pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
+                if (getFromPrefs("asmtId"+Hospital_id).length() > 0){
+                    pojo_dataSync.setAssessment_id(Integer.parseInt(getFromPrefs("asmtId"+Hospital_id)));
+                }else {
+                    pojo_dataSync.setAssessment_id(0);
+                }
+
+
+
+                for (int i=0;i<specimen_list.size();i++){
+                    String value_specimen = specimen_list.get(i);
+
+                    specimen = value_specimen + specimen;
+                }
+
+                pojo.setSpecimen_safe_image(specimen);
 
 
                 pojo_dataSync.setLaboratory(pojo);
@@ -2094,8 +2289,7 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(LaboratoryActivity.this,HospitalListActivity.class);
-        startActivity(intent);
-        finish();
+        SaveLaboratoryData("save");
+
     }
 }

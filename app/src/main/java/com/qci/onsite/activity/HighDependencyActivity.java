@@ -1005,6 +1005,8 @@ public class HighDependencyActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             image2 = json.toString();
+        }else {
+            image2 = null;
         }
 
         if (Local_AreStaff_imageList.size() > 0){
@@ -1014,6 +1016,8 @@ public class HighDependencyActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             Local_image2 = json.toString();
+        }else {
+            Local_image2 = null;
         }
 
 
@@ -1029,6 +1033,8 @@ public class HighDependencyActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             image3 = json.toString();
+        }else {
+            image3 = null;
         }
 
         if (Local_DoHigh_imageList.size() > 0){
@@ -1038,6 +1044,8 @@ public class HighDependencyActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             Local_image3 = json.toString();
+        }else {
+            Local_image3 = null;
         }
 
         pojo.setHIGH_DEPENDENCY_adequate_equipment_remark(remark3);
@@ -1224,7 +1232,7 @@ public class HighDependencyActivity extends BaseActivity implements View.OnClick
 
         SaveLaboratoryData("sync");
 
-        if (high_patient_care.length() > 0 && high_Are_staff.length() > 0 && high_do_high.length() > 0){
+        if (high_Are_staff.length() > 0 && high_do_high.length() > 0){
 
             if (image2 != null && image3 != null){
                 pojo_dataSync.setTabName("highdependency");
@@ -1354,9 +1362,7 @@ public class HighDependencyActivity extends BaseActivity implements View.OnClick
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(HighDependencyActivity.this,HospitalListActivity.class);
-        startActivity(intent);
-        finish();
+        SaveLaboratoryData("save");
     }
 
 }

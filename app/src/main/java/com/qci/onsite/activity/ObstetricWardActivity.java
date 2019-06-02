@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -80,7 +81,27 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
     @BindView(R.id.hospital_center)
     TextView hospital_center;
 
-    private String remark1;
+    @BindView(R.id.SHCO_Obstetrics_ward_yes)
+    RadioButton SHCO_Obstetrics_ward_yes;
+
+    @BindView(R.id.SHCO_Obstetrics_ward__no)
+    RadioButton SHCO_Obstetrics_ward__no;
+
+    @BindView(R.id.remark_SHCO_Obstetrics_ward)
+    ImageView remark_SHCO_Obstetrics_ward;
+
+    @BindView(R.id.nc_SHCO_Obstetrics_ward)
+    ImageView nc_SHCO_Obstetrics_ward;
+
+    @BindView(R.id.image_SHCO_Obstetrics_ward)
+    ImageView image_SHCO_Obstetrics_ward;
+
+    @BindView(R.id.ll_SHCO_Obstetrics_ward)
+    LinearLayout ll_SHCO_Obstetrics_ward;
+
+
+
+    private String remark1,remark2;
 
     private Dialog dialogLogout;
 
@@ -90,20 +111,20 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
     private Uri picUri;
     private File imageF;
 
-    private String nc1;
-    private String radiology_status = "";
-    private String radio_status1;
+    private String nc1,nc2;
+    private String radiology_status = "",SHCO_Obstetrics_ward_status = "";
+    private String radio_status1,radio_status2;
 
     private DatabaseHandler databaseHandler;
 
     private OBSTETRIC_WARD_Pojo pojo;
 
-    private ArrayList<String> identification_list;
-    private ArrayList<String> Local_identification_list;
+    private ArrayList<String> identification_list,SHCO_Obstetrics_ward_list;
+    private ArrayList<String> Local_identification_list,Local_SHCO_Obstetrics_ward_listt;
 
 
-    private String image1;
-    private String Local_image1;
+    private String image1,image2;
+    private String Local_image1,Local_image2;
 
     private APIService mAPIService;
 
@@ -115,7 +136,9 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
 
     private String Hospital_id;
 
-    private String identification = "",surveillance = "";
+    private String identification = "",WARD_abuse = "";
+
+    int Bed_no = 0;
 
 
     @Override
@@ -134,6 +157,9 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
         identification_list = new ArrayList<>();
         Local_identification_list = new ArrayList<>();
 
+        SHCO_Obstetrics_ward_list = new ArrayList<>();
+        Local_SHCO_Obstetrics_ward_listt = new ArrayList<>();
+
         Hospital_id = getFromPrefs(AppConstant.Hospital_ID);
 
         hospital_center.setText(getFromPrefs(AppConstant.Hospital_Name));
@@ -141,6 +167,14 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
         assessement_list = new ArrayList<>();
 
         pojo_dataSync = new DataSyncRequest();
+
+        Bed_no = getINTFromPrefs("Hospital_bed");
+
+        if (Bed_no < 51){
+            ll_SHCO_Obstetrics_ward.setVisibility(View.VISIBLE);
+        }else {
+            ll_SHCO_Obstetrics_ward.setVisibility(View.GONE);
+        }
 
         getObstetricWardData();
 
@@ -160,11 +194,25 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
                     neonate_abduction_no.setChecked(true);
                 }
             }
+            if (pojo.getShco_obstetrics_ward() != null){
+                SHCO_Obstetrics_ward_status = pojo.getShco_obstetrics_ward();
+
+                if (pojo.getShco_obstetrics_ward().equalsIgnoreCase("Yes")){
+                    SHCO_Obstetrics_ward_yes.setChecked(true);
+                }else if (pojo.getShco_obstetrics_ward().equalsIgnoreCase("No")){
+                    SHCO_Obstetrics_ward__no.setChecked(true);
+                }
+            }
 
             if (pojo.getOBSTETRIC_WARD_abuse_remark() != null){
                 remark1 = pojo.getOBSTETRIC_WARD_abuse_remark();
 
                 remark_obstetricWard.setImageResource(R.mipmap.remark_selected);
+            }
+            if (pojo.getShco_obstetrics_ward_remark() != null){
+                remark2 = pojo.getShco_obstetrics_ward_remark();
+
+                remark_SHCO_Obstetrics_ward.setImageResource(R.mipmap.remark_selected);
             }
             if (pojo.getOBSTETRIC_WARD_abuse_NC() != null){
                 nc1 = pojo.getOBSTETRIC_WARD_abuse_NC();
@@ -174,8 +222,15 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
                 }else {
                     nc_obstetricWard.setImageResource(R.mipmap.nc_selected);
                 }
+            }
+            if (pojo.getShco_obstetrics_ward_nc() != null){
+                nc2 = pojo.getShco_obstetrics_ward_nc();
 
-
+                if (nc2.equalsIgnoreCase("close")){
+                    nc_SHCO_Obstetrics_ward.setImageResource(R.mipmap.nc);
+                }else {
+                    nc_SHCO_Obstetrics_ward.setImageResource(R.mipmap.nc_selected);
+                }
             }
 
 
@@ -210,6 +265,44 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
                     if (jArray != null){
                         for (int i=0;i<jArray.length();i++){
                             Local_identification_list.add(jArray.getString(i));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (pojo.getShco_obstetrics_ward_image() != null){
+                image_SHCO_Obstetrics_ward.setImageResource(R.mipmap.camera_selected);
+
+                image2 = pojo.getShco_obstetrics_ward_image();
+
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(image2);
+                    JSONArray jArray = json.optJSONArray("uniqueArrays");
+                    if (jArray != null){
+                        for (int i=0;i<jArray.length();i++){
+                            SHCO_Obstetrics_ward_list.add(jArray.getString(i));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (pojo.getLocal_shco_obstetrics_ward_image() != null){
+                image_SHCO_Obstetrics_ward.setImageResource(R.mipmap.camera_selected);
+
+                Local_image2 = pojo.getLocal_shco_obstetrics_ward_image();
+
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(Local_image2);
+                    JSONArray jArray = json.optJSONArray("uniqueArrays");
+                    if (jArray != null){
+                        for (int i=0;i<jArray.length();i++){
+                            Local_SHCO_Obstetrics_ward_listt.add(jArray.getString(i));
                         }
                     }
                 } catch (JSONException e) {
@@ -273,6 +366,8 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
         return storageDir;
     }
 
+    // // Local_SHCO_Obstetrics_ward_listt
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
@@ -283,6 +378,16 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
                     ImageUpload(image2, "obstetricWard");
+                }
+
+            }
+            if (requestCode == 2) {
+                if (picUri != null) {
+                    Uri uri = picUri;
+                    String image2 = compressImage(uri.toString());
+                    //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
+
+                    ImageUpload(image2, "SHCO_Obstetrics_ward");
                 }
 
             }
@@ -304,6 +409,17 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
                 if (checked)
                     radiology_status = "No";
                 break;
+
+            case R.id.SHCO_Obstetrics_ward_yes:
+                 if (checked)
+                     SHCO_Obstetrics_ward_status = "Yes";
+                break;
+
+            case R.id.SHCO_Obstetrics_ward__no:
+                  if (checked)
+                      SHCO_Obstetrics_ward_status = "No";
+                break;
+
 
         }
     }
@@ -370,6 +486,10 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
                         radio_status1 = "Yes";
                     }
 
+                    if (position == 2) {
+                        radio_status2 = "Yes";
+                    }
+
 
                 }
             });
@@ -378,6 +498,12 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
                 public void onClick(View v) {
                     if (position == 1) {
                         radio_status1 = "close";
+
+                        edit_text.setText("");
+                    }
+
+                    if (position == 2) {
+                        radio_status2 = "close";
 
                         edit_text.setText("");
                     }
@@ -406,6 +532,27 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
 
                 }
             }
+
+            if (position == 2) {
+                if (nc2 != null) {
+                    try {
+                        String nc_total = nc2;
+                        String[] separated = nc_total.split(",", 2);
+                        String radio = separated[0];
+                        radio_status2 = radio;
+                        if (radio.equalsIgnoreCase("Yes"))
+                            rd_major.setChecked(true);
+                        else if (radio.equalsIgnoreCase("close"))
+                            rd_miner.setChecked(true);
+                        String nc = separated[1];
+                        edit_text.setText(nc);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
 
 
             ImageView dialog_header_cross = (ImageView) DialogLogOut.findViewById(R.id.dialog_header_cross);
@@ -452,6 +599,37 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
                             }
                          }
                         }
+
+                    if (position == 2) {
+                        if (radio_status2 != null) {
+
+                            if (radio_status2.equalsIgnoreCase("close")) {
+                                nc_SHCO_Obstetrics_ward.setImageResource(R.mipmap.nc);
+
+                                nc2 = radio_status2;
+
+                                DialogLogOut.dismiss();
+
+                                getWindow().setSoftInputMode(
+                                        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                            } else {
+                                if (radio_status2.equalsIgnoreCase("Yes") & edit_text.getText().toString().length() > 0) {
+                                    nc_SHCO_Obstetrics_ward.setImageResource(R.mipmap.nc_selected);
+
+                                    nc2 = radio_status2 + "," + edit_text.getText().toString();
+
+                                    radio_status2 = "";
+
+                                    DialogLogOut.dismiss();
+
+                                    getWindow().setSoftInputMode(
+                                            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                                } else {
+                                    Toast.makeText(ObstetricWardActivity.this, "Please capture NC details", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }
+                    }
                 }
             });
             DialogLogOut.show();
@@ -487,6 +665,12 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
                 }
             }
 
+            if (position == 2) {
+                if (remark2 != null) {
+                    edit_text.setText(remark2);
+                }
+            }
+
 
 
             OkButtonLogout.setOnClickListener(new View.OnClickListener() {
@@ -510,13 +694,30 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
 
                     }
 
+                    if (position == 2) {
+                        if (edit_text.getText().toString().length() > 0) {
+                            remark2 = edit_text.getText().toString();
+                            remark_SHCO_Obstetrics_ward.setImageResource(R.mipmap.remark_selected);
+
+                            DialogLogOut.dismiss();
+
+                            getWindow().setSoftInputMode(
+                                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+                        } else {
+                            Toast.makeText(ObstetricWardActivity.this, "Please capture Remark details", Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+
                 }
             });
             DialogLogOut.show();
         }
     }
 
-    @OnClick({R.id.remark_obstetricWard,R.id.image_obstetricWard,R.id.nc_obstetricWard,R.id.btnSave,R.id.btnSync})
+    @OnClick({R.id.remark_obstetricWard,R.id.image_obstetricWard,R.id.nc_obstetricWard,R.id.btnSave,R.id.btnSync,
+    R.id.remark_SHCO_Obstetrics_ward,R.id.nc_SHCO_Obstetrics_ward,R.id.image_SHCO_Obstetrics_ward})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.remark_obstetricWard:
@@ -534,12 +735,33 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
                 }
                 break;
 
+            case R.id.remark_SHCO_Obstetrics_ward:
+                displayCommonDialogWithHeader("Remark", 2);
+                break;
+
+            case R.id.nc_SHCO_Obstetrics_ward:
+                displayNCDialog("NC", 2);
+                break;
+
+            case R.id.image_SHCO_Obstetrics_ward:
+                if (Local_SHCO_Obstetrics_ward_listt.size() > 0){
+                    showImageListDialog(Local_SHCO_Obstetrics_ward_listt,2,"SHCO_Obstetrics_ward");
+                }else {
+                    captureImage(2);
+                }
+                break;
+
             case R.id.btnSave:
                 SaveRadioLogyData("save");
                 break;
 
             case R.id.btnSync:
-                PostLaboratoryData();
+                if (Bed_no < 51){
+                    PostSHCO_LaboratoryData();
+                }else {
+                    PostLaboratoryData();
+                }
+
                 break;
         }
     }
@@ -556,6 +778,10 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
         pojo.setOBSTETRIC_WARD_abuse_remark(remark1);
         pojo.setOBSTETRIC_WARD_abuse_NC(nc1);
 
+        pojo.setShco_obstetrics_ward(SHCO_Obstetrics_ward_status);
+        pojo.setShco_obstetrics_ward_remark(remark2);
+        pojo.setShco_obstetrics_ward_nc(nc2);
+
         JSONObject json = new JSONObject();
 
         if (identification_list.size() > 0){
@@ -565,6 +791,8 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
                 e.printStackTrace();
             }
             image1 = json.toString();
+        }else {
+            image1 = null;
         }
         if (Local_identification_list.size() > 0){
             try {
@@ -573,9 +801,36 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
                 e.printStackTrace();
             }
             Local_image1 = json.toString();
+        }else {
+            Local_image1 = null;
         }
         pojo.setOBSTETRIC_WARD_abuse_image_identification(image1);
         pojo.setLocal_OBSTETRIC_WARD_abuse_image_identification(Local_image1);
+
+
+        if (SHCO_Obstetrics_ward_list.size() > 0){
+            try {
+                json.put("uniqueArrays", new JSONArray(SHCO_Obstetrics_ward_list));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            image2 = json.toString();
+        }else {
+            image2 = null;
+        }
+        if (Local_SHCO_Obstetrics_ward_listt.size() > 0){
+            try {
+                json.put("uniqueArrays", new JSONArray(Local_SHCO_Obstetrics_ward_listt));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Local_image2 = json.toString();
+        }else {
+            Local_image2 = null;
+        }
+
+        pojo.setShco_obstetrics_ward_image(image2);
+        pojo.setLocal_shco_obstetrics_ward_image(Local_image2);
 
 
 
@@ -695,6 +950,102 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
         }
     }
 
+    private void PostSHCO_LaboratoryData(){
+
+        SaveRadioLogyData("sync");
+
+        if (radiology_status.length() > 0 && SHCO_Obstetrics_ward_status.length() > 0){
+
+            if (image1 != null && image2 != null){
+                pojo_dataSync.setTabName("obstetricward");
+                pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
+                pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
+                if (getFromPrefs("asmtId"+Hospital_id).length() > 0){
+                    pojo_dataSync.setAssessment_id(Integer.parseInt(getFromPrefs("asmtId"+Hospital_id)));
+                }else {
+                    pojo_dataSync.setAssessment_id(0);
+                }
+
+
+                for (int i=0;i<identification_list.size();i++){
+                    String value_rail = identification_list.get(i);
+
+                    identification = value_rail + identification;
+                }
+                pojo.setOBSTETRIC_WARD_abuse_image_identification(identification);
+
+                for (int i=0;i<SHCO_Obstetrics_ward_list.size();i++){
+
+                   String value_ward = SHCO_Obstetrics_ward_list.get(i);
+
+                    WARD_abuse = value_ward + WARD_abuse;
+                }
+
+                pojo.setShco_obstetrics_ward_image(WARD_abuse);
+
+
+
+                pojo_dataSync.setObstetricWard(pojo);
+
+                final ProgressDialog d = AppDialog.showLoading(ObstetricWardActivity.this);
+                d.setCanceledOnTouchOutside(false);
+
+                mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
+                    @Override
+                    public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
+                        System.out.println("xxx sucess");
+
+                        d.dismiss();
+
+                        if (response.message().equalsIgnoreCase("Unauthorized")) {
+                            Intent intent = new Intent(ObstetricWardActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+
+                            Toast.makeText(ObstetricWardActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                        }else {
+                            if (response.body() != null){
+                                if (response.body().getSuccess()){
+                                    Intent intent = new Intent(ObstetricWardActivity.this,HospitalListActivity.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                    saveIntoPrefs("Obstetric_tabId"+Hospital_id, String.valueOf(response.body().getTabId()));
+
+                                    saveIntoPrefs("asmtId"+Hospital_id, String.valueOf(response.body().getAsmtId()));
+
+                                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                                    pojo.setHospital_id(assessement_list.get(5).getHospital_id());
+                                    pojo.setAssessement_name("Obstetric Ward NICU Paediatric");
+                                    pojo.setAssessement_status("Done");
+                                    pojo.setLocal_id(assessement_list.get(5).getLocal_id());
+
+                                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                                    Toast.makeText(ObstetricWardActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<DataSyncResponse> call, Throwable t) {
+                        System.out.println("xxx failed");
+
+                        d.dismiss();
+                    }
+                });
+            }else {
+                Toast.makeText(ObstetricWardActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+            }
+        }else {
+            Toast.makeText(ObstetricWardActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     private void ImageUpload(final String image_path,final String from){
         File file = new File(image_path);
@@ -731,6 +1082,10 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
                                 identification_list.add(response.body().getMessage());
                                 Local_identification_list.add(image_path);
                                 image_obstetricWard.setImageResource(R.mipmap.camera_selected);
+                            }else if (from.equalsIgnoreCase("SHCO_Obstetrics_ward")){
+                                SHCO_Obstetrics_ward_list.add(response.body().getMessage());
+                                Local_SHCO_Obstetrics_ward_listt.add(image_path);
+                                image_SHCO_Obstetrics_ward.setImageResource(R.mipmap.camera_selected);
                             }
 
                             Toast.makeText(ObstetricWardActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
@@ -795,8 +1150,6 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(ObstetricWardActivity.this,HospitalListActivity.class);
-        startActivity(intent);
-        finish();
+        SaveRadioLogyData("save");
     }
 }

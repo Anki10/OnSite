@@ -27,6 +27,16 @@ public class DataSyncRequest {
     private UniformSignagePojo uniformsignage;
     private DocumentationPojo documentation;
 
+    public ScopeOfServicePojo getScopeofservice() {
+        return scopeofservice;
+    }
+
+    public void setScopeofservice(ScopeOfServicePojo scopeofservice) {
+        this.scopeofservice = scopeofservice;
+    }
+
+    private ScopeOfServicePojo scopeofservice;
+
     public GeneralDetailsPojo getGeneral() {
         return general;
     }

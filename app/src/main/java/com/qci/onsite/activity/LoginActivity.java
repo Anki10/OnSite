@@ -77,10 +77,19 @@ public class LoginActivity extends BaseActivity implements ActivityCompat.OnRequ
 
         permissionUtils.check_permission(permissions,"All the permissions are required to access the app functionality",1);
 
+
+        if (getFromPrefs(AppConstant.Login_status).length() > 0){
+            if (getFromPrefs(AppConstant.Login_status).equalsIgnoreCase("Login")){
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }
+
         /*login_userName.setText("ahana@gmail.com");
         login_password.setText("Password1");*/
 
-       /* login_userName.setText("rimshajmi21@gmail.com");
+      /*  login_userName.setText("qciassesser@gmail.com");
         login_password.setText("Password1");*/
     }
 
@@ -119,7 +128,6 @@ public class LoginActivity extends BaseActivity implements ActivityCompat.OnRequ
 
                 d.dismiss();
 
-
                 try {
                     if (response.body() != null){
                         if (response.body().getAccessToken() != null){
@@ -127,6 +135,9 @@ public class LoginActivity extends BaseActivity implements ActivityCompat.OnRequ
                         }
 
                         saveIntoPrefs(AppConstant.ASSESSOR_ID, String.valueOf(response.body().getAssessor().getId()));
+
+
+                        saveIntoPrefs(AppConstant.Login_status,"Login");
 
                         System.out.println("xxx"+response.body().getAccessToken());
                     }

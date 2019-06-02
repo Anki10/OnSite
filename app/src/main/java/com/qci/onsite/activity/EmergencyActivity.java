@@ -679,8 +679,7 @@ public class EmergencyActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(EmergencyActivity.this,HospitalListActivity.class);
-        startActivity(intent);
-        finish();
+        SaveEmergencyData("save");
+
     }
     }

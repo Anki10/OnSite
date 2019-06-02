@@ -39,6 +39,9 @@ public class LaboratoryPojo {
     private String laboratory_defined_turnaround_Remark;
     private String laboratory_defined_turnaround_Nc;
 
+    private String laboratory_defined_turnaround_image;
+    private String Local_laboratory_defined_turnaround_image;
+
     public String getLocal_Collected_properly_video() {
         return Local_Collected_properly_video;
     }
@@ -87,8 +90,6 @@ public class LaboratoryPojo {
         Local_laboratory_defined_turnaround_image = local_laboratory_defined_turnaround_image;
     }
 
-    private String laboratory_defined_turnaround_image;
-    private String Local_laboratory_defined_turnaround_image;
 
 
     public long getLocal_id() {

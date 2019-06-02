@@ -24,6 +24,7 @@ import com.qci.onsite.pojo.OT_ICU_Pojo;
 import com.qci.onsite.pojo.Patient_Staff_InterviewPojo;
 import com.qci.onsite.pojo.RadioLogyPojo;
 import com.qci.onsite.pojo.SafetManagementPojo;
+import com.qci.onsite.pojo.ScopeOfServicePojo;
 import com.qci.onsite.pojo.SterilizationAreaPojo;
 import com.qci.onsite.pojo.UniformSignagePojo;
 import com.qci.onsite.pojo.Ward_Ot_EmergencyPojo;
@@ -40,7 +41,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static DatabaseHandler sInstance;
 
     // Database Version
-    private static final int DATABASE_VERSION = 19;
+    private static final int DATABASE_VERSION = 23;
 
     // Database Name
     private static final String DATABASE_NAME = "OnSite_db";
@@ -93,6 +94,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String Laboratory_defined_turnaround_Nc = "laboratory_defined_turnaround_nc";
     private static final String Laboratory_defined_turnaround_Image = "laboratory_defined_turnaround_image";
     private static final String Local_Laboratory_defined_turnaround_Image = "Local_laboratory_defined_turnaround_image";
+
+
 
 
     // Radiology
@@ -150,6 +153,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String Local_OBSTETRIC_WARD_abuse_image_identification = "Local_OBSTETRIC_WARD_abuse_image_identification";
     private static final String OBSTETRIC_WARD_abuse_image_surveillance = "OBSTETRIC_WARD_abuse_image_surveillance";
     private static final String Local_OBSTETRIC_WARD_abuse_image_surveillance = "Local_OBSTETRIC_WARD_abuse_image_surveillance";
+    private static final String shco_obstetrics_ward = "shco_obstetrics_ward";
+    private static final String shco_obstetrics_ward_remark = "shco_obstetrics_ward_remark";
+    private static final String shco_obstetrics_ward_nc = "shco_obstetrics_ward_nc";
+    private static final String shco_obstetrics_ward_image = "shco_obstetrics_ward_image";
+    private static final String Local_shco_obstetrics_ward_image = "Local_shco_obstetrics_ward_image";
 
     // OT
 
@@ -674,6 +682,72 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String Key_document_showing_medical_records_nc = "document_showing_medical_records_nc";
 
 
+    // Scope of Service
+
+    private static final String Table_scope_service = "Scopea_of_Serive";
+    private static final String Key_clinical_anaesthesiology = "clinical_anaesthesiology";
+    private static final String Key_clinical_dermatology_venereology = "clinical_dermatology_venereology";
+    private static final String Key_clinical_emergency_medicine = "clinical_emergency_medicine";
+    private static final String Key_clinical_family_medicine = "clinical_clinical_family_medicine";
+    private static final String Key_clinical_general_medicine = "clinical_clinical_general_medicine";
+    private static final String Key_clinical_general_surgery = "clinical_general_surgery";
+    private static final String Key_clinical_obstetrics_gynecology = "clinical_obstetrics_gynecology";
+    private static final String Key_clinical_ophthalmology = "clinical_ophthalmology";
+    private static final String Key_clinical_orthopaedic_surgery = "clinical_orthopaedic_surgery";
+    private static final String Key_clinical_otorhinolaryngology = "clinical_otorhinolaryngology";
+    private static final String Key_clinical_paediatrics = "clinical_paediatrics";
+    private static final String Key_clinical_Psychiatry = "clinical_Psychiatry";
+    private static final String Key_clinical_respiratory_medicine = "clinical_respiratory_medicine";
+    private static final String Key_clinical_day_care_services = "clinical_day_care_services";
+    private static final String Key_clinical_cardiac_anaesthesia = "clinical_cardiac_anaesthesia";
+    private static final String Key_clinical_cardiology = "clinical_cardiology";
+    private static final String Key_clinical_cardiothoracic_surgery = "clinical_cardiothoracic_surgery";
+    private static final String Key_clinical_clinical_haematology = "clinical_clinical_haematology";
+    private static final String Key_clinical_critical_care = "clinical_critical_care";
+    private static final String Key_clinical_endocrinology = "clinical_endocrinology";
+    private static final String Key_clinical_hepatology = "clinical_hepatology";
+    private static final String Key_clinical_immunology = "clinical_immunology";
+    private static final String Key_clinical_medical_gastroenterology = "clinical_medical_gastroenterology";
+    private static final String Key_clinical_neonatology = "clinical_neonatology";
+    private static final String Key_clinical_nephrology = "clinical_nephrology";
+    private static final String Key_clinical_Neurology = "clinical_Neurology";
+    private static final String Key_clinical_Neurosurgery = "clinical_Neurosurgery";
+    private static final String Key_clinical_Oncology = "clinical_Oncology";
+    private static final String Key_clinical_paediatric_cardiology = "clinical_paediatric_cardiology";
+    private static final String Key_clinical_paediatric_surgery = "clinical_paediatric_surgery";
+    private static final String Key_clinical_plastic_reconstructive = "clinical_plastic_reconstructive";
+    private static final String Key_clinical_surgical_gastroenterology = "clinical_surgical_gastroenterology";
+    private static final String Key_clinical_urology = "clinical_urology";
+    private static final String Key_clinical_transplantation_service = "clinical_transplantation_service";
+    private static final String Key_diagnostic_ct_scanning = "diagnostic_ct_scanning";
+    private static final String Key_diagnostic_mammography = "diagnostic_mammography";
+    private static final String Key_diagnostic_mri = "diagnostic_mri";
+    private static final String Key_diagnostic_ultrasound = "diagnostic_ultrasound";
+    private static final String Key_diagnostic_x_ray= "diagnostic_x_ray";
+    private static final String Key_diagnostic_2d_echo = "diagnostic_2d_echo";
+    private static final String Key_diagnostic_eeg = "diagnostic_eeg";
+    private static final String Key_diagnostic_holter_monitoring = "diagnostic_holter_monitoring";
+    private static final String Key_diagnostic_spirometry = "diagnostic_spirometry";
+    private static final String Key_diagnostic_tread_mill_testing = "diagnostic_tread_mill_testing";
+    private static final String Key_diagnostic_urodynamic_studies = "diagnostic_urodynamic_studies";
+    private static final String Key_diagnostic_bone_densitometry = "diagnostic_bone_densitometry";
+    private static final String Key_laboratory_clinical_bio_chemistry = "laboratory_clinical_bio_chemistry";
+    private static final String Key_laboratory_clinical_microbiology = "laboratory_clinical_microbiology";
+    private static final String Key_laboratory_clinical_pathology = "laboratory_clinical_pathology";
+    private static final String Key_laboratory_cytopathology = "laboratory_cytopathology";
+    private static final String Key_laboratory_haematology = "laboratory_haematology";
+    private static final String Key_laboratory_histopathology = "laboratory_histopathology";
+    private static final String Key_pharmacy_dispensary = "pharmacy_dispensary";
+    private static final String Key_transfusions_blood_transfusions = "transfusions_blood_transfusions";
+    private static final String Key_transfusions_blood_bank = "transfusions_blood_bank";
+    private static final String Key_professions_allied_ambulance = "professions_allied_ambulance";
+    private static final String Key_professions_dietetics = "professions_dietetics";
+    private static final String Key_professions_physiotherapy = "professions_physiotherapy";
+    private static final String Key_professions_occupational_therapy = "professions_occupational_therapy";
+    private static final String Key_professions_speech_language = "professions_speech_language";
+    private static final String Key_professions_psychology = "professions_psychology";
+
+
 
     public DatabaseHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -712,6 +786,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CREATE_Uniform_Signage_TABLE);
         sqLiteDatabase.execSQL(CREATE_Ambulance_Accessibility_TABLE);
         sqLiteDatabase.execSQL(CREATE_Documentation_TABLE);
+        sqLiteDatabase.execSQL(CREATE_Scope_Service_TABLE);
     }
 
     @Override
@@ -737,6 +812,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CREATE_Uniform_Signage_TABLE);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CREATE_Ambulance_Accessibility_TABLE);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CREATE_Documentation_TABLE);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CREATE_Scope_Service_TABLE);
 
     }
 
@@ -848,7 +924,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + OBSTETRIC_WARD_abuse_image_identification + " TEXT,"
             + Local_OBSTETRIC_WARD_abuse_image_identification + " TEXT,"
             + OBSTETRIC_WARD_abuse_image_surveillance + " TEXT,"
-            + Local_OBSTETRIC_WARD_abuse_image_surveillance + " TEXT" + ")";
+            + Local_OBSTETRIC_WARD_abuse_image_surveillance + " TEXT,"
+            + shco_obstetrics_ward + " TEXT,"
+            + shco_obstetrics_ward_remark + " TEXT,"
+            + shco_obstetrics_ward_nc + " TEXT,"
+            + shco_obstetrics_ward_image + " TEXT,"
+            + Local_shco_obstetrics_ward_image + " TEXT" + ")";
 
     String CREATE_OT_TABLE = "CREATE TABLE "
             + TABLE_OT + "("
@@ -1400,6 +1481,74 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + Key_document_showing_medical_records + " TEXT,"
             + Key_document_showing_medical_records_remark + " TEXT,"
             + Key_document_showing_medical_records_nc + " TEXT" + ")";
+
+    String CREATE_Scope_Service_TABLE = "CREATE TABLE "
+            + Table_scope_service + "("
+            + KEY_Local_id + " INTEGER PRIMARY KEY,"
+            + KEY_ID + " TEXT,"
+            + KEY_HOSPITAL_NAME + " TEXT,"
+            + KEY_HOSPITAL_ID + " TEXT,"
+            + Key_clinical_anaesthesiology + " TEXT,"
+            + Key_clinical_dermatology_venereology + " TEXT,"
+            + Key_clinical_emergency_medicine + " TEXT,"
+            + Key_clinical_family_medicine + " TEXT,"
+            + Key_clinical_general_medicine + " TEXT,"
+            + Key_clinical_general_surgery + " TEXT,"
+            + Key_clinical_obstetrics_gynecology + " TEXT,"
+            + Key_clinical_ophthalmology + " TEXT,"
+            + Key_clinical_orthopaedic_surgery + " TEXT,"
+            + Key_clinical_otorhinolaryngology + " TEXT,"
+            + Key_clinical_paediatrics + " TEXT,"
+            + Key_clinical_Psychiatry + " TEXT,"
+            + Key_clinical_respiratory_medicine + " TEXT,"
+            + Key_clinical_day_care_services + " TEXT,"
+            + Key_clinical_cardiac_anaesthesia + " TEXT,"
+            + Key_clinical_cardiology + " TEXT,"
+            + Key_clinical_cardiothoracic_surgery + " TEXT,"
+            + Key_clinical_clinical_haematology + " TEXT,"
+            + Key_clinical_critical_care + " TEXT,"
+            + Key_clinical_endocrinology + " TEXT,"
+            + Key_clinical_hepatology + " TEXT,"
+            + Key_clinical_immunology + " TEXT,"
+            + Key_clinical_medical_gastroenterology + " TEXT,"
+            + Key_clinical_neonatology + " TEXT,"
+            + Key_clinical_nephrology + " TEXT,"
+            + Key_clinical_Neurology + " TEXT,"
+            + Key_clinical_Neurosurgery + " TEXT,"
+            + Key_clinical_Oncology + " TEXT,"
+            + Key_clinical_paediatric_cardiology + " TEXT,"
+            + Key_clinical_paediatric_surgery + " TEXT,"
+            + Key_clinical_plastic_reconstructive + " TEXT,"
+            + Key_clinical_surgical_gastroenterology + " TEXT,"
+            + Key_clinical_urology + " TEXT,"
+            + Key_clinical_transplantation_service + " TEXT,"
+            + Key_diagnostic_ct_scanning + " TEXT,"
+            + Key_diagnostic_mammography + " TEXT,"
+            + Key_diagnostic_mri + " TEXT,"
+            + Key_diagnostic_ultrasound + " TEXT,"
+            + Key_diagnostic_x_ray + " TEXT,"
+            + Key_diagnostic_2d_echo + " TEXT,"
+            + Key_diagnostic_eeg + " TEXT,"
+            + Key_diagnostic_holter_monitoring + " TEXT,"
+            + Key_diagnostic_spirometry + " TEXT,"
+            + Key_diagnostic_tread_mill_testing + " TEXT,"
+            + Key_diagnostic_urodynamic_studies + " TEXT,"
+            + Key_diagnostic_bone_densitometry + " TEXT,"
+            + Key_laboratory_clinical_bio_chemistry + " TEXT,"
+            + Key_laboratory_clinical_microbiology + " TEXT,"
+            + Key_laboratory_clinical_pathology + " TEXT,"
+            + Key_laboratory_cytopathology + " TEXT,"
+            + Key_laboratory_haematology + " TEXT,"
+            + Key_laboratory_histopathology + " TEXT,"
+            + Key_pharmacy_dispensary + " TEXT,"
+            + Key_transfusions_blood_transfusions + " TEXT,"
+            + Key_transfusions_blood_bank + " TEXT,"
+            + Key_professions_allied_ambulance + " TEXT,"
+            + Key_professions_dietetics + " TEXT,"
+            + Key_professions_physiotherapy + " TEXT,"
+            + Key_professions_occupational_therapy + " TEXT,"
+            + Key_professions_speech_language + " TEXT,"
+            + Key_professions_psychology + " TEXT" + ")";
 
 
     public boolean INSERT_Documentation(DocumentationPojo pojo){
@@ -2541,6 +2690,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Laboratory_defined_turnaround_Image,pojo.getLaboratory_defined_turnaround_image());
         values.put(Local_Laboratory_defined_turnaround_Image,pojo.getLocal_laboratory_defined_turnaround_image());
 
+
         database.insert(TABLE_LABORATORY,null,values);
 
 
@@ -2585,6 +2735,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Laboratory_defined_turnaround_Nc,pojo.getLaboratory_defined_turnaround_Nc());
         values.put(Laboratory_defined_turnaround_Image,pojo.getLaboratory_defined_turnaround_image());
         values.put(Local_Laboratory_defined_turnaround_Image,pojo.getLocal_laboratory_defined_turnaround_image());
+
 
         database.update(TABLE_LABORATORY,values,KEY_Local_id + "=" + pojo.getLocal_id(),null);
 
@@ -2759,6 +2910,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Local_OBSTETRIC_WARD_abuse_image_identification,pojo.getLocal_OBSTETRIC_WARD_abuse_image_identification());
         values.put(OBSTETRIC_WARD_abuse_image_surveillance,pojo.getOBSTETRIC_WARD_abuse_image_surveillance());
         values.put(Local_OBSTETRIC_WARD_abuse_image_surveillance,pojo.getLocal_OBSTETRIC_WARD_abuse_image_surveillance());
+        values.put(shco_obstetrics_ward,pojo.getShco_obstetrics_ward());
+        values.put(shco_obstetrics_ward_remark,pojo.getShco_obstetrics_ward_remark());
+        values.put(shco_obstetrics_ward_nc,pojo.getShco_obstetrics_ward_nc());
+        values.put(shco_obstetrics_ward_image,pojo.getShco_obstetrics_ward_image());
+        values.put(Local_shco_obstetrics_ward_image,pojo.getLocal_shco_obstetrics_ward_image());
 
         database.insert(TABLE_OBSTETRIC_WARD,null,values);
 
@@ -2782,6 +2938,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Local_OBSTETRIC_WARD_abuse_image_identification,pojo.getLocal_OBSTETRIC_WARD_abuse_image_identification());
         values.put(OBSTETRIC_WARD_abuse_image_surveillance,pojo.getOBSTETRIC_WARD_abuse_image_surveillance());
         values.put(Local_OBSTETRIC_WARD_abuse_image_surveillance,pojo.getLocal_OBSTETRIC_WARD_abuse_image_surveillance());
+        values.put(shco_obstetrics_ward,pojo.getShco_obstetrics_ward());
+        values.put(shco_obstetrics_ward_remark,pojo.getShco_obstetrics_ward_remark());
+        values.put(shco_obstetrics_ward_nc,pojo.getShco_obstetrics_ward_nc());
+        values.put(shco_obstetrics_ward_image,pojo.getShco_obstetrics_ward_image());
+        values.put(Local_shco_obstetrics_ward_image,pojo.getLocal_shco_obstetrics_ward_image());
 
         database.update(TABLE_OBSTETRIC_WARD,values,KEY_Local_id + "=" + pojo.getLocal_id(),null);
 
@@ -2919,6 +3080,160 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return true;
 
+    }
+
+    public boolean INSERT_SCOPE_SERVICE(ScopeOfServicePojo pojo){
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(KEY_ID,pojo.getId());
+        values.put(KEY_HOSPITAL_NAME,pojo.getHospital_name());
+        values.put(KEY_HOSPITAL_ID,pojo.getHospital_id());
+        values.put(Key_clinical_anaesthesiology,pojo.getClinical_anaesthesiology());
+        values.put(Key_clinical_dermatology_venereology,pojo.getClinical_dermatology_venereology());
+        values.put(Key_clinical_emergency_medicine,pojo.getClinical_emergency_medicine());
+        values.put(Key_clinical_family_medicine,pojo.getClinical_family_medicine());
+        values.put(Key_clinical_general_medicine,pojo.getClinical_general_medicine());
+        values.put(Key_clinical_general_surgery,pojo.getClinical_general_surgery());
+        values.put(Key_clinical_obstetrics_gynecology,pojo.getClinical_obstetrics_gynecology());
+        values.put(Key_clinical_ophthalmology,pojo.getClinical_ophthalmology());
+        values.put(Key_clinical_orthopaedic_surgery,pojo.getClinical_orthopaedic_surgery());
+        values.put(Key_clinical_otorhinolaryngology,pojo.getClinical_otorhinolaryngology());
+        values.put(Key_clinical_paediatrics,pojo.getClinical_paediatrics());;
+        values.put(Key_clinical_Psychiatry,pojo.getClinical_Psychiatry());
+        values.put(Key_clinical_respiratory_medicine,pojo.getClinical_respiratory_medicine());
+        values.put(Key_clinical_day_care_services,pojo.getClinical_day_care_services());
+        values.put(Key_clinical_cardiac_anaesthesia,pojo.getClinical_cardiac_anaesthesia());
+        values.put(Key_clinical_cardiology,pojo.getClinical_cardiology());
+        values.put(Key_clinical_cardiothoracic_surgery,pojo.getClinical_cardiothoracic_surgery());
+        values.put(Key_clinical_clinical_haematology,pojo.getClinical_clinical_haematology());
+        values.put(Key_clinical_critical_care,pojo.getClinical_critical_care());
+        values.put(Key_clinical_endocrinology,pojo.getClinical_endocrinology());
+        values.put(Key_clinical_hepatology,pojo.getClinical_hepatology());
+        values.put(Key_clinical_immunology,pojo.getClinical_immunology());
+        values.put(Key_clinical_medical_gastroenterology,pojo.getClinical_medical_gastroenterology());
+        values.put(Key_clinical_neonatology,pojo.getClinical_Neurology());
+        values.put(Key_clinical_nephrology,pojo.getClinical_nephrology());
+        values.put(Key_clinical_Neurology,pojo.getClinical_Neurology());
+        values.put(Key_clinical_Neurosurgery,pojo.getClinical_Neurosurgery());
+        values.put(Key_clinical_Oncology,pojo.getClinical_Oncology());
+        values.put(Key_clinical_paediatric_cardiology,pojo.getClinical_paediatric_cardiology());
+        values.put(Key_clinical_paediatric_surgery,pojo.getClinical_paediatric_surgery());
+        values.put(Key_clinical_plastic_reconstructive,pojo.getClinical_plastic_reconstructive());
+        values.put(Key_clinical_surgical_gastroenterology,pojo.getClinical_surgical_gastroenterology());
+        values.put(Key_clinical_urology,pojo.getClinical_urology());
+        values.put(Key_clinical_transplantation_service,pojo.getClinical_transplantation_service());
+        values.put(Key_diagnostic_ct_scanning,pojo.getDiagnostic_ct_scanning());
+        values.put(Key_diagnostic_mammography,pojo.getDiagnostic_mammography());
+        values.put(Key_diagnostic_mri,pojo.getDiagnostic_mri());
+        values.put(Key_diagnostic_ultrasound,pojo.getDiagnostic_ultrasound());
+        values.put(Key_diagnostic_x_ray,pojo.getDiagnostic_x_ray());
+        values.put(Key_diagnostic_2d_echo,pojo.getDiagnostic_2d_echo());
+        values.put(Key_diagnostic_eeg,pojo.getDiagnostic_eeg());
+        values.put(Key_diagnostic_holter_monitoring,pojo.getDiagnostic_holter_monitoring());
+        values.put(Key_diagnostic_spirometry,pojo.getDiagnostic_spirometry());
+        values.put(Key_diagnostic_tread_mill_testing,pojo.getDiagnostic_tread_mill_testing());
+        values.put(Key_diagnostic_urodynamic_studies,pojo.getDiagnostic_urodynamic_studies());
+        values.put(Key_diagnostic_bone_densitometry,pojo.getDiagnostic_bone_densitometry());
+        values.put(Key_laboratory_clinical_bio_chemistry,pojo.getLaboratory_clinical_bio_chemistry());
+        values.put(Key_laboratory_clinical_microbiology,pojo.getLaboratory_clinical_microbiology());
+        values.put(Key_laboratory_clinical_pathology,pojo.getLaboratory_clinical_pathology());
+        values.put(Key_laboratory_cytopathology,pojo.getLaboratory_cytopathology());
+        values.put(Key_laboratory_haematology,pojo.getLaboratory_haematology());
+        values.put(Key_laboratory_histopathology,pojo.getLaboratory_histopathology());
+        values.put(Key_pharmacy_dispensary,pojo.getPharmacy_dispensary());
+        values.put(Key_transfusions_blood_transfusions,pojo.getTransfusions_blood_transfusions());
+        values.put(Key_transfusions_blood_bank,pojo.getTransfusions_blood_bank());
+        values.put(Key_professions_allied_ambulance,pojo.getProfessions_allied_ambulance());
+        values.put(Key_professions_dietetics,pojo.getProfessions_dietetics());
+        values.put(Key_professions_physiotherapy,pojo.getProfessions_physiotherapy());
+        values.put(Key_professions_occupational_therapy,pojo.getProfessions_occupational_therapy());
+        values.put(Key_professions_speech_language,pojo.getProfessions_speech_language());
+        values.put(Key_professions_psychology,pojo.getProfessions_psychology());
+
+        database.insert(Table_scope_service,null,values);
+
+
+        return true;
+
+    }
+    public boolean UPDATE_SCOPE_SERVICE(ScopeOfServicePojo pojo){
+
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(KEY_ID,pojo.getId());
+        values.put(KEY_HOSPITAL_NAME,pojo.getHospital_name());
+        values.put(KEY_HOSPITAL_ID,pojo.getHospital_id());
+        values.put(Key_clinical_anaesthesiology,pojo.getClinical_anaesthesiology());
+        values.put(Key_clinical_dermatology_venereology,pojo.getClinical_dermatology_venereology());
+        values.put(Key_clinical_emergency_medicine,pojo.getClinical_emergency_medicine());
+        values.put(Key_clinical_family_medicine,pojo.getClinical_family_medicine());
+        values.put(Key_clinical_general_medicine,pojo.getClinical_general_medicine());
+        values.put(Key_clinical_general_surgery,pojo.getClinical_general_surgery());
+        values.put(Key_clinical_obstetrics_gynecology,pojo.getClinical_obstetrics_gynecology());
+        values.put(Key_clinical_ophthalmology,pojo.getClinical_ophthalmology());
+        values.put(Key_clinical_orthopaedic_surgery,pojo.getClinical_orthopaedic_surgery());
+        values.put(Key_clinical_otorhinolaryngology,pojo.getClinical_otorhinolaryngology());
+        values.put(Key_clinical_paediatrics,pojo.getClinical_paediatrics());
+        values.put(Key_clinical_Psychiatry,pojo.getClinical_Psychiatry());
+        values.put(Key_clinical_respiratory_medicine,pojo.getClinical_respiratory_medicine());
+        values.put(Key_clinical_day_care_services,pojo.getClinical_day_care_services());
+        values.put(Key_clinical_cardiac_anaesthesia,pojo.getClinical_cardiac_anaesthesia());
+        values.put(Key_clinical_cardiology,pojo.getClinical_cardiology());
+        values.put(Key_clinical_cardiothoracic_surgery,pojo.getClinical_cardiothoracic_surgery());
+        values.put(Key_clinical_clinical_haematology,pojo.getClinical_clinical_haematology());
+        values.put(Key_clinical_critical_care,pojo.getClinical_critical_care());
+        values.put(Key_clinical_endocrinology,pojo.getClinical_endocrinology());
+        values.put(Key_clinical_hepatology,pojo.getClinical_hepatology());
+        values.put(Key_clinical_immunology,pojo.getClinical_immunology());
+        values.put(Key_clinical_medical_gastroenterology,pojo.getClinical_medical_gastroenterology());
+        values.put(Key_clinical_neonatology,pojo.getClinical_Neurology());
+        values.put(Key_clinical_nephrology,pojo.getClinical_nephrology());
+        values.put(Key_clinical_Neurology,pojo.getClinical_Neurology());
+        values.put(Key_clinical_Neurosurgery,pojo.getClinical_Neurosurgery());
+        values.put(Key_clinical_Oncology,pojo.getClinical_Oncology());
+        values.put(Key_clinical_paediatric_cardiology,pojo.getClinical_paediatric_cardiology());
+        values.put(Key_clinical_paediatric_surgery,pojo.getClinical_paediatric_surgery());
+        values.put(Key_clinical_plastic_reconstructive,pojo.getClinical_plastic_reconstructive());
+        values.put(Key_clinical_surgical_gastroenterology,pojo.getClinical_surgical_gastroenterology());
+        values.put(Key_clinical_urology,pojo.getClinical_urology());
+        values.put(Key_clinical_transplantation_service,pojo.getClinical_transplantation_service());
+        values.put(Key_diagnostic_ct_scanning,pojo.getDiagnostic_ct_scanning());
+        values.put(Key_diagnostic_mammography,pojo.getDiagnostic_mammography());
+        values.put(Key_diagnostic_mri,pojo.getDiagnostic_mri());
+        values.put(Key_diagnostic_ultrasound,pojo.getDiagnostic_ultrasound());
+        values.put(Key_diagnostic_x_ray,pojo.getDiagnostic_x_ray());
+        values.put(Key_diagnostic_2d_echo,pojo.getDiagnostic_2d_echo());
+        values.put(Key_diagnostic_eeg,pojo.getDiagnostic_eeg());
+        values.put(Key_diagnostic_holter_monitoring,pojo.getDiagnostic_holter_monitoring());
+        values.put(Key_diagnostic_spirometry,pojo.getDiagnostic_spirometry());
+        values.put(Key_diagnostic_tread_mill_testing,pojo.getDiagnostic_tread_mill_testing());
+        values.put(Key_diagnostic_urodynamic_studies,pojo.getDiagnostic_urodynamic_studies());
+        values.put(Key_diagnostic_bone_densitometry,pojo.getDiagnostic_bone_densitometry());
+        values.put(Key_laboratory_clinical_bio_chemistry,pojo.getLaboratory_clinical_bio_chemistry());
+        values.put(Key_laboratory_clinical_microbiology,pojo.getLaboratory_clinical_microbiology());
+        values.put(Key_laboratory_clinical_pathology,pojo.getLaboratory_clinical_pathology());
+        values.put(Key_laboratory_cytopathology,pojo.getLaboratory_cytopathology());
+        values.put(Key_laboratory_haematology,pojo.getLaboratory_haematology());
+        values.put(Key_laboratory_histopathology,pojo.getLaboratory_histopathology());
+        values.put(Key_pharmacy_dispensary,pojo.getPharmacy_dispensary());
+        values.put(Key_transfusions_blood_transfusions,pojo.getTransfusions_blood_transfusions());
+        values.put(Key_transfusions_blood_bank,pojo.getTransfusions_blood_bank());
+        values.put(Key_professions_allied_ambulance,pojo.getProfessions_allied_ambulance());
+        values.put(Key_professions_dietetics,pojo.getProfessions_dietetics());
+        values.put(Key_professions_physiotherapy,pojo.getProfessions_physiotherapy());
+        values.put(Key_professions_occupational_therapy,pojo.getProfessions_occupational_therapy());
+        values.put(Key_professions_speech_language,pojo.getProfessions_speech_language());
+        values.put(Key_professions_psychology,pojo.getProfessions_psychology());
+
+
+        database.update(Table_scope_service,values,KEY_Local_id + "=" + pojo.getLocal_id(),null);
+
+
+        return true;
     }
 
 
@@ -3787,6 +4102,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 pojo.setLocal_OBSTETRIC_WARD_abuse_image_identification(cursor.getString(cursor.getColumnIndex(Local_OBSTETRIC_WARD_abuse_image_identification)));
                 pojo.setOBSTETRIC_WARD_abuse_image_surveillance(cursor.getString(cursor.getColumnIndex(OBSTETRIC_WARD_abuse_image_surveillance)));
                 pojo.setLocal_OBSTETRIC_WARD_abuse_image_surveillance(cursor.getString(cursor.getColumnIndex(Local_OBSTETRIC_WARD_abuse_image_surveillance)));
+                pojo.setShco_obstetrics_ward(cursor.getString(cursor.getColumnIndex(shco_obstetrics_ward)));
+                pojo.setShco_obstetrics_ward_remark(cursor.getString(cursor.getColumnIndex(shco_obstetrics_ward_remark)));
+                pojo.setShco_obstetrics_ward_nc(cursor.getString(cursor.getColumnIndex(shco_obstetrics_ward_nc)));
+                pojo.setShco_obstetrics_ward_image(cursor.getString(cursor.getColumnIndex(shco_obstetrics_ward_image)));
+                pojo.setLocal_shco_obstetrics_ward_image(cursor.getString(cursor.getColumnIndex(Local_shco_obstetrics_ward_image)));
             }
         }
         cursor.close();
@@ -3963,6 +4283,87 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return pojo;
     }
 
+    public ScopeOfServicePojo getScopeService(String Hospital_id){
+        ScopeOfServicePojo pojo = null;
+        SQLiteDatabase sqliteDB = this.getReadableDatabase();
+
+        Cursor cursor = sqliteDB.rawQuery("SELECT * FROM " + Table_scope_service + " where " + KEY_HOSPITAL_ID + " ='" + Hospital_id + "'", null);
+        if (cursor != null){
+            if (cursor.getCount() > 0){
+                cursor.moveToFirst();
+                pojo = new ScopeOfServicePojo();
+                pojo.setLocal_id(cursor.getLong(cursor.getColumnIndex(KEY_Local_id)));
+                pojo.setId(cursor.getLong(cursor.getColumnIndex(KEY_ID)));
+                pojo.setHospital_name(cursor.getString(cursor.getColumnIndex(KEY_HOSPITAL_NAME)));
+                pojo.setHospital_id(cursor.getInt(cursor.getColumnIndex(KEY_HOSPITAL_ID)));
+                pojo.setClinical_anaesthesiology(cursor.getString(cursor.getColumnIndex(Key_clinical_anaesthesiology)));
+                pojo.setClinical_dermatology_venereology(cursor.getString(cursor.getColumnIndex(Key_clinical_dermatology_venereology)));
+                pojo.setClinical_emergency_medicine(cursor.getString(cursor.getColumnIndex(Key_clinical_emergency_medicine)));
+                pojo.setClinical_family_medicine(cursor.getString(cursor.getColumnIndex(Key_clinical_family_medicine)));
+                pojo.setClinical_general_medicine(cursor.getString(cursor.getColumnIndex(Key_clinical_general_medicine)));
+                pojo.setClinical_general_surgery(cursor.getString(cursor.getColumnIndex(Key_clinical_general_surgery)));
+                pojo.setClinical_obstetrics_gynecology(cursor.getString(cursor.getColumnIndex(Key_clinical_obstetrics_gynecology)));
+                pojo.setClinical_ophthalmology(cursor.getString(cursor.getColumnIndex(Key_clinical_ophthalmology)));
+                pojo.setClinical_orthopaedic_surgery(cursor.getString(cursor.getColumnIndex(Key_clinical_orthopaedic_surgery)));
+                pojo.setClinical_otorhinolaryngology(cursor.getString(cursor.getColumnIndex(Key_clinical_otorhinolaryngology)));
+                pojo.setClinical_paediatrics(cursor.getString(cursor.getColumnIndex(Key_clinical_paediatrics)));
+                pojo.setClinical_Psychiatry(cursor.getString(cursor.getColumnIndex(Key_clinical_Psychiatry)));
+                pojo.setClinical_respiratory_medicine(cursor.getString(cursor.getColumnIndex(Key_clinical_respiratory_medicine)));
+                pojo.setClinical_day_care_services(cursor.getString(cursor.getColumnIndex(Key_clinical_day_care_services)));
+                pojo.setClinical_cardiac_anaesthesia(cursor.getString(cursor.getColumnIndex(Key_clinical_cardiac_anaesthesia)));
+                pojo.setClinical_cardiology(cursor.getString(cursor.getColumnIndex(Key_clinical_cardiology)));
+                pojo.setClinical_cardiothoracic_surgery(cursor.getString(cursor.getColumnIndex(Key_clinical_cardiothoracic_surgery)));
+                pojo.setClinical_clinical_haematology(cursor.getString(cursor.getColumnIndex(Key_clinical_clinical_haematology)));
+                pojo.setClinical_critical_care(cursor.getString(cursor.getColumnIndex(Key_clinical_critical_care)));
+                pojo.setClinical_endocrinology(cursor.getString(cursor.getColumnIndex(Key_clinical_endocrinology)));
+                pojo.setClinical_hepatology(cursor.getString(cursor.getColumnIndex(Key_clinical_hepatology)));
+                pojo.setClinical_immunology(cursor.getString(cursor.getColumnIndex(Key_clinical_immunology)));
+                pojo.setClinical_medical_gastroenterology(cursor.getString(cursor.getColumnIndex(Key_clinical_medical_gastroenterology)));
+                pojo.setClinical_Neurology(cursor.getString(cursor.getColumnIndex(Key_clinical_neonatology)));
+                pojo.setClinical_nephrology(cursor.getString(cursor.getColumnIndex(Key_clinical_nephrology)));
+                pojo.setClinical_Neurosurgery(cursor.getString(cursor.getColumnIndex(Key_clinical_Neurosurgery)));
+                pojo.setClinical_Oncology(cursor.getString(cursor.getColumnIndex(Key_clinical_Oncology)));
+                pojo.setClinical_paediatric_cardiology(cursor.getString(cursor.getColumnIndex(Key_clinical_paediatric_cardiology)));
+                pojo.setClinical_paediatric_surgery(cursor.getString(cursor.getColumnIndex(Key_clinical_paediatric_surgery)));
+                pojo.setClinical_plastic_reconstructive(cursor.getString(cursor.getColumnIndex(Key_clinical_plastic_reconstructive)));
+                pojo.setClinical_surgical_gastroenterology(cursor.getString(cursor.getColumnIndex(Key_clinical_surgical_gastroenterology)));
+                pojo.setClinical_urology(cursor.getString(cursor.getColumnIndex(Key_clinical_urology)));
+                pojo.setClinical_transplantation_service(cursor.getString(cursor.getColumnIndex(Key_clinical_transplantation_service)));
+                pojo.setDiagnostic_ct_scanning(cursor.getString(cursor.getColumnIndex(Key_diagnostic_ct_scanning)));
+                pojo.setDiagnostic_mammography(cursor.getString(cursor.getColumnIndex(Key_diagnostic_mammography)));
+                pojo.setDiagnostic_mri(cursor.getString(cursor.getColumnIndex(Key_diagnostic_mri)));
+                pojo.setDiagnostic_ultrasound(cursor.getString(cursor.getColumnIndex(Key_diagnostic_ultrasound)));
+                pojo.setDiagnostic_x_ray(cursor.getString(cursor.getColumnIndex(Key_diagnostic_x_ray)));
+                pojo.setDiagnostic_2d_echo(cursor.getString(cursor.getColumnIndex(Key_diagnostic_2d_echo)));
+                pojo.setDiagnostic_eeg(cursor.getString(cursor.getColumnIndex(Key_diagnostic_eeg)));
+                pojo.setDiagnostic_holter_monitoring(cursor.getString(cursor.getColumnIndex(Key_diagnostic_holter_monitoring)));
+                pojo.setDiagnostic_spirometry(cursor.getString(cursor.getColumnIndex(Key_diagnostic_spirometry)));
+                pojo.setDiagnostic_tread_mill_testing(cursor.getString(cursor.getColumnIndex(Key_diagnostic_tread_mill_testing)));
+                pojo.setDiagnostic_urodynamic_studies(cursor.getString(cursor.getColumnIndex(Key_diagnostic_urodynamic_studies)));
+                pojo.setDiagnostic_bone_densitometry(cursor.getString(cursor.getColumnIndex(Key_diagnostic_bone_densitometry)));
+                pojo.setLaboratory_clinical_bio_chemistry(cursor.getString(cursor.getColumnIndex(Key_laboratory_clinical_bio_chemistry)));
+                pojo.setLaboratory_clinical_microbiology(cursor.getString(cursor.getColumnIndex(Key_laboratory_clinical_microbiology)));
+                pojo.setLaboratory_clinical_pathology(cursor.getString(cursor.getColumnIndex(Key_laboratory_clinical_pathology)));
+                pojo.setLaboratory_cytopathology(cursor.getString(cursor.getColumnIndex(Key_laboratory_cytopathology)));
+                pojo.setLaboratory_haematology(cursor.getString(cursor.getColumnIndex(Key_laboratory_haematology)));
+                pojo.setLaboratory_histopathology(cursor.getString(cursor.getColumnIndex(Key_laboratory_histopathology)));
+                pojo.setPharmacy_dispensary(cursor.getString(cursor.getColumnIndex(Key_pharmacy_dispensary)));
+                pojo.setTransfusions_blood_transfusions(cursor.getString(cursor.getColumnIndex(Key_transfusions_blood_transfusions)));
+                pojo.setTransfusions_blood_bank(cursor.getString(cursor.getColumnIndex(Key_transfusions_blood_bank)));
+                pojo.setProfessions_allied_ambulance(cursor.getString(cursor.getColumnIndex(Key_professions_allied_ambulance)));
+                pojo.setProfessions_dietetics(cursor.getString(cursor.getColumnIndex(Key_professions_dietetics)));
+                pojo.setProfessions_physiotherapy(cursor.getString(cursor.getColumnIndex(Key_professions_physiotherapy)));
+                pojo.setProfessions_occupational_therapy(cursor.getString(cursor.getColumnIndex(Key_professions_occupational_therapy)));
+                pojo.setProfessions_speech_language(cursor.getString(cursor.getColumnIndex(Key_professions_speech_language)));
+                pojo.setProfessions_psychology(cursor.getString(cursor.getColumnIndex(Key_professions_psychology)));
+
+
+            }
+        }
+        cursor.close();
+        return pojo;
+    }
+
 
 
 
@@ -4011,6 +4412,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 pojo.setLaboratory_defined_turnaround_Nc(cursor.getString(cursor.getColumnIndex(Laboratory_defined_turnaround_Nc)));
                 pojo.setLaboratory_defined_turnaround_image(cursor.getString(cursor.getColumnIndex(Laboratory_defined_turnaround_Image)));
                 pojo.setLocal_laboratory_defined_turnaround_image(cursor.getString(cursor.getColumnIndex(Local_Laboratory_defined_turnaround_Image)));
+
 
             }
         }
@@ -4072,6 +4474,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.delete(Table_Ambulance_Accessibility,null,null);
         db.delete(Table_Uniform_Signage,null,null);
         db.delete(Table_Documentation,null,null);
+        db.delete(Table_scope_service,null,null);
     }
 
 }

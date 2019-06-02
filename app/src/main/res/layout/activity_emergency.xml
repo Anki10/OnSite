@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:labelFor="@+id/gen_edit1"
-            android:text="1. Are services being provided as per laid down Norms ?"
+            android:text="Are services being provided as per laid down Norms ?"
             android:textColor="@color/textHeadColor"
             android:textSize="@dimen/font_large"
             android:textStyle="bold" />
@@ -70,16 +70,8 @@
             android:padding="5dp"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:text="Note: 1.Check if the documented procedure (including handling of medico-legal cases) is being adhered to.
- \n 2.Staff is able to describe the procedure for care of patients coming to the emergency (including MLC)."/>
+            android:text="Note: Interview the staff on awareness of HCO's documented procedures for emergency"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:text="Upload: Video of staff interview"/>
 
 
         <LinearLayout
@@ -111,6 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
+                android:visibility="gone"
                 android:src="@mipmap/camera" />
 
 

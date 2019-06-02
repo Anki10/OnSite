@@ -36,7 +36,8 @@
     <ScrollView
         android:id="@+id/scrollViewGeneral"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:padding="8dp">
 
@@ -49,7 +50,7 @@
                 android:orientation="vertical">
 
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_collected_properly"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -60,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="1. Are samples collected properly ?"
+                    android:text="Are PPE properly used while collecting blood samples ?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -81,22 +82,6 @@
                         android:onClick="onRadioButtonClicked"/>
                 </RadioGroup>
 
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:text="Note: 1.Taking blood sample from patient \n  2. Check if the documented procedure has to be adhered."/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:text="Upload: Video of phlebotomy"/>
 
 
                 <LinearLayout
@@ -128,6 +113,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
+                        android:visibility="gone"
                         android:src="@mipmap/camera" />
 
 
@@ -141,9 +127,10 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_identified_properly"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
 
@@ -152,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="2. Are samples identified properly ?"
+                    android:text="Are samples identified properly ?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -232,16 +219,17 @@
             </LinearLayout>
 
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_transported"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:text="3. Are the samples transported in a safe manner ?"
+                    android:text="Are the samples transported in a safe manner ?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -282,7 +270,7 @@
                     android:padding="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="Upload: Photo of Box/container (outside and inside)"/>
+                    android:text="Upload: Photo of Box/container "/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -327,9 +315,10 @@
 
 
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_specimen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -337,7 +326,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="4. Is disposal of specimen done in safe manner ?"
+                    android:text="Is disposal of specimen done in safe manner ?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -373,7 +362,7 @@
                     android:padding="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="Upload: Photo of specimen disposal."/>
+                    android:text="Upload: Photo of specimen disposal bin"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -417,9 +406,10 @@
 
             </LinearLayout>
 
-                <LinearLayout
+                <LinearLayout android:id="@+id/ll_laboratory_defined_turnaround"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="5dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -427,7 +417,7 @@
                         android:layout_height="wrap_content"
                         android:labelFor="@+id/gen_edit1"
                         android:paddingTop="10dp"
-                        android:text="5. Is there any defined turnaround time for test?"
+                        android:text="Is there any defined turnaround time for test?"
                         android:textColor="@color/textHeadColor"
                         android:textSize="@dimen/font_large"
                         android:textStyle="bold" />
@@ -462,7 +452,7 @@
                         android:padding="5dp"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:text="Upload: Photo of document validating the defined turnaround time for test."/>
+                        android:text="Upload: Photo of record of turnaround time for Lab test."/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -507,9 +497,10 @@
 
 
 
-                <LinearLayout
+                <LinearLayout android:id="@+id/ll_appropriate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -517,7 +508,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="6. Are laboratory personnel using appropriate safety equipment/ devices?"
+                    android:text="Are laboratory personnel using appropriate safety equipment/ devices?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -561,7 +552,7 @@
                     android:padding="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="Upload: Photo of staff with appropriate PPE."/>
+                    android:text="Upload: Photo of safety devices including PPE, dressing materials, disinfectants, fire extinguishers etc."/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -605,36 +596,37 @@
             </LinearLayout>
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_large"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btnSave"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:background="@color/login_btn"
-                    android:textColor="@color/white"
-                    android:layout_margin="10dp"
-                    android:text="Save" />
-
-                <Button
-                    android:id="@+id/btnSync"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@color/login_btn"
-                    android:textColor="@color/white"
-                    android:layout_weight="1"
-                    android:layout_margin="10dp"
-                    android:text="SYNC" />
-
-
-            </LinearLayout>
 
         </LinearLayout>
+
     </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_large"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="@color/login_btn"
+            android:textColor="@color/white"
+            android:layout_margin="10dp"
+            android:text="Save" />
+
+        <Button
+            android:id="@+id/btnSync"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/login_btn"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:text="SYNC" />
+
+
+    </LinearLayout>
 </LinearLayout>

@@ -1224,6 +1224,8 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             image1 = json.toString();
+        }else {
+            image1 = null;
         }
 
         if (Local_medical_gas_cylinders_list.size() > 0){
@@ -1233,6 +1235,8 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             Local_image1 = json.toString();
+        }else {
+            Local_image1 = null;
         }
 
 
@@ -1249,6 +1253,8 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             image2 = json.toString();
+        }else {
+            image2 = null;
         }
 
         if (Local_smoke_detectors_installed_list.size() > 0){
@@ -1258,6 +1264,8 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             Local_image2 = json.toString();
+        }else {
+            Local_image2 = null;
         }
 
 
@@ -1273,6 +1281,8 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             image3 = json.toString();
+        }else {
+            image3 = null;
         }
 
         if (Local_extinguisher_present_patient_list.size() > 0){
@@ -1282,6 +1292,8 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
                 e.printStackTrace();
             }
             Local_image3 = json.toString();
+        }else {
+            Local_image3 = null;
         }
 
 
@@ -1564,9 +1576,7 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(FacilityChecksActivity.this,HospitalListActivity.class);
-        startActivity(intent);
-        finish();
+        SaveLaboratoryData("save");
     }
 }
 

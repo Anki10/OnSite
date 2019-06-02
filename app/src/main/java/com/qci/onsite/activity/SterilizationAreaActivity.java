@@ -891,6 +891,8 @@ public class SterilizationAreaActivity extends BaseActivity implements View.OnCl
                 e.printStackTrace();
             }
             image2 = json.toString();
+        }else {
+            image2 = null;
         }
 
         if (Local_AreStaff_imageList.size() > 0){
@@ -900,6 +902,8 @@ public class SterilizationAreaActivity extends BaseActivity implements View.OnCl
                 e.printStackTrace();
             }
             Local_image2 = json.toString();
+        }else {
+            Local_image2 = null;
         }
 
 
@@ -915,6 +919,8 @@ public class SterilizationAreaActivity extends BaseActivity implements View.OnCl
                 e.printStackTrace();
             }
             image3 = json.toString();
+        }else {
+            image3 = null;
         }
 
         if (Local_DoHigh_imageList.size() > 0){
@@ -924,6 +930,8 @@ public class SterilizationAreaActivity extends BaseActivity implements View.OnCl
                 e.printStackTrace();
             }
             Local_image3 = json.toString();
+        }else {
+            Local_image3 = null;
         }
 
         pojo.setSterilized_drums_trays_remark(remark3);
@@ -1175,8 +1183,6 @@ public class SterilizationAreaActivity extends BaseActivity implements View.OnCl
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(SterilizationAreaActivity.this,HospitalListActivity.class);
-        startActivity(intent);
-        finish();
+        SaveLaboratoryData("save");
     }
 }

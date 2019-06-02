@@ -777,6 +777,8 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
                 e.printStackTrace();
             }
             image1 = json.toString();
+        }else {
+            image1 = null;
         }
 
         if (Local_radiology_list.size() > 0){
@@ -786,6 +788,8 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
                 e.printStackTrace();
             }
             Local_image1 = json.toString();
+        }else {
+            Local_image1 = null;
         }
         pojo.setRADIOLOGY_Appropriate_safety_equipment_image(image1);
         pojo.setLocal_RADIOLOGY_Appropriate_safety_equipment_image(Local_image1);
@@ -804,6 +808,8 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
                 e.printStackTrace();
             }
             image2 = json.toString();
+        }else {
+            image2 = null;
         }
 
         if (Local_radiology_defined_turnaround_list.size() > 0){
@@ -813,6 +819,8 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
                 e.printStackTrace();
             }
             Local_image2 = json.toString();
+        }else {
+            Local_image2 = null;
         }
 
         pojo.setRADIOLOGY_defined_turnaround_image(image2);
@@ -1060,8 +1068,6 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(RadiologyActivity.this,HospitalListActivity.class);
-        startActivity(intent);
-        finish();
+        SaveRadioLogyData("save");
     }
 }

@@ -106,6 +106,28 @@ public class BaseActivity extends AppCompatActivity {
         int actualHeight = options.outHeight;
         int actualWidth = options.outWidth;
 
+        float maxHeight = 816.0f;
+        float maxWidth = 612.0f;
+        float imgRatio = actualWidth / actualHeight;
+        float maxRatio = maxWidth / maxHeight;
+
+//      width and height values are set maintaining the aspect ratio of the image
+
+        if (actualHeight > maxHeight || actualWidth > maxWidth) {
+            if (imgRatio < maxRatio) {
+                imgRatio = maxHeight / actualHeight;
+                actualWidth = (int) (imgRatio * actualWidth);
+                actualHeight = (int) maxHeight;
+            } else if (imgRatio > maxRatio) {
+                imgRatio = maxWidth / actualWidth;
+                actualHeight = (int) (imgRatio * actualHeight);
+                actualWidth = (int) maxWidth;
+            } else {
+                actualHeight = (int) maxHeight;
+                actualWidth = (int) maxWidth;
+            }
+        }
+
 
         options.inSampleSize = calculateInSampleSize(options, actualWidth, actualHeight);
 
@@ -181,12 +203,12 @@ public class BaseActivity extends AppCompatActivity {
             String longitude_val = " Long: " + getFromPrefs(AppConstant.Longitude);
             Paint paint = new Paint();
             paint.setColor(Color.RED);
-            paint.setTextSize(100);
+            paint.setTextSize(20);
             paint.setTextAlign(Paint.Align.CENTER);
 
-            canvas1.drawText(date_string, 700, 100, paint);
-            canvas1.drawText(latitude_val, 400, 200, paint);
-            canvas1.drawText(longitude_val, 1200, 200, paint);
+            canvas1.drawText(date_string, 120, 20, paint);
+            canvas1.drawText(latitude_val, 80, 50, paint);
+            canvas1.drawText(longitude_val, 250, 50, paint);
 
 //          write the compressed bitmap at the destination specified by filename.
             scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
@@ -250,6 +272,18 @@ public class BaseActivity extends AppCompatActivity {
     public String getFromPrefs(String key) {
         SharedPreferences prefs = getSharedPreferences(AppConstant.PREF_NAME, MODE_PRIVATE);
         return prefs.getString(key, AppConstant.DEFAULT_VALUE);
+    }
+
+    public void SAVEINTPrefs(String Key,int value){
+        SharedPreferences settings = getSharedPreferences(AppConstant.PREF_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(Key,value);
+        editor.commit();
+    }
+
+    public int getINTFromPrefs(String key){
+        SharedPreferences settings = getSharedPreferences(AppConstant.PREF_NAME, 0);
+        return settings.getInt(key, 0);
     }
 
 

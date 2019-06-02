@@ -36,7 +36,8 @@
     <ScrollView
         android:id="@+id/scrollViewGeneral"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:padding="8dp">
 
@@ -60,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="1. Select the level of access available for the ambulance for patient drop off"
+                    android:text="Select the level of access available for the ambulance for patient drop off"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -122,7 +123,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_ownership_the_ambulance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -133,7 +134,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="2. Select the type of ownership of the ambulance"
+                    android:text="Select the type of ownership of the ambulance"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -188,9 +189,10 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_ambulance_available"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
 
@@ -199,7 +201,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="3. What is the total number of ambulance available?"
+                    android:text="What is the total number of ambulance available?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -219,7 +221,7 @@
                     android:padding="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="Upload: Take photo of inside and outside view of ambulance(multiple upload)"/>
+                    android:text="Upload: Take photo of inside and outside view of one ambulance(multiple upload)"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -262,16 +264,17 @@
             </LinearLayout>
 
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_appropriately_equiped"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:text="4. Is ambulance appropriately equiped ?"
+                    android:text="Is ambulance appropriately equiped ?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -346,7 +349,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_driver_ambulances_available"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -357,7 +360,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="5. How many drivers for the ambulances are available?"
+                    android:text="How many drivers for the ambulances are available?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -423,7 +426,7 @@
             </LinearLayout>
 
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_doctor_available"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -434,7 +437,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="6. How many doctors are available for the ambulances?"
+                    android:text="How many doctors are available for the ambulances?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -499,7 +502,7 @@
             </LinearLayout>
 
 
-            <LinearLayout
+            <LinearLayout android:id="@+id/ll_nurses_available"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -510,7 +513,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="7. How many nurses are available for the ambulances?"
+                    android:text="How many nurses are available for the ambulances?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -578,37 +581,38 @@
             </LinearLayout>
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_large"
-                android:gravity="center"
-                android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btnSave"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@color/login_btn"
-                    android:textColor="@color/white"
-                    android:layout_weight="1"
-                    android:layout_margin="10dp"
-                    android:text="Save" />
-
-                <Button
-                    android:id="@+id/btnSync"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@color/login_btn"
-                    android:textColor="@color/white"
-                    android:layout_weight="1"
-                    android:layout_margin="10dp"
-                    android:text="SYNC" />
-
-
-
-            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_large"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/login_btn"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:text="Save" />
+
+        <Button
+            android:id="@+id/btnSync"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/login_btn"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:text="SYNC" />
+
+
+
+    </LinearLayout>
 </LinearLayout>

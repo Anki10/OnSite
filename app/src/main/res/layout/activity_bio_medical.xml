@@ -24,7 +24,7 @@
             android:textStyle="bold"
             android:textSize="@dimen/assessor_id"/>
 
-        <TextView android:id="@+id/collection_center"
+        <TextView android:id="@+id/hospital_center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
-                    android:text="1. Is Maintenance staff contactable round the clock for emergency repairs? "
+                    android:text="Is Maintenance staff contactable round the clock for emergency repairs? "
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -136,6 +136,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
 
@@ -144,7 +145,7 @@
                     android:layout_height="wrap_content"
                     android:labelFor="@+id/gen_edit1"
                     android:paddingTop="10dp"
-                    android:text="2. Does the hospital plan for equipment in accordance with its services? "
+                    android:text="Does the hospital plan for equipment in accordance with its services? "
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
@@ -215,13 +216,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:text="3. Is the documented operational and maintenance (preventive and breakdown) plan adhered?"
+                    android:text="Is the documented operational and maintenance (preventive and breakdown) plan adhered?"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
