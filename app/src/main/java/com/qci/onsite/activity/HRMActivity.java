@@ -242,6 +242,8 @@ public class HRMActivity extends BaseActivity implements View.OnClickListener {
 
         pojo = new HRMPojo();
 
+        assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
         getPharmacyData();
     }
 
@@ -1971,7 +1973,15 @@ public class HRMActivity extends BaseActivity implements View.OnClickListener {
     public void onBackPressed() {
         super.onBackPressed();
 
-        SavePharmacyData("");
+        if (!assessement_list.get(10).getAssessement_status().equalsIgnoreCase("Done")){
+            SavePharmacyData("");
+        }else {
+            Intent intent = new Intent(HRMActivity.this,HospitalListActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+
     }
 
 }

@@ -355,6 +355,9 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
             ll_OT_Zoning.setVisibility(View.VISIBLE);
         }
 
+        assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+
         getOTData();
     }
 
@@ -3105,7 +3108,15 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
     public void onBackPressed() {
         super.onBackPressed();
 
-        SaveLaboratoryData("save");
+        if (!assessement_list.get(6).getAssessement_status().equalsIgnoreCase("Done")){
+            SaveLaboratoryData("save");
+        }else {
+            Intent intent = new Intent(OTActivity.this,HospitalListActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+
     }
 
 

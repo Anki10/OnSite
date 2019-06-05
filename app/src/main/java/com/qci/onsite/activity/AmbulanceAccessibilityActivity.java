@@ -293,6 +293,8 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
             ll_nurses_available.setVisibility(View.VISIBLE);
         }
 
+        assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
         getPharmacyData();
 
     }
@@ -2198,7 +2200,15 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
     public void onBackPressed() {
         super.onBackPressed();
 
-        SavePharmacyData("save");
+        if (!assessement_list.get(18).getAssessement_status().equalsIgnoreCase("Done")){
+            SavePharmacyData("save");
+        }else {
+            Intent intent = new Intent(AmbulanceAccessibilityActivity.this,HospitalListActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+
     }
 
 }

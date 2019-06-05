@@ -187,6 +187,8 @@ public class HighDependencyActivity extends BaseActivity implements View.OnClick
 
         hospital_center.setText(getFromPrefs(AppConstant.Hospital_Name));
 
+        assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
         getHighDeppendencyData();
     }
 
@@ -1362,7 +1364,15 @@ public class HighDependencyActivity extends BaseActivity implements View.OnClick
     public void onBackPressed() {
         super.onBackPressed();
 
-        SaveLaboratoryData("save");
+        if (!assessement_list.get(4).getAssessement_status().equalsIgnoreCase("Done")){
+            SaveLaboratoryData("save");
+        }else {
+            Intent intent = new Intent(HighDependencyActivity.this,HospitalListActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+
     }
 
 }

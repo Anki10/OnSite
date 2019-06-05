@@ -53,7 +53,7 @@ public class MainHospitalListAdapter extends RecyclerView.Adapter<MainHospitalLi
     public void onBindViewHolder(ViewHolder holder, int position) {
         AllocatedHospitalListPojo pojo = mainhospital_list.get(position);
 
-        if (pojo.getStatus().equalsIgnoreCase("Assessment accepted")){
+        if (pojo.getHospitalstage().equalsIgnoreCase("Assessment accepted")){
             holder.iv_hospital_accept.setVisibility(View.GONE);
             holder.iv_hospital_reject.setVisibility(View.GONE);
 

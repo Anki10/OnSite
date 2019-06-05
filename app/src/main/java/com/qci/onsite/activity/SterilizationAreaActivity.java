@@ -178,6 +178,8 @@ public class SterilizationAreaActivity extends BaseActivity implements View.OnCl
 
         pojo = new SterilizationAreaPojo();
 
+        assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
         getHighDeppendencyData();
 
     }
@@ -1183,6 +1185,14 @@ public class SterilizationAreaActivity extends BaseActivity implements View.OnCl
     public void onBackPressed() {
         super.onBackPressed();
 
-        SaveLaboratoryData("save");
+        if (!assessement_list.get(13).getAssessement_status().equalsIgnoreCase("Done")){
+            SaveLaboratoryData("save");
+        }else {
+            Intent intent = new Intent(SterilizationAreaActivity.this,HospitalListActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+
     }
 }

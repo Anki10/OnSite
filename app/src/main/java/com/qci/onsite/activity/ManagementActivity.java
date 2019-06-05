@@ -289,6 +289,8 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
 
         pojo = new ManagementPojo();
 
+        assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
         getPharmacyData();
     }
 
@@ -2386,7 +2388,13 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
     public void onBackPressed() {
         super.onBackPressed();
 
-        SavePharmacyData("save");
+        if (!assessement_list.get(14).getAssessement_status().equalsIgnoreCase("Done")){
+            SavePharmacyData("save");
+        }else {
+            Intent intent = new Intent(ManagementActivity.this,HospitalListActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
 }

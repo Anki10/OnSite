@@ -136,6 +136,8 @@ public class EmergencyActivity extends BaseActivity {
 
         hospital_center.setText(getFromPrefs(AppConstant.Hospital_Name));
 
+        assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
         getEmergencyData();
 
 
@@ -679,7 +681,13 @@ public class EmergencyActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        SaveEmergencyData("save");
+        if (!assessement_list.get(3).getAssessement_status().equalsIgnoreCase("Done")){
+            SaveEmergencyData("save");
+        }else {
+            Intent intent = new Intent(EmergencyActivity.this,HospitalListActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
     }
     }

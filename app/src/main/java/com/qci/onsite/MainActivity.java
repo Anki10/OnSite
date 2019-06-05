@@ -165,7 +165,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                     saveIntoPrefs(AppConstant.Hospital_ID, String.valueOf(list_hospital.get(position).getHospitalid()));
 
-                    if (!list_hospital.get(position).getStatus().equalsIgnoreCase("Onsite Assessor Allocated")){
+                    if (!list_hospital.get(position).getHospitalstage().equalsIgnoreCase("Onsite Assessor Allocated")){
                         if (date1.before(date2)){
                             if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS).length() > 0){
                                 if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS).equalsIgnoreCase(hospital_id)){

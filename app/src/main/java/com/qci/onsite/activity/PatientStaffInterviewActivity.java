@@ -257,6 +257,8 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
             ll_patient_aware_plan_care.setVisibility(View.VISIBLE);
         }
 
+        assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
 
         getPharmacyData();
 
@@ -2077,7 +2079,15 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
     public void onBackPressed() {
         super.onBackPressed();
 
-        SavePharmacyData("save");
+        if (!assessement_list.get(8).getAssessement_status().equalsIgnoreCase("Done")){
+            SavePharmacyData("save");
+        }else {
+            Intent intent = new Intent(PatientStaffInterviewActivity.this,HospitalListActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+
     }
 
 }

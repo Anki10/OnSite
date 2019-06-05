@@ -209,6 +209,8 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
 
         hospital_center.setText(getFromPrefs(AppConstant.Hospital_Name));
 
+        assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
         getPharmacyData();
 
     }
@@ -1599,6 +1601,13 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
     public void onBackPressed() {
         super.onBackPressed();
 
-        SavePharmacyData("save");
+        if (!assessement_list.get(12).getAssessement_status().equalsIgnoreCase("Done")){
+            SavePharmacyData("save");
+        }else {
+            Intent intent = new Intent(HouseKeepingActivity.this,HospitalListActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
 }

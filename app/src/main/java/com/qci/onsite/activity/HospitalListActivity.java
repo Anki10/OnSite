@@ -224,9 +224,6 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
 
 
 
-
-
-
               /*  for (int i= 0;i<assessement_list.size();i++){
                     if (assessement_list.get(i).getAssessement_status().equalsIgnoreCase("Done")){
                         Assess_Status = true;

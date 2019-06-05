@@ -176,6 +176,8 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
             ll_SHCO_Obstetrics_ward.setVisibility(View.GONE);
         }
 
+        assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
         getObstetricWardData();
 
     }
@@ -1150,6 +1152,14 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
     public void onBackPressed() {
         super.onBackPressed();
 
-        SaveRadioLogyData("save");
+        if (!assessement_list.get(5).getAssessement_status().equalsIgnoreCase("Done")){
+            SaveRadioLogyData("save");
+        }else {
+            Intent intent = new Intent(ObstetricWardActivity.this,HospitalListActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+
     }
 }

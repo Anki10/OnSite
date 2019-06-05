@@ -167,6 +167,8 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
 
         hospiatl_center.setText(getFromPrefs(AppConstant.Hospital_Name));
 
+        assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
         getLaboratoryData();
 
     }
@@ -1068,6 +1070,14 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
     public void onBackPressed() {
         super.onBackPressed();
 
-        SaveRadioLogyData("save");
+        if (!assessement_list.get(2).getAssessement_status().equalsIgnoreCase("Done")){
+            SaveRadioLogyData("save");
+        }else {
+            Intent intent = new Intent(RadiologyActivity.this,HospitalListActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+
     }
 }

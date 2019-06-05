@@ -291,6 +291,8 @@ public class ScopeOfServiceActivity extends BaseActivity {
             }
         });
 
+        assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
         getScopeService();
 
     }
@@ -1333,7 +1335,15 @@ public class ScopeOfServiceActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        SaveScopeService("save");
+        if (!assessement_list.get(21).getAssessement_status().equalsIgnoreCase("Done")){
+            SaveScopeService("save");
+        }else {
+            Intent intent = new Intent(ScopeOfServiceActivity.this,HospitalListActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+
     }
 
 }

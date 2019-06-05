@@ -217,6 +217,8 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
 
         laboratory_hospital_name.setText(getFromPrefs(AppConstant.Hospital_Name));
 
+        assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
         getLaboratoryData();
 
     }
@@ -1576,7 +1578,15 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
     public void onBackPressed() {
         super.onBackPressed();
 
-        SaveLaboratoryData("save");
+        if (!assessement_list.get(16).getAssessement_status().equalsIgnoreCase("Done")){
+            SaveLaboratoryData("save");
+        }else {
+            Intent intent = new Intent(FacilityChecksActivity.this,HospitalListActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+
     }
 }
 

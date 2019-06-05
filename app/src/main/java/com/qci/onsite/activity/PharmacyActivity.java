@@ -354,6 +354,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
             ll_risk_medications_verified.setVisibility(View.VISIBLE);
         }
 
+        assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
         getPharmacyData();
 
     }
@@ -3329,7 +3331,14 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
     public void onBackPressed() {
         super.onBackPressed();
 
-        SavePharmacyData("save");
+        if (!assessement_list.get(7).getAssessement_status().equalsIgnoreCase("Done")){
+            SavePharmacyData("save");
+        }else {
+            Intent intent = new Intent(PharmacyActivity.this,HospitalListActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
 
 }

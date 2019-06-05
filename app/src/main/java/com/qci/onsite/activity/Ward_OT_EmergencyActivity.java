@@ -212,6 +212,8 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
             ll_hospital_provide_adequate_gloves.setVisibility(View.VISIBLE);
         }
 
+        assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
 
 
         getPharmacyData();
@@ -1486,6 +1488,14 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
     public void onBackPressed() {
         super.onBackPressed();
 
-        SavePharmacyData("save");
+        if (!assessement_list.get(9).getAssessement_status().equalsIgnoreCase("Done")){
+            SavePharmacyData("save");
+        }else {
+            Intent intent = new Intent(Ward_OT_EmergencyActivity.this,HospitalListActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+
     }
 }

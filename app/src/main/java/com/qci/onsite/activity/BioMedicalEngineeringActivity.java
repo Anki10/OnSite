@@ -172,6 +172,8 @@ public class BioMedicalEngineeringActivity extends BaseActivity implements View.
 
         pojo = new BioMedicalEngineeringPojo();
 
+        assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
         getHighDeppendencyData();
 
     }
@@ -1067,6 +1069,13 @@ public class BioMedicalEngineeringActivity extends BaseActivity implements View.
     public void onBackPressed() {
         super.onBackPressed();
 
-        SaveLaboratoryData("");
+        if (!assessement_list.get(15).getAssessement_status().equalsIgnoreCase("Done")){
+            SaveLaboratoryData("");
+        }else {
+            Intent intent = new Intent(BioMedicalEngineeringActivity.this,HospitalListActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
 }

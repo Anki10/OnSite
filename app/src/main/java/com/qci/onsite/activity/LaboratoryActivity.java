@@ -270,6 +270,8 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
 
         laboratory_hospital_name.setText(getFromPrefs(AppConstant.Hospital_Name));
 
+        assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
         getLaboratoryData();
     }
 
@@ -745,7 +747,6 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                 }else {
                     PostLaboratoryData();
                 }
-
 
 
                 break;
@@ -2289,7 +2290,17 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
     public void onBackPressed() {
         super.onBackPressed();
 
-        SaveLaboratoryData("save");
+
+
+        if (!assessement_list.get(1).getAssessement_status().equalsIgnoreCase("Done")){
+            SaveLaboratoryData("save");
+        }else {
+            Intent intent = new Intent(LaboratoryActivity.this,HospitalListActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+
 
     }
 }

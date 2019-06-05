@@ -253,6 +253,9 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
             image_safety_device_lab.setVisibility(View.GONE);
         }
 
+        assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+
         getLaboratoryData();
 
     }
@@ -1820,6 +1823,13 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
     public void onBackPressed() {
         super.onBackPressed();
 
-        SaveLaboratoryData("save");
+        if (!assessement_list.get(17).getAssessement_status().equalsIgnoreCase("Done")){
+            SaveLaboratoryData("save");
+        }else {
+            Intent intent = new Intent(SafetyManagementActivity.this,HospitalListActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
 }

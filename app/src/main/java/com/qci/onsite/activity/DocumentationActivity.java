@@ -528,6 +528,8 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
             ll_document_showing_well_defined_staff.setVisibility(View.VISIBLE);
         }
 
+        assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
         getPharmacyData();
 
     }
@@ -4339,7 +4341,15 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
     public void onBackPressed() {
         super.onBackPressed();
 
-        SavePharmacyData("save");
+        if (!assessement_list.get(20).getAssessement_status().equalsIgnoreCase("Done")){
+            SavePharmacyData("save");
+        }else {
+            Intent intent = new Intent(DocumentationActivity.this,HospitalListActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+
     }
 
     @Override
