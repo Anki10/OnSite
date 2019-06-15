@@ -2095,7 +2095,7 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
             }
         });
     }
-    public class PostDataTask extends AsyncTask<Void, Void, Void> {
+    private class PostDataTask extends AsyncTask<Void, Void, Void> {
         ProgressDialog d;
         @Override
         protected void onPreExecute() {
@@ -2386,7 +2386,7 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
         }
     }
 
-    public class PostSHCODataTask extends AsyncTask<Void, Void, Void> {
+    private class PostSHCODataTask extends AsyncTask<Void, Void, Void> {
         ProgressDialog d;
         @Override
         protected void onPreExecute() {
@@ -2608,8 +2608,8 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
                                 }
 
                             }
+                            latch.countDown();
                         }
-                        latch.countDown();
                     }
 
                     @Override
