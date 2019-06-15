@@ -2025,12 +2025,18 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
             public void onResponse(Call<ImageUploadResponse> call, Response<ImageUploadResponse> response) {
                 //d.cancel();
                 if (response.message().equalsIgnoreCase("Unauthorized")) {
-                    Intent intent = new Intent(LaboratoryActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(LaboratoryActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
 
-                    Toast.makeText(LaboratoryActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LaboratoryActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
                 }else {
                     if (response.body() != null){
                         if (response.body().getSuccess()){
@@ -2080,7 +2086,7 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
 
             @Override
             public void onFailure(Call<ImageUploadResponse> call, Throwable t) {
-                System.out.println("xxx fail");
+                //System.out.println("xxx fail");
                 check = 0;
                 latch.countDown();
                 //d.cancel();
@@ -2126,7 +2132,12 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
             }
             if(check==0)
             {
-                Toast.makeText(this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(LaboratoryActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 break;
             }
         }
@@ -2144,7 +2155,12 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
             }
             if(check==0)
             {
-                Toast.makeText(this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(LaboratoryActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 break;
             }
         }
@@ -2163,7 +2179,12 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
             }
             if(check==0)
             {
-                Toast.makeText(this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(LaboratoryActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 break;
             }
         }
@@ -2181,7 +2202,12 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
             }
             if(check==0)
             {
-                Toast.makeText(this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(LaboratoryActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 break;
             }
 
@@ -2200,7 +2226,12 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
             }
             if(check==0)
             {
-                Toast.makeText(this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(LaboratoryActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 break;
             }
         }
@@ -2273,18 +2304,27 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
                         //d.dismiss();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
-                            Intent intent = new Intent(LaboratoryActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            finish();
-
-                            Toast.makeText(LaboratoryActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
-                        }else {
-                            if (response.body() != null){
-                                if (response.body().getSuccess()){
-                                    Intent intent = new Intent(LaboratoryActivity.this,HospitalListActivity.class);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(LaboratoryActivity.this, LoginActivity.class);
                                     startActivity(intent);
                                     finish();
 
+                                    Toast.makeText(LaboratoryActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }else {
+                            if (response.body() != null){
+                                if (response.body().getSuccess()){
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Intent intent = new Intent(LaboratoryActivity.this,HospitalListActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
                                     saveIntoPrefs("Laboratory_tabId"+Hospital_id, String.valueOf(response.body().getTabId()));
 
                                     saveIntoPrefs("asmtId"+Hospital_id, String.valueOf(response.body().getAsmtId()));
@@ -2299,8 +2339,12 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
                                     pojo.setLocal_id(assessement_list.get(1).getLocal_id());
 
                                     databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-                                    Toast.makeText(LaboratoryActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(LaboratoryActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                                 }
 
                             }
@@ -2323,12 +2367,22 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
                     Log.e("Upload",e.getMessage());
                 }
             }else {
-                Toast.makeText(LaboratoryActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(LaboratoryActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+                    }
+                });
             }
 
 
         }else {
-            Toast.makeText(LaboratoryActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(LaboratoryActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+                }
+            });
         }
     }
 
@@ -2368,7 +2422,12 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
             }
             if(check==0)
             {
-                Toast.makeText(this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(LaboratoryActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 break;
             }
         }
@@ -2386,7 +2445,12 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
             }
             if(check==0)
             {
-                Toast.makeText(this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(LaboratoryActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 break;
             }
         }
@@ -2405,7 +2469,12 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
             }
             if(check==0)
             {
-                Toast.makeText(this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(LaboratoryActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 break;
             }
         }
@@ -2423,7 +2492,12 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
             }
             if(check==0)
             {
-                Toast.makeText(this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(LaboratoryActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 break;
             }
 
@@ -2442,7 +2516,12 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
             }
             if(check==0)
             {
-                Toast.makeText(this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(LaboratoryActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 break;
             }
         }
@@ -2473,29 +2552,39 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
 
                 pojo_dataSync.setLaboratory(pojo);
 
-                final ProgressDialog d = AppDialog.showLoading(LaboratoryActivity.this);
-                d.setCanceledOnTouchOutside(false);
-
+                //final ProgressDialog d = AppDialog.showLoading(LaboratoryActivity.this);
+                //d.setCanceledOnTouchOutside(false);
+                latch = new CountDownLatch(1);
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        d.dismiss();
+                        //d.dismiss();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
-                            Intent intent = new Intent(LaboratoryActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            finish();
-
-                            Toast.makeText(LaboratoryActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
-                        }else {
-                            if (response.body() != null){
-                                if (response.body().getSuccess()){
-                                    Intent intent = new Intent(LaboratoryActivity.this,HospitalListActivity.class);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(LaboratoryActivity.this, LoginActivity.class);
                                     startActivity(intent);
                                     finish();
 
+                                    Toast.makeText(LaboratoryActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+
+                                }
+                            });
+                        }else {
+                            if (response.body() != null){
+                                if (response.body().getSuccess()){
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Intent intent = new Intent(LaboratoryActivity.this,HospitalListActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
                                     saveIntoPrefs("Laboratory_tabId"+Hospital_id, String.valueOf(response.body().getTabId()));
 
                                     saveIntoPrefs("asmtId"+Hospital_id, String.valueOf(response.body().getAsmtId()));
@@ -2510,28 +2599,50 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
                                     pojo.setLocal_id(assessement_list.get(1).getLocal_id());
 
                                     databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-                                    Toast.makeText(LaboratoryActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(LaboratoryActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                                 }
 
                             }
                         }
+                        latch.countDown();
                     }
 
                     @Override
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
-
-                        d.dismiss();
+                        latch.countDown();
+                        //d.dismiss();
                     }
                 });
+                try {
+                    latch.await();
+                }
+                catch(Exception e)
+                {
+                    Log.e("Upload",e.getMessage());
+                }
             }else {
-                Toast.makeText(LaboratoryActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(LaboratoryActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+                    }
+                });
             }
 
 
         }else {
-            Toast.makeText(LaboratoryActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(LaboratoryActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+                }
+            });
         }
     }
 
