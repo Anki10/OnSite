@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
@@ -612,7 +613,18 @@ public class HRMActivity extends BaseActivity implements View.OnClickListener {
                 break;
 
             case R.id.btnSync:
-              PostLaboratoryData();
+
+                if (staff_health_related_issues.length() > 0 && staffs_personal_files_maintained.length() > 0 && occupational_health_hazards.length() > 0 && training_responsibility_changes.length() > 0 && medical_records_doctors_retrievable.length() > 0 &&
+                        case_of_grievances.length() > 0 && staff_disciplinary_procedure.length() > 0 && staff_able_to_demonstrate.length() > 0){
+                    if (image1 != null){
+                        SavePharmacyData("sync");
+                    }else {
+                        Toast.makeText(HRMActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+                    }
+                }else {
+                    Toast.makeText(HRMActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+                }
                 break;
         }
     }
@@ -1705,43 +1717,65 @@ public class HRMActivity extends BaseActivity implements View.OnClickListener {
         pojo.setStaff_able_to_demonstrate_nc(nc11);
 
         if (sql_status){
-             databaseHandler.UPDATE_HRM(pojo);
+             boolean sp_status = databaseHandler.UPDATE_HRM(pojo);
+
+             if (sp_status){
+                 if (!from.equalsIgnoreCase("sync")){
+                     assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                     AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                     pojo.setHospital_id(assessement_list.get(10).getHospital_id());
+                     pojo.setAssessement_name("HRM");
+                     pojo.setAssessement_status("Draft");
+                     pojo.setLocal_id(assessement_list.get(10).getLocal_id());
+
+                     databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+
+                     Toast.makeText(HRMActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                     Intent intent = new Intent(HRMActivity.this,HospitalListActivity.class);
+                     startActivity(intent);
+                     finish();
+                 }else {
+                     progreesDialog();
+                     PostLaboratoryData();
+                 }
+
+             }
         }else {
-            boolean status = databaseHandler.INSERT_HRM(pojo);
-            System.out.println(status);
+            boolean sp_status = databaseHandler.INSERT_HRM(pojo);
+
+
+            if (sp_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(10).getHospital_id());
+                    pojo.setAssessement_name("HRM");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(10).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+
+                    Toast.makeText(HRMActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(HRMActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    progreesDialog();
+                    PostLaboratoryData();
+                }
+
+            }
         }
-
-        if (!from.equalsIgnoreCase("sync")){
-            assessement_list = databaseHandler.getAssessmentList(Hospital_id);
-
-            AssessmentStatusPojo pojo = new AssessmentStatusPojo();
-            pojo.setHospital_id(assessement_list.get(10).getHospital_id());
-            pojo.setAssessement_name("HRM");
-            pojo.setAssessement_status("Draft");
-            pojo.setLocal_id(assessement_list.get(10).getLocal_id());
-
-            databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-
-            Toast.makeText(HRMActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(HRMActivity.this,HospitalListActivity.class);
-            startActivity(intent);
-            finish();
-        }
-
-
-
     }
 
     private void PostLaboratoryData(){
 
-        SavePharmacyData("sync");
-
-        if (staff_health_related_issues.length() > 0 && staffs_personal_files_maintained.length() > 0 && occupational_health_hazards.length() > 0 && training_responsibility_changes.length() > 0 && medical_records_doctors_retrievable.length() > 0 &&
-                case_of_grievances.length() > 0 && staff_disciplinary_procedure.length() > 0 && staff_able_to_demonstrate.length() > 0){
-
-            if (image1 != null){
                 pojo_dataSync.setTabName("hrm");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -1761,15 +1795,12 @@ public class HRMActivity extends BaseActivity implements View.OnClickListener {
 
                 pojo_dataSync.setHrm(pojo);
 
-                final ProgressDialog d = AppDialog.showLoading(HRMActivity.this);
-                d.setCanceledOnTouchOutside(false);
-
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
                             Intent intent = new Intent(HRMActivity.this, LoginActivity.class);
@@ -1808,16 +1839,9 @@ public class HRMActivity extends BaseActivity implements View.OnClickListener {
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
                     }
                 });
-            }else {
-                Toast.makeText(HRMActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
-            }
-
-        }else {
-            Toast.makeText(HRMActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
     }
 
     private void VideoUpload(String image_path,final String from){
@@ -1908,6 +1932,8 @@ public class HRMActivity extends BaseActivity implements View.OnClickListener {
                                 staffs_personal_files_maintained_list.add(response.body().getMessage());
                                 Local_staffs_personal_files_maintained_list.add(image_path);
                                 image_staffs_personal_files_maintained.setImageResource(R.mipmap.camera_selected);
+
+                                image1 = "staffs_personal_files_maintained";
                             }
 
                             Toast.makeText(HRMActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();

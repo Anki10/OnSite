@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
@@ -912,7 +913,6 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
             }
 
 
-
             if (pojo.getDocument_showing_policies_procedure_remark() != null){
                 remark11 = pojo.getDocument_showing_policies_procedure_remark();
 
@@ -1154,7 +1154,7 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
                     JSONArray jArray = json.optJSONArray("uniqueArrays");
                     if (jArray != null){
                         for (int i=0;i<jArray.length();i++){
-                            img_signed_general_duty_list.add(jArray.getString(i));
+                            img_signed_general_duty_url_list.add(jArray.getString(i));
                         }
                     }
                 } catch (JSONException e) {
@@ -1171,7 +1171,7 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
                     JSONArray jArray = json.optJSONArray("uniqueArrays");
                     if (jArray != null){
                         for (int i=0;i<jArray.length();i++){
-                            img_signed_general_duty_url_list.add(jArray.getString(i));
+                            img_signed_general_duty_list.add(jArray.getString(i));
                         }
                     }
                 } catch (JSONException e) {
@@ -1534,15 +1534,35 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
 
 
             case R.id.btnSave:
-                SavePharmacyData("save");
+                SavePharmacyData("save","");
                 break;
 
             case R.id.btnSync:
 
                 if(Bed_no < 51){
-                    Post_SHCO_LaboratoryData();
+                    if (document_related_procedure.length() > 0 && document_showing_process.length() > 0 && document_showing_care_patients.length() >0 && document_showing_policies.length() > 0 &&
+                            document_showing_procedure_administration.length() > 0 && document_showing_procedure_prevention.length() > 0 && document_showing_procedure_incorporating.length() > 0 &&
+                            document_showing_procedure_address.length() > 0 &&
+                            Infection_control_manual_showing.length() > 0 && document_showing_operational_maintenance.length() > 0 && document_showing_safe_exit_plan.length() > 0 && document_showing_disciplinary_grievance.length() > 0 &&
+                            document_showing_policies_procedures.length() > 0 && document_showing_retention_time.length() > 0 && document_showing_define_process.length() > 0 && document_showing_medical_records.length() > 0
+                            && img_signed_document_url_list.size() > 0 && img_signed_general_duty_url_list.size() > 0 && img_signed_nursesl_url_list.size() > 0 &&  img_signed_paramedical_url_list.size() > 0 && img_signed_administrativ_url_list.size() > 0){
+                        SavePharmacyData("sync","shco");
+                    }else {
+                        Toast.makeText(DocumentationActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+                    }
                 }else {
-                    PostLaboratoryData();
+                    if (document_related_procedure.length() > 0 && document_showing_process.length() > 0 && document_showing_care_patients.length() >0 && document_showing_policies.length() > 0 &&
+                            document_showing_procedures.length() > 0 && document_showing_procedure_administration.length() > 0 && document_showing_defined_criteria.length() > 0 && document_showing_procedure_prevention.length() > 0 && document_showing_procedure_incorporating.length() > 0 &&
+                            document_showing_procedure_address.length() > 0 && document_showing_policies_procedure.length() > 0 && document_showing_drugs_available.length() >0 && document_showing_safe_storage.length() > 0 &&
+                            Infection_control_manual_showing.length() > 0 && document_showing_operational_maintenance.length() > 0 && document_showing_safe_exit_plan.length() > 0 && document_showing_well_defined_staff.length() > 0 && document_showing_disciplinary_grievance.length() > 0 &&
+                            document_showing_policies_procedures.length() > 0 && document_showing_retention_time.length() > 0 && document_showing_define_process.length() > 0 && document_showing_medical_records.length() > 0
+                            && img_signed_document_url_list.size() > 0 && img_signed_general_duty_url_list.size() > 0 && img_signed_nursesl_url_list.size() > 0 &&  img_signed_paramedical_url_list.size() > 0 && img_signed_administrativ_url_list.size() > 0){
+                        SavePharmacyData("sync","hco");
+                    }else {
+                        Toast.makeText(DocumentationActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+                    }
                 }
 
                 break;
@@ -3604,7 +3624,7 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
     }
 
 
-    public void SavePharmacyData(String from) {
+    public void SavePharmacyData(String from,String hospital_status) {
 
         pojo.setHospital_name("Hospital1");
         pojo.setHospital_id(20);
@@ -3849,42 +3869,81 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
 
 
         if (sql_status) {
-            databaseHandler.UPDATE_DOCUMENTATION(pojo);
+            boolean sh_status = databaseHandler.UPDATE_DOCUMENTATION(pojo);
+
+            if (sh_status){
+                if (!from.equalsIgnoreCase("sync")) {
+
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(20).getHospital_id());
+                    pojo.setAssessement_name("Documentation");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(20).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+
+                    Toast.makeText(DocumentationActivity.this, "Your data saved", Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(DocumentationActivity.this, HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    if (hospital_status.equalsIgnoreCase("shco")){
+
+                        progreesDialog();
+
+                        Post_SHCO_LaboratoryData();
+                    }else {
+                        progreesDialog();
+
+                        PostLaboratoryData();
+                    }
+                }
+            }
         } else {
-            boolean status = databaseHandler.INSERT_Documentation(pojo);
-            System.out.println(status);
+            boolean sh_status = databaseHandler.INSERT_Documentation(pojo);
+
+            if (sh_status){
+                if (!from.equalsIgnoreCase("sync")) {
+
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(20).getHospital_id());
+                    pojo.setAssessement_name("Documentation");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(20).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+
+                    Toast.makeText(DocumentationActivity.this, "Your data saved", Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(DocumentationActivity.this, HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    if (hospital_status.equalsIgnoreCase("shco")){
+
+                        progreesDialog();
+
+                        Post_SHCO_LaboratoryData();
+                    }else {
+                        progreesDialog();
+
+                        PostLaboratoryData();
+                    }
+                }
+            }
         }
 
-        if (!from.equalsIgnoreCase("sync")) {
 
-            assessement_list = databaseHandler.getAssessmentList(Hospital_id);
-
-            AssessmentStatusPojo pojo = new AssessmentStatusPojo();
-            pojo.setHospital_id(assessement_list.get(20).getHospital_id());
-            pojo.setAssessement_name("Documentation");
-            pojo.setAssessement_status("Draft");
-            pojo.setLocal_id(assessement_list.get(20).getLocal_id());
-
-            databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-
-            Toast.makeText(DocumentationActivity.this, "Your data saved", Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(DocumentationActivity.this, HospitalListActivity.class);
-            startActivity(intent);
-            finish();
-        }
     }
     private void PostLaboratoryData(){
 
-        SavePharmacyData("sync");
-
-        if (document_related_procedure.length() > 0 && document_showing_process.length() > 0 && document_showing_care_patients.length() >0 && document_showing_policies.length() > 0 &&
-                document_showing_procedures.length() > 0 && document_showing_procedure_administration.length() > 0 && document_showing_defined_criteria.length() > 0 && document_showing_procedure_prevention.length() > 0 && document_showing_procedure_incorporating.length() > 0 &&
-                document_showing_procedure_address.length() > 0 && document_showing_policies_procedure.length() > 0 && document_showing_drugs_available.length() >0 && document_showing_safe_storage.length() > 0 &&
-                Infection_control_manual_showing.length() > 0 && document_showing_operational_maintenance.length() > 0 && document_showing_safe_exit_plan.length() > 0 && document_showing_well_defined_staff.length() > 0 && document_showing_disciplinary_grievance.length() > 0 &&
-                document_showing_policies_procedures.length() > 0 && document_showing_retention_time.length() > 0 && document_showing_define_process.length() > 0 && document_showing_medical_records.length() > 0
-        && img_signed_document_url_list.size() > 0 && img_signed_general_duty_url_list.size() > 0 && img_signed_nursesl_url_list.size() > 0 &&  img_signed_paramedical_url_list.size() > 0 && img_signed_administrativ_url_list.size() > 0){
 
             pojo_dataSync.setTabName("Documentation");
             pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
@@ -3936,15 +3995,14 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
 
             pojo_dataSync.setDocumentation(pojo);
 
-            final ProgressDialog d = AppDialog.showLoading(DocumentationActivity.this);
-            d.setCanceledOnTouchOutside(false);
+
 
             mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                 @Override
                 public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                     System.out.println("xxx sucess");
 
-                    d.dismiss();
+                    CloseProgreesDialog();
 
                     if (response.message().equalsIgnoreCase("Unauthorized")) {
                         Intent intent = new Intent(DocumentationActivity.this, LoginActivity.class);
@@ -3985,25 +4043,13 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
                 public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                     System.out.println("xxx failed");
 
-                    d.dismiss();
+                    CloseProgreesDialog();
                 }
             });
-        }else {
-            Toast.makeText(DocumentationActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
     }
 
     private void Post_SHCO_LaboratoryData(){
 
-        SavePharmacyData("sync");
-
-        if (document_related_procedure.length() > 0 && document_showing_process.length() > 0 && document_showing_care_patients.length() >0 && document_showing_policies.length() > 0 &&
-                document_showing_procedure_administration.length() > 0 && document_showing_procedure_prevention.length() > 0 && document_showing_procedure_incorporating.length() > 0 &&
-                document_showing_procedure_address.length() > 0 &&
-                Infection_control_manual_showing.length() > 0 && document_showing_operational_maintenance.length() > 0 && document_showing_safe_exit_plan.length() > 0 && document_showing_disciplinary_grievance.length() > 0 &&
-                document_showing_policies_procedures.length() > 0 && document_showing_retention_time.length() > 0 && document_showing_define_process.length() > 0 && document_showing_medical_records.length() > 0
-                && img_signed_document_url_list.size() > 0 && img_signed_general_duty_url_list.size() > 0 && img_signed_nursesl_url_list.size() > 0 &&  img_signed_paramedical_url_list.size() > 0 && img_signed_administrativ_url_list.size() > 0){
-
             pojo_dataSync.setTabName("Documentation");
             pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
             pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -4055,15 +4101,13 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
 
             pojo_dataSync.setDocumentation(pojo);
 
-            final ProgressDialog d = AppDialog.showLoading(DocumentationActivity.this);
-            d.setCanceledOnTouchOutside(false);
 
             mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                 @Override
                 public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                     System.out.println("xxx sucess");
 
-                    d.dismiss();
+                    CloseProgreesDialog();
 
                     if (response.message().equalsIgnoreCase("Unauthorized")) {
                         Intent intent = new Intent(DocumentationActivity.this, LoginActivity.class);
@@ -4104,12 +4148,9 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
                 public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                     System.out.println("xxx failed");
 
-                    d.dismiss();
+                    CloseProgreesDialog();
                 }
             });
-        }else {
-            Toast.makeText(DocumentationActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
     }
 
 
@@ -4255,22 +4296,38 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
                                 img_signed_document_url_list.add(response.body().getMessage());
                                 img_signed_document_list.add(image_path);
                                 image_signed_document.setImageResource(R.mipmap.camera_selected);
+
+                                image1 = "selfie";
+
                             }else if (from.equalsIgnoreCase("hospital_board")){
                                 img_signed_general_duty_url_list.add(response.body().getMessage());
                                 img_signed_general_duty_list.add(image_path);
                                 image_signed_general_duty.setImageResource(R.mipmap.camera_selected);
+
+                                image2 = "hospital_board";
+
                             }else if (from.equalsIgnoreCase("authorised_person")){
                                 img_signed_nursesl_url_list.add(response.body().getMessage());
                                 img_signed_nursesl_list.add(image_path);
                                 image_signed_nursesl.setImageResource(R.mipmap.camera_selected);
+
+                                image3 = "authorised_person";
+
+
                             }else if (from.equalsIgnoreCase("front_hospital")){
                                 img_signed_paramedical_url_list.add(response.body().getMessage());
                                 img_signed_paramedicall_list.add(image_path);
                                 image_signed_paramedical.setImageResource(R.mipmap.camera_selected);
+
+                                image4 = "front_hospital";
+
                             }else if (from.equalsIgnoreCase("back_hospital")){
                                 img_signed_administrativ_url_list.add(response.body().getMessage());
                                 img_signed_administrativ_list.add(image_path);
                                 image_signed_administrativ.setImageResource(R.mipmap.camera_selected);
+
+                                image5 = "back_hospital";
+
                             }
 
                             Toast.makeText(DocumentationActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
@@ -4342,7 +4399,7 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
         super.onBackPressed();
 
         if (!assessement_list.get(20).getAssessement_status().equalsIgnoreCase("Done")){
-            SavePharmacyData("save");
+            SavePharmacyData("save","");
         }else {
             Intent intent = new Intent(DocumentationActivity.this,HospitalListActivity.class);
             startActivity(intent);

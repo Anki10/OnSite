@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
@@ -615,14 +616,37 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
                 break;
 
             case R.id.btnSave:
-                SavePharmacyData("save");
+                SavePharmacyData("save","");
                 break;
 
             case R.id.btnSync:
                 if (Bed_no < 51){
-                 PostLaboratory_SHCO_Data();
+                    if (privacy_maintained.length() > 0 && patients_protected_physical_abuse.length() > 0 && patient_information_confidential.length() > 0 && patients_consent_carrying.length() > 0 && patient_voice_complaint.length() > 0 &&
+                            patients_cost_treatment.length() > 0 && patient_clinical_records.length() > 0 ){
+
+                        if (image1 != null){
+                            SavePharmacyData("sync","shco");
+                        }else {
+                            Toast.makeText(PatientStaffInterviewActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+                        }
+                    }else {
+                        Toast.makeText(PatientStaffInterviewActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+                    }
+
                 }else {
-                    PostLaboratoryData();
+                    if (privacy_maintained.length() > 0 && patients_protected_physical_abuse.length() > 0 && patient_information_confidential.length() > 0 && patients_consent_carrying.length() > 0 && patient_voice_complaint.length() > 0 &&
+                            patients_cost_treatment.length() > 0 && patient_clinical_records.length() > 0 && patient_aware_plan_care.length() > 0){
+
+                        if (image1 != null){
+                            SavePharmacyData("sync","hco");
+                        }else {
+                            Toast.makeText(PatientStaffInterviewActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+                        }
+
+                    }else {
+                        Toast.makeText(PatientStaffInterviewActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+                    }
                 }
 
                 break;
@@ -1694,7 +1718,7 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
 
 
 
-    public void SavePharmacyData(String from){
+    public void SavePharmacyData(String from,String hospital_status){
 
         pojo.setHospital_name("Hospital1");
         pojo.setHospital_id(8);
@@ -1776,40 +1800,78 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
 
 
         if (sql_status){
-            databaseHandler.UPDATE_PATIENT_STAFF(pojo);
+            boolean st_status = databaseHandler.UPDATE_PATIENT_STAFF(pojo);
+
+            if (st_status){
+                if (!from.equalsIgnoreCase("sync")){
+
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(8).getHospital_id());
+                    pojo.setAssessement_name("Patient/Staff Interview");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(8).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+                    Toast.makeText(PatientStaffInterviewActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(PatientStaffInterviewActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    if (hospital_status.equalsIgnoreCase("shco")){
+
+                        progreesDialog();
+
+                        PostLaboratory_SHCO_Data();
+                    }else {
+                        progreesDialog();
+
+                        PostLaboratoryData();
+                    }
+                }
+            }
         }else {
-            boolean status = databaseHandler.INSERT_PATIENT_STAFF(pojo);
-            System.out.println(status);
+            boolean st_status = databaseHandler.INSERT_PATIENT_STAFF(pojo);
+            if (st_status){
+                if (!from.equalsIgnoreCase("sync")){
+
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(8).getHospital_id());
+                    pojo.setAssessement_name("Patient/Staff Interview");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(8).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+                    Toast.makeText(PatientStaffInterviewActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(PatientStaffInterviewActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    if (hospital_status.equalsIgnoreCase("shco")){
+
+                        progreesDialog();
+
+                        PostLaboratory_SHCO_Data();
+                    }else {
+                        progreesDialog();
+
+                        PostLaboratoryData();
+                    }
+                }
+            }
         }
 
-        if (!from.equalsIgnoreCase("sync")){
 
-            assessement_list = databaseHandler.getAssessmentList(Hospital_id);
-
-            AssessmentStatusPojo pojo = new AssessmentStatusPojo();
-            pojo.setHospital_id(assessement_list.get(8).getHospital_id());
-            pojo.setAssessement_name("Patient/Staff Interview");
-            pojo.setAssessement_status("Draft");
-            pojo.setLocal_id(assessement_list.get(8).getLocal_id());
-
-            databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-            Toast.makeText(PatientStaffInterviewActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(PatientStaffInterviewActivity.this,HospitalListActivity.class);
-            startActivity(intent);
-            finish();
-        }
 
     }
 
     private void PostLaboratoryData(){
 
-        SavePharmacyData("sync");
-
-        if (privacy_maintained.length() > 0 && patients_protected_physical_abuse.length() > 0 && patient_information_confidential.length() > 0 && patients_consent_carrying.length() > 0 && patient_voice_complaint.length() > 0 &&
-                patients_cost_treatment.length() > 0 && patient_clinical_records.length() > 0 && patient_aware_plan_care.length() > 0){
-
-            if (image1 != null){
                 pojo_dataSync.setTabName("patientstaffinterview");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -1829,15 +1891,13 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
 
                 pojo_dataSync.setPatientStaffInterview(pojo);
 
-                final ProgressDialog d = AppDialog.showLoading(PatientStaffInterviewActivity.this);
-                d.setCanceledOnTouchOutside(false);
 
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
                             Intent intent = new Intent(PatientStaffInterviewActivity.this, LoginActivity.class);
@@ -1878,26 +1938,13 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
                     }
                 });
-            }else {
-                Toast.makeText(PatientStaffInterviewActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
-            }
-
-        }else {
-            Toast.makeText(PatientStaffInterviewActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
     }
 
     private void PostLaboratory_SHCO_Data(){
 
-        SavePharmacyData("sync");
-
-        if (privacy_maintained.length() > 0 && patients_protected_physical_abuse.length() > 0 && patient_information_confidential.length() > 0 && patients_consent_carrying.length() > 0 && patient_voice_complaint.length() > 0 &&
-                patients_cost_treatment.length() > 0 && patient_clinical_records.length() > 0 ){
-
-            if (image1 != null){
                 pojo_dataSync.setTabName("patientstaffinterview");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -1917,15 +1964,14 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
 
                 pojo_dataSync.setPatientStaffInterview(pojo);
 
-                final ProgressDialog d = AppDialog.showLoading(PatientStaffInterviewActivity.this);
-                d.setCanceledOnTouchOutside(false);
+
 
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
                             Intent intent = new Intent(PatientStaffInterviewActivity.this, LoginActivity.class);
@@ -1966,16 +2012,10 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
                     }
                 });
-            }else {
-                Toast.makeText(PatientStaffInterviewActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
-            }
 
-        }else {
-            Toast.makeText(PatientStaffInterviewActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
     }
 
 
@@ -2014,6 +2054,8 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
                                 privacy_maintained_list.add(response.body().getMessage());
                                 Local_privacy_maintained_list.add(image_path);
                                 Image_privacy_maintained.setImageResource(R.mipmap.camera_selected);
+
+                                image1 = "privacy_maintained";
                             }
 
                             Toast.makeText(PatientStaffInterviewActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
@@ -2080,7 +2122,7 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
         super.onBackPressed();
 
         if (!assessement_list.get(8).getAssessement_status().equalsIgnoreCase("Done")){
-            SavePharmacyData("save");
+            SavePharmacyData("save","");
         }else {
             Intent intent = new Intent(PatientStaffInterviewActivity.this,HospitalListActivity.class);
             startActivity(intent);

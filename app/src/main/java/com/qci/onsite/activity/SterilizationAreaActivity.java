@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
@@ -395,7 +396,17 @@ public class SterilizationAreaActivity extends BaseActivity implements View.OnCl
                 break;
 
             case R.id.btnSync:
-                PostLaboratoryData();
+                if (sterilisation_practices_adherede.length() > 0 && monitor_effectiveness_sterilization_process.length() > 0 && sterilized_drums_trays.length() > 0){
+                    if (image2 != null && image3 != null){
+                        SaveLaboratoryData("sync");
+                    }else {
+                        Toast.makeText(SterilizationAreaActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+                    }
+                }else {
+                    Toast.makeText(SterilizationAreaActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+                }
+
+
                 break;
         }
     }
@@ -942,39 +953,64 @@ public class SterilizationAreaActivity extends BaseActivity implements View.OnCl
         pojo.setLocal_sterilized_drums_trays_image(Local_image3);
 
         if (sql_status){
-            databaseHandler.UPDATE_STERIALIZATION(pojo);
+            boolean sp_status =  databaseHandler.UPDATE_STERIALIZATION(pojo);
+
+            if (sp_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(13).getHospital_id());
+                    pojo.setAssessement_name("Sterilization Area");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(13).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+
+                    Toast.makeText(SterilizationAreaActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(SterilizationAreaActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }  else {
+                    progreesDialog();
+
+                    PostLaboratoryData();
+                }
+            }
         }else {
-            boolean status = databaseHandler.INSERT_STERIALIZATION(pojo);
-            System.out.println(status);
-        }
+            boolean sp_status = databaseHandler.INSERT_STERIALIZATION(pojo);
 
-        if (!from.equalsIgnoreCase("sync")){
-            assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+            if (sp_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
 
-            AssessmentStatusPojo pojo = new AssessmentStatusPojo();
-            pojo.setHospital_id(assessement_list.get(13).getHospital_id());
-            pojo.setAssessement_name("Sterilization Area");
-            pojo.setAssessement_status("Draft");
-            pojo.setLocal_id(assessement_list.get(13).getLocal_id());
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(13).getHospital_id());
+                    pojo.setAssessement_name("Sterilization Area");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(13).getLocal_id());
 
-            databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
 
 
-            Toast.makeText(SterilizationAreaActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+                    Toast.makeText(SterilizationAreaActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
 
-            Intent intent = new Intent(SterilizationAreaActivity.this,HospitalListActivity.class);
-            startActivity(intent);
-            finish();
+                    Intent intent = new Intent(SterilizationAreaActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    progreesDialog();
+
+                    PostLaboratoryData();
+                }
+            }
         }
     }
 
     private void PostLaboratoryData(){
 
-        SaveLaboratoryData("sync");
-
-        if (sterilisation_practices_adherede.length() > 0 && monitor_effectiveness_sterilization_process.length() > 0 && sterilized_drums_trays.length() > 0){
-
-            if (image2 != null && image3 != null){
                 pojo_dataSync.setTabName("sterilization");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -1004,15 +1040,12 @@ public class SterilizationAreaActivity extends BaseActivity implements View.OnCl
 
                 pojo_dataSync.setSterilization(pojo);
 
-                final ProgressDialog d = AppDialog.showLoading(SterilizationAreaActivity.this);
-                d.setCanceledOnTouchOutside(false);
-
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
                             Intent intent = new Intent(SterilizationAreaActivity.this, LoginActivity.class);
@@ -1051,18 +1084,10 @@ public class SterilizationAreaActivity extends BaseActivity implements View.OnCl
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
                     }
                 });
-            }else {
-                Toast.makeText(SterilizationAreaActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
-            }
-        }else {
-            Toast.makeText(SterilizationAreaActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
     }
-
-
 
     private void ImageUpload(final String image_path,final String from){
         File file = new File(image_path);
@@ -1099,11 +1124,19 @@ public class SterilizationAreaActivity extends BaseActivity implements View.OnCl
                                 AreStaff_imageList.add(response.body().getMessage());
                                 Local_AreStaff_imageList.add(image_path);
                                 image_monitor_effectiveness_sterilization_process.setImageResource(R.mipmap.camera_selected);
+
+                                image2 = "Are_staff";
+
+
                             }else if (from.equalsIgnoreCase("do_high")){
 
                                 DoHigh_imageList.add(response.body().getMessage());
                                 Local_DoHigh_imageList.add(image_path);
                                 image_sterilized_drums_trays.setImageResource(R.mipmap.camera_selected);
+
+                                image3 = "do_high";
+
+
                             }
 
 

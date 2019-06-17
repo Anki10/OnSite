@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
@@ -199,8 +200,8 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
 
     private DatabaseHandler databaseHandler;
 
-    private String video1,image2,image3,image4,image5,image6,image7;
-    private String Local_video1,Local_image2,Local_image3,Local_image4,Local_image5,Local_image6,Local_image7;
+    private String video1,image2,image3,image4,image5,image6;
+    private String Local_video1,Local_image2,Local_image3,Local_image4,Local_image5,Local_image6;
 
     private File outputVideoFile;
 
@@ -327,9 +328,6 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                     laboratory_defined_turnaround_no.setChecked(true);
                 }
             }
-
-
-
 
             if (pojo.getCollected_properly_remark() != null){
                 remark_collected.setImageResource(R.mipmap.remark_selected);
@@ -737,17 +735,37 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
 
                 break;
                 case R.id.btnSave:
-                SaveLaboratoryData("save");
+                SaveLaboratoryData("save","");
                 break;
 
             case R.id.btnSync:
 
                 if (Bed_no < 51){
-                     PostSHCO_LaboratoryData();
-                }else {
-                    PostLaboratoryData();
-                }
 
+                    if ( specimen_status.length() > 0 ){
+                        if ( image4 != null){
+                            SaveLaboratoryData("sync","shco");
+                        }else {
+                            Toast.makeText(LaboratoryActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+                        }
+                    }else {
+                        Toast.makeText(LaboratoryActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+                    }
+
+                }else {
+                    if (identified_status.length() > 0 && transported_status.length() > 0 && specimen_status.length() > 0
+                            && appropriate_status.length() > 0 && laboratory_defined_turnaround.length() >0){
+
+                        if (image3 != null && image4 != null && image5 != null && image6 != null){
+                            SaveLaboratoryData("sync","hco");
+                        }else {
+                            Toast.makeText(LaboratoryActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+                        }
+                    }else {
+                        Toast.makeText(LaboratoryActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+                    }
+                }
 
                 break;
 
@@ -1653,7 +1671,7 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
 
 
 
-    public void SaveLaboratoryData(String from){
+    public void SaveLaboratoryData(String from,String hospital_status){
         pojo.setHospital_name("Hospital1");
         pojo.setHospital_id(1);
 
@@ -1815,31 +1833,77 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
 
 
         if (sql_status){
-             databaseHandler.UPDATE_LABORATORY(pojo);
+             boolean sqlite_status = databaseHandler.UPDATE_LABORATORY(pojo);
+
+             if (sqlite_status){
+                 if (!from.equalsIgnoreCase("sync")){
+                     assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+
+                     AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                     pojo.setHospital_id(assessement_list.get(1).getHospital_id());
+                     pojo.setAssessement_name("Laboratory");
+                     pojo.setAssessement_status("Draft");
+                     pojo.setLocal_id(assessement_list.get(1).getLocal_id());
+
+                     databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                     Toast.makeText(LaboratoryActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                     Intent intent = new Intent(LaboratoryActivity.this,HospitalListActivity.class);
+                     startActivity(intent);
+                     finish();
+
+                 }else {
+                     if (hospital_status.equalsIgnoreCase("shco")){
+                         progreesDialog();
+
+                         PostSHCO_LaboratoryData();
+                     }else {
+                         progreesDialog();
+
+                         PostLaboratoryData();
+                     }
+
+                 }
+             }
         }else {
-            boolean status = databaseHandler.INSERT_LABORATORY(pojo);
-            System.out.println(status);
+            boolean sqlite_status = databaseHandler.INSERT_LABORATORY(pojo);
+            if (sqlite_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(1).getHospital_id());
+                    pojo.setAssessement_name("Laboratory");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(1).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                    Toast.makeText(LaboratoryActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(LaboratoryActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                }else {
+                    if (hospital_status.equalsIgnoreCase("shco")){
+
+                        progreesDialog();
+
+                        PostSHCO_LaboratoryData();
+                    }else {
+                        progreesDialog();
+
+                        PostLaboratoryData();
+                    }
+                }
+            }
         }
 
-        if (!from.equalsIgnoreCase("sync")){
-            assessement_list = databaseHandler.getAssessmentList(Hospital_id);
 
-
-            AssessmentStatusPojo pojo = new AssessmentStatusPojo();
-            pojo.setHospital_id(assessement_list.get(1).getHospital_id());
-            pojo.setAssessement_name("Laboratory");
-            pojo.setAssessement_status("Draft");
-            pojo.setLocal_id(assessement_list.get(1).getLocal_id());
-
-            databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-            Toast.makeText(LaboratoryActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(LaboratoryActivity.this,HospitalListActivity.class);
-            startActivity(intent);
-            finish();
-
-        }
 
     }
     public void showVideoDialog(final String path) {
@@ -1943,22 +2007,36 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                                 Identified_List.add(response.body().getMessage());
                                 Local_Identified_List.add(image_path);
                                 image_Identified.setImageResource(R.mipmap.camera_selected);
+
+                                image2 = "Identified";
+
                             }else if (from.equalsIgnoreCase("transported")){
                                 transported_list.add(response.body().getMessage());
                                 Local_transported_list.add(image_path);
                                 image_transported.setImageResource(R.mipmap.camera_selected);
+
+                                image3 = "transported";
+
                             }else if (from.equalsIgnoreCase("specimen")){
                                 specimen_list.add(response.body().getMessage());
                                 Local_specimen_list.add(image_path);
                                 image_specimen.setImageResource(R.mipmap.camera_selected);
+
+                                image4 = "specimen";
+
                             }else if (from.equalsIgnoreCase("equipment")){
                                 equipment_list.add(response.body().getMessage());
                                 Local_equipment_list.add(image_path);
                                 image_equipment.setImageResource(R.mipmap.camera_selected);
+
+                                image5 = "equipment";
+
                             }else if (from.equalsIgnoreCase("laboratory_defined_turnaround")){
                                 laboratory_defined_turnaround_list.add(response.body().getMessage());
                                 Local_laboratory_defined_turnaround_list.add(image_path);
                                 image_laboratory_defined_turnaround.setImageResource(R.mipmap.camera_selected);
+
+                                image6 = "laboratory_defined_turnaround";
                             }
 
 
@@ -1987,12 +2065,7 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
 
     private void PostLaboratoryData(){
 
-        SaveLaboratoryData("sync");
 
-        if (identified_status.length() > 0 && transported_status.length() > 0 && specimen_status.length() > 0
-        && appropriate_status.length() > 0 && laboratory_defined_turnaround.length() >0){
-
-            if (image3 != null && image4 != null && image5 != null && image6 != null){
                 pojo_dataSync.setTabName("laboratory");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -2044,15 +2117,12 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
 
                 pojo_dataSync.setLaboratory(pojo);
 
-                final ProgressDialog d = AppDialog.showLoading(LaboratoryActivity.this);
-                d.setCanceledOnTouchOutside(false);
-
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
                             Intent intent = new Intent(LaboratoryActivity.this, LoginActivity.class);
@@ -2093,26 +2163,14 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
                     }
                 });
-            }else {
-                Toast.makeText(LaboratoryActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
-            }
 
-
-        }else {
-            Toast.makeText(LaboratoryActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
     }
 
     private void PostSHCO_LaboratoryData(){
 
-        SaveLaboratoryData("sync");
-
-        if ( specimen_status.length() > 0 ){
-
-            if ( image4 != null){
                 pojo_dataSync.setTabName("laboratory");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -2135,15 +2193,14 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
 
                 pojo_dataSync.setLaboratory(pojo);
 
-                final ProgressDialog d = AppDialog.showLoading(LaboratoryActivity.this);
-                d.setCanceledOnTouchOutside(false);
+
 
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
                             Intent intent = new Intent(LaboratoryActivity.this, LoginActivity.class);
@@ -2184,17 +2241,10 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
                     }
                 });
-            }else {
-                Toast.makeText(LaboratoryActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
-            }
 
-
-        }else {
-            Toast.makeText(LaboratoryActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
     }
 
     @Override
@@ -2290,10 +2340,8 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
     public void onBackPressed() {
         super.onBackPressed();
 
-
-
         if (!assessement_list.get(1).getAssessement_status().equalsIgnoreCase("Done")){
-            SaveLaboratoryData("save");
+            SaveLaboratoryData("save","");
         }else {
             Intent intent = new Intent(LaboratoryActivity.this,HospitalListActivity.class);
             startActivity(intent);

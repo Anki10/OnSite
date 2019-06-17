@@ -3,6 +3,7 @@ package com.qci.onsite.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -287,7 +288,14 @@ public class ScopeOfServiceActivity extends BaseActivity {
         btnSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PostScopeData();
+
+
+
+                SaveScopeService("sync");
+
+
+
+
             }
         });
 
@@ -1235,35 +1243,63 @@ public class ScopeOfServiceActivity extends BaseActivity {
 
 
         if (sql_status) {
-            databaseHandler.UPDATE_SCOPE_SERVICE(pojo);
+            boolean sp_status = databaseHandler.UPDATE_SCOPE_SERVICE(pojo);
+
+            if (sp_status){
+                if (!from.equalsIgnoreCase("sync")) {
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(21).getHospital_id());
+                    pojo.setAssessement_name("Scope of Services");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(21).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+
+                    Toast.makeText(ScopeOfServiceActivity.this, "Your data saved", Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(ScopeOfServiceActivity.this, HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    progreesDialog();
+                    PostScopeData();
+                }
+            }
         } else {
-            boolean status = databaseHandler.INSERT_SCOPE_SERVICE(pojo);
-            System.out.println(status);
+            boolean sp_status = databaseHandler.INSERT_SCOPE_SERVICE(pojo);
+
+            if (sp_status){
+                if (!from.equalsIgnoreCase("sync")) {
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(21).getHospital_id());
+                    pojo.setAssessement_name("Scope of Services");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(21).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+
+                    Toast.makeText(ScopeOfServiceActivity.this, "Your data saved", Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(ScopeOfServiceActivity.this, HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    progreesDialog();
+                    PostScopeData();
+                }
+            }
         }
 
-        if (!from.equalsIgnoreCase("sync")) {
-            assessement_list = databaseHandler.getAssessmentList(Hospital_id);
 
-            AssessmentStatusPojo pojo = new AssessmentStatusPojo();
-            pojo.setHospital_id(assessement_list.get(21).getHospital_id());
-            pojo.setAssessement_name("Scope of Services");
-            pojo.setAssessement_status("Draft");
-            pojo.setLocal_id(assessement_list.get(21).getLocal_id());
-
-            databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-
-            Toast.makeText(ScopeOfServiceActivity.this, "Your data saved", Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(ScopeOfServiceActivity.this, HospitalListActivity.class);
-            startActivity(intent);
-            finish();
-        }
     }
 
     private void PostScopeData(){
-
-        SaveScopeService("sync");
 
             pojo_dataSync.setTabName("scopeofservice");
             pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
@@ -1277,15 +1313,12 @@ public class ScopeOfServiceActivity extends BaseActivity {
 
             pojo_dataSync.setScopeofservice(pojo);
 
-            final ProgressDialog d = AppDialog.showLoading(ScopeOfServiceActivity.this);
-            d.setCanceledOnTouchOutside(false);
-
             mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                 @Override
                 public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                     System.out.println("xxx sucess");
 
-                    d.dismiss();
+                    CloseProgreesDialog();
 
                     if (response.message().equalsIgnoreCase("Unauthorized")) {
                         Intent intent = new Intent(ScopeOfServiceActivity.this, LoginActivity.class);
@@ -1326,7 +1359,7 @@ public class ScopeOfServiceActivity extends BaseActivity {
                 public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                     System.out.println("xxx failed");
 
-                    d.dismiss();
+                    CloseProgreesDialog();
                 }
             });
     }

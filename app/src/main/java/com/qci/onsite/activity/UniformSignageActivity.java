@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
@@ -644,9 +645,17 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
                 break;
 
             case R.id.btnSync:
+                if (scope_services_present.length() > 0 && Patients_responsibility_displayed.length() > 0 && fire_exit_signage_present.length() > 0 && directional_signages_present.length() > 0
+                        && departmental_signages_present.length() > 0){
 
-                PostLaboratoryData();
-
+                    if (image1 != null && image2 != null  && image3 != null  && image4 != null  && image5 != null ){
+                        SaveLaboratoryData("sync");
+                    }else {
+                        Toast.makeText(UniformSignageActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+                    }
+                }else {
+                    Toast.makeText(UniformSignageActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+                }
 
                 break;
 
@@ -1485,31 +1494,62 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
 
 
         if (sql_status){
-            databaseHandler.UPDATE_Uniform_Signage(pojo);
+            boolean s_status = databaseHandler.UPDATE_Uniform_Signage(pojo);
+
+            if (s_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(19).getHospital_id());
+                    pojo.setAssessement_name("Uniform Signage");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(19).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                    Toast.makeText(UniformSignageActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(UniformSignageActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                }else {
+                    progreesDialog();
+                    PostLaboratoryData();
+                }
+            }
         }else {
-            boolean status = databaseHandler.INSERT_Uniform_Signage(pojo);
-            System.out.println(status);
+            boolean s_status = databaseHandler.INSERT_Uniform_Signage(pojo);
+
+            if (s_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(19).getHospital_id());
+                    pojo.setAssessement_name("Uniform Signage");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(19).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                    Toast.makeText(UniformSignageActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(UniformSignageActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                } else {
+                    progreesDialog();
+                    PostLaboratoryData();
+                }
+            }
         }
 
-        if (!from.equalsIgnoreCase("sync")){
-            assessement_list = databaseHandler.getAssessmentList(Hospital_id);
 
-
-            AssessmentStatusPojo pojo = new AssessmentStatusPojo();
-            pojo.setHospital_id(assessement_list.get(19).getHospital_id());
-            pojo.setAssessement_name("Uniform Signage");
-            pojo.setAssessement_status("Draft");
-            pojo.setLocal_id(assessement_list.get(19).getLocal_id());
-
-            databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-            Toast.makeText(UniformSignageActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(UniformSignageActivity.this,HospitalListActivity.class);
-            startActivity(intent);
-            finish();
-
-        }
 
     }
     private void ImageUpload(final String image_path,final String from){
@@ -1547,22 +1587,37 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
                                 safety_device_lab_list.add(response.body().getMessage());
                                 Local_safety_device_lab_list.add(image_path);
                                 image_scope_services_present.setImageResource(R.mipmap.camera_selected);
+
+                                image1 = "safety_device_lab";
+
                             }else if (from.equalsIgnoreCase("body_parts_staff_patients")){
                                 body_parts_staff_patients_list.add(response.body().getMessage());
                                 Local_body_parts_staff_patients_list.add(image_path);
                                 image_Patients_responsibility_displayed.setImageResource(R.mipmap.camera_selected);
+
+                                image2 = "body_parts_staff_patients";
+
                             }else if (from.equalsIgnoreCase("staff_member_radiation_area")){
                                 staff_member_radiation_area_list.add(response.body().getMessage());
                                 Local_staff_member_radiation_area_list.add(image_path);
                                 image_fire_exit_signage_present.setImageResource(R.mipmap.camera_selected);
+
+                                image3 = "staff_member_radiation_area";
+
                             }else if (from.equalsIgnoreCase("standardised_colur_coding")){
                                 standardised_colur_coding_list.add(response.body().getMessage());
                                 Local_standardised_colur_coding_list.add(image_path);
                                 image_directional_signages_present.setImageResource(R.mipmap.camera_selected);
+
+                                image4 = "standardised_colur_coding";
+
+
                             }else if (from.equalsIgnoreCase("safe_storage_medical")){
                                 safe_storage_medical_list.add(response.body().getMessage());
                                 Local_safe_storage_medical_list.add(image_path);
                                 image_departmental_signages_present.setImageResource(R.mipmap.camera_selected);
+
+                                image5 = "safe_storage_medical";
                             }
 
                             Toast.makeText(UniformSignageActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
@@ -1590,12 +1645,6 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
 
     private void PostLaboratoryData(){
 
-        SaveLaboratoryData("sync");
-
-        if (scope_services_present.length() > 0 && Patients_responsibility_displayed.length() > 0 && fire_exit_signage_present.length() > 0 && directional_signages_present.length() > 0
-                && departmental_signages_present.length() > 0){
-
-            if (image1 != null && image2 != null  && image3 != null  && image4 != null  && image5 != null ){
                 pojo_dataSync.setTabName("UniformSignage");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -1647,15 +1696,12 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
 
                 pojo_dataSync.setUniformsignage(pojo);
 
-                final ProgressDialog d = AppDialog.showLoading(UniformSignageActivity.this);
-                d.setCanceledOnTouchOutside(false);
-
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
                             Intent intent = new Intent(UniformSignageActivity.this, LoginActivity.class);
@@ -1696,15 +1742,9 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
                     }
                 });
-            }else {
-                Toast.makeText(UniformSignageActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
-            }
-        }else {
-            Toast.makeText(UniformSignageActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
     }
 
     @Override

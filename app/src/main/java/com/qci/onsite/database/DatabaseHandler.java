@@ -41,7 +41,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static DatabaseHandler sInstance;
 
     // Database Version
-    private static final int DATABASE_VERSION = 23;
+    private static final int DATABASE_VERSION = 25;
 
     // Database Name
     private static final String DATABASE_NAME = "OnSite_db";

@@ -1,5 +1,6 @@
 package com.qci.onsite.activity;
 
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import com.qci.onsite.R;
 import com.qci.onsite.fragment.DrawerFragment;
 import com.qci.onsite.util.AppConstant;
+import com.qci.onsite.util.AppDialog;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -42,6 +44,8 @@ import java.util.Locale;
 public class BaseActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
+
+    ProgressDialog d;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
@@ -285,6 +289,17 @@ public class BaseActivity extends AppCompatActivity {
     public int getINTFromPrefs(String key){
         SharedPreferences settings = getSharedPreferences(AppConstant.PREF_NAME, 0);
         return settings.getInt(key, 0);
+    }
+
+    public void progreesDialog(){
+        d = AppDialog.showLoading(BaseActivity.this);
+        d.setCanceledOnTouchOutside(false);
+    }
+
+    public void CloseProgreesDialog(){
+        if (d.isShowing() || d != null){
+            d.dismiss();
+        }
     }
 
 

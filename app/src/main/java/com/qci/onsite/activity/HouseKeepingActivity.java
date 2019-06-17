@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
@@ -492,7 +493,18 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
                 break;
 
             case R.id.btnSync:
-                 PostLaboratoryData();
+                if (infected_patient_room.length() > 0 && procedure_cleaning_room.length() > 0 && procedure_cleaning_blood_spill.length() > 0 && Biomedical_Waste_regulations.length() > 0 && cleaning_washing_blood_stained.length() > 0){
+                    if (image1 != null){
+                        SavePharmacyData("sync");
+                    }else {
+                        Toast.makeText(HouseKeepingActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+                    }
+
+                }else {
+                    Toast.makeText(HouseKeepingActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+                }
+
                 break;
         }
     }
@@ -1312,39 +1324,66 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
         pojo.setCleaning_washing_blood_stained_nc(nc5);
 
         if (sql_status){
-            databaseHandler.UPDATE_HOUSEKEEPING(pojo);
+            boolean se_status = databaseHandler.UPDATE_HOUSEKEEPING(pojo);
+
+            if (se_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(12).getHospital_id());
+                    pojo.setAssessement_name("Housekeeping");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(12).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+
+                    Toast.makeText(HouseKeepingActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(HouseKeepingActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    progreesDialog();
+
+                    PostLaboratoryData();
+                }
+            }
         }else {
-            boolean status = databaseHandler.INSERT_HOUSEKEEPING(pojo);
-            System.out.println(status);
+            boolean se_status = databaseHandler.INSERT_HOUSEKEEPING(pojo);
+
+            if (se_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(12).getHospital_id());
+                    pojo.setAssessement_name("Housekeeping");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(12).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+
+                    Toast.makeText(HouseKeepingActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(HouseKeepingActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    progreesDialog();
+
+                    PostLaboratoryData();
+                }
+            }
+
         }
 
-        if (!from.equalsIgnoreCase("sync")){
-            assessement_list = databaseHandler.getAssessmentList(Hospital_id);
-
-            AssessmentStatusPojo pojo = new AssessmentStatusPojo();
-            pojo.setHospital_id(assessement_list.get(12).getHospital_id());
-            pojo.setAssessement_name("Housekeeping");
-            pojo.setAssessement_status("Draft");
-            pojo.setLocal_id(assessement_list.get(12).getLocal_id());
-
-            databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-
-            Toast.makeText(HouseKeepingActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(HouseKeepingActivity.this,HospitalListActivity.class);
-            startActivity(intent);
-            finish();
-        }
     }
 
     private void PostLaboratoryData(){
 
-        SavePharmacyData("sync");
-
-        if (infected_patient_room.length() > 0 && procedure_cleaning_room.length() > 0 && procedure_cleaning_blood_spill.length() > 0 && Biomedical_Waste_regulations.length() > 0 && cleaning_washing_blood_stained.length() > 0){
-
-         if (image1 != null){
              pojo_dataSync.setTabName("housekeeping");
              pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
              pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -1371,22 +1410,15 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
              }
               pojo.setProcedure_cleaning_blood_spill_video(procedure_cleaning_blood_spill_view);
 
-
-
-
-
-
              pojo_dataSync.setHousekeeping(pojo);
 
-             final ProgressDialog d = AppDialog.showLoading(HouseKeepingActivity.this);
-             d.setCanceledOnTouchOutside(false);
 
              mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                  @Override
                  public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                      System.out.println("xxx sucess");
 
-                     d.dismiss();
+                     CloseProgreesDialog();
 
                      if (response.message().equalsIgnoreCase("Unauthorized")) {
                          Intent intent = new Intent(HouseKeepingActivity.this, LoginActivity.class);
@@ -1425,16 +1457,9 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
                  public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                      System.out.println("xxx failed");
 
-                     d.dismiss();
+                     CloseProgreesDialog();
                  }
              });
-         }else {
-             Toast.makeText(HouseKeepingActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
-         }
-
-        }else {
-            Toast.makeText(HouseKeepingActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
     }
 
   /*  private void VideoUpload(final String image_path){
@@ -1516,6 +1541,9 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
                                 staffs_personal_files_maintained_list.add(response.body().getMessage());
                                 Local_staffs_personal_files_maintained_list.add(image_path);
                                 image_Biomedical_Waste_regulations.setImageResource(R.mipmap.camera_selected);
+
+                                image1 = "Biomedical_Waste_regulations";
+
                             }else if (from.equalsIgnoreCase("procedure_cleaning_blood_spill_list")){
                                 procedure_cleaning_blood_spill_list.add(response.body().getMessage());
                                 Local_procedure_cleaning_blood_spill_list.add(image_path);

@@ -53,14 +53,19 @@ public class MainHospitalListAdapter extends RecyclerView.Adapter<MainHospitalLi
     public void onBindViewHolder(ViewHolder holder, int position) {
         AllocatedHospitalListPojo pojo = mainhospital_list.get(position);
 
-        if (pojo.getHospitalstage().equalsIgnoreCase("Assessment accepted")){
-            holder.iv_hospital_accept.setVisibility(View.GONE);
-            holder.iv_hospital_reject.setVisibility(View.GONE);
+        if (pojo.getHospitalstage().equalsIgnoreCase("QC Review Stage_1")){
+            holder.ll_hospital_main.setVisibility(View.GONE);
+        }else {
+            holder.ll_hospital_main.setVisibility(View.VISIBLE);
+            if (pojo.getHospitalstage().equalsIgnoreCase("Assessment accepted")){
+                holder.iv_hospital_accept.setVisibility(View.GONE);
+                holder.iv_hospital_reject.setVisibility(View.GONE);
 
-            if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS) != null){
-                if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS).equalsIgnoreCase(String.valueOf(pojo.getHospitalid()))){
-                    holder.iv_hospital_accept.setVisibility(View.VISIBLE);
-                    holder.iv_hospital_accept.setImageResource(R.mipmap.progress);
+                if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS) != null){
+                    if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS).equalsIgnoreCase(String.valueOf(pojo.getHospitalid()))){
+                        holder.iv_hospital_accept.setVisibility(View.VISIBLE);
+                        holder.iv_hospital_accept.setImageResource(R.mipmap.progress);
+                    }
                 }
             }
         }
@@ -147,6 +152,9 @@ public class MainHospitalListAdapter extends RecyclerView.Adapter<MainHospitalLi
 
         @BindView(R.id.ll_hospital_main)
         LinearLayout ll_hospital_main;
+
+        @BindView(R.id.ll_main_hospital)
+        LinearLayout ll_main_hospital;
 
         @BindView(R.id.tv_hospital_main_name)
         TextView tv_hospital_main_name;

@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
@@ -754,21 +755,42 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
                 break;
 
             case R.id.btnSave:
-                SaveRadioLogyData("save");
+                SaveRadioLogyData("save","");
                 break;
 
             case R.id.btnSync:
                 if (Bed_no < 51){
-                    PostSHCO_LaboratoryData();
+                    if (radiology_status.length() > 0 && SHCO_Obstetrics_ward_status.length() > 0){
+
+                        if (image1 != null && image2 != null){
+                            SaveRadioLogyData("sync","shco");
+                        }else {
+                            Toast.makeText(ObstetricWardActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+                        }
+                    }else {
+                        Toast.makeText(ObstetricWardActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+                    }
+
                 }else {
-                    PostLaboratoryData();
+                    if (radiology_status.length() > 0 ){
+                        if (image1 != null){
+                            SaveRadioLogyData("sync","hco");
+                        }else {
+                            Toast.makeText(ObstetricWardActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+
+                        }
+                    }else {
+                        Toast.makeText(ObstetricWardActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+                    }
                 }
 
                 break;
         }
     }
 
-    private void SaveRadioLogyData(String from){
+    private void SaveRadioLogyData(String from,String hospital_status){
         pojo.setHospital_name("Hospital1");
         pojo.setHospital_id(5);
         if (getFromPrefs("Obstetric_tabId"+Hospital_id).length() > 0){
@@ -837,37 +859,83 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
 
 
         if (sql_status){
-            databaseHandler.UPDATE_OBSTETRIC_WARD(pojo);
+            boolean s_status = databaseHandler.UPDATE_OBSTETRIC_WARD(pojo);
+
+            if (s_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(5).getHospital_id());
+                    pojo.setAssessement_name("Obstetric Ward NICU Paediatric");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(5).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+
+                    Toast.makeText(ObstetricWardActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(ObstetricWardActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                }else {
+                    if (hospital_status.equalsIgnoreCase("shco")){
+
+                        progreesDialog();
+
+                        PostSHCO_LaboratoryData();
+                    }else {
+                        progreesDialog();
+
+                        PostLaboratoryData();
+                    }
+                }
+            }
         }else {
-            boolean status = databaseHandler.INSERT_OBSTETRIC_WARD(pojo);
-            System.out.println(status);
+            boolean sp_status = databaseHandler.INSERT_OBSTETRIC_WARD(pojo);
+
+            if (sp_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(5).getHospital_id());
+                    pojo.setAssessement_name("Obstetric Ward NICU Paediatric");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(5).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+
+                    Toast.makeText(ObstetricWardActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(ObstetricWardActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                }else {
+                    if (hospital_status.equalsIgnoreCase("shco")){
+
+                        progreesDialog();
+
+                        PostSHCO_LaboratoryData();
+                    }else {
+                        progreesDialog();
+
+                        PostLaboratoryData();
+                    }
+                }
+            }
+
         }
 
-        if (!from.equalsIgnoreCase("sync")){
-            assessement_list = databaseHandler.getAssessmentList(Hospital_id);
 
-            AssessmentStatusPojo pojo = new AssessmentStatusPojo();
-            pojo.setHospital_id(assessement_list.get(5).getHospital_id());
-            pojo.setAssessement_name("Obstetric Ward NICU Paediatric");
-            pojo.setAssessement_status("Draft");
-            pojo.setLocal_id(assessement_list.get(5).getLocal_id());
-
-            databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-
-            Toast.makeText(ObstetricWardActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(ObstetricWardActivity.this,HospitalListActivity.class);
-            startActivity(intent);
-            finish();
-
-        }
 
     }
 
     private void PostLaboratoryData(){
-
-        SaveRadioLogyData("sync");
 
         if (radiology_status.length() > 0 ){
 
@@ -893,15 +961,12 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
 
                 pojo_dataSync.setObstetricWard(pojo);
 
-                final ProgressDialog d = AppDialog.showLoading(ObstetricWardActivity.this);
-                d.setCanceledOnTouchOutside(false);
-
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
                             Intent intent = new Intent(ObstetricWardActivity.this, LoginActivity.class);
@@ -941,20 +1006,22 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
                     }
                 });
             }else {
                 Toast.makeText(ObstetricWardActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+
+                CloseProgreesDialog();
             }
         }else {
             Toast.makeText(ObstetricWardActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+            CloseProgreesDialog();
         }
     }
 
     private void PostSHCO_LaboratoryData(){
-
-        SaveRadioLogyData("sync");
 
         if (radiology_status.length() > 0 && SHCO_Obstetrics_ward_status.length() > 0){
 
@@ -989,15 +1056,13 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
 
                 pojo_dataSync.setObstetricWard(pojo);
 
-                final ProgressDialog d = AppDialog.showLoading(ObstetricWardActivity.this);
-                d.setCanceledOnTouchOutside(false);
 
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
                             Intent intent = new Intent(ObstetricWardActivity.this, LoginActivity.class);
@@ -1037,14 +1102,18 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
                     }
                 });
             }else {
                 Toast.makeText(ObstetricWardActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+
+                CloseProgreesDialog();
             }
         }else {
             Toast.makeText(ObstetricWardActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+            CloseProgreesDialog();
         }
     }
 
@@ -1084,10 +1153,15 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
                                 identification_list.add(response.body().getMessage());
                                 Local_identification_list.add(image_path);
                                 image_obstetricWard.setImageResource(R.mipmap.camera_selected);
+
+                                image1 = "obstetricWard";
+
                             }else if (from.equalsIgnoreCase("SHCO_Obstetrics_ward")){
                                 SHCO_Obstetrics_ward_list.add(response.body().getMessage());
                                 Local_SHCO_Obstetrics_ward_listt.add(image_path);
                                 image_SHCO_Obstetrics_ward.setImageResource(R.mipmap.camera_selected);
+
+                                image2 = "SHCO_Obstetrics_ward";
                             }
 
                             Toast.makeText(ObstetricWardActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
@@ -1153,7 +1227,7 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
         super.onBackPressed();
 
         if (!assessement_list.get(5).getAssessement_status().equalsIgnoreCase("Done")){
-            SaveRadioLogyData("save");
+            SaveRadioLogyData("save","");
         }else {
             Intent intent = new Intent(ObstetricWardActivity.this,HospitalListActivity.class);
             startActivity(intent);

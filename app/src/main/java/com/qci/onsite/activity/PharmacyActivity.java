@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
@@ -1171,15 +1172,43 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
 
 
             case R.id.btnSave:
-                SavePharmacyData("save");
+                SavePharmacyData("save","");
                 break;
 
             case R.id.btnSync:
 
                 if (Bed_no < 51){
-                    Post_SHCO_LaboratoryData();
+                    if (patient_care_area.length() > 0 && pharmacyStores_present.length() > 0 && drugs_pharmacy.length() >0 && medication_expiry.length() > 0 &&
+                            high_risk_medications.length() > 0 &&  labelling_of_drug.length() > 0 && medication_order_checked.length() > 0
+                            && medication_administration.length() > 0 && fridge_temperature.length() > 0){
+
+                        if (image1 != null && image2 != null && image3!= null && image6!= null
+                                && image8!= null  && image10 != null && image11!= null){
+                            SavePharmacyData("sync","shco");
+                        }else {
+                            Toast.makeText(PharmacyActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+
+                        }
+                    }else {
+                        Toast.makeText(PharmacyActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+                    }
                 }else {
-                    PostLaboratoryData();
+                    if (patient_care_area.length() > 0 && pharmacyStores_present.length() > 0 && drugs_pharmacy.length() >0 && medication_expiry.length() > 0 &&
+                            emergency_medications.length() > 0 && high_risk_medications.length() > 0 && risk_medications_verified.length() > 0 && labelling_of_drug.length() > 0 && medication_order_checked.length() > 0
+                            && medication_administration.length() > 0 && fridge_temperature.length() > 0){
+
+                        if (image1 != null && image2 != null && image3!= null && image5!= null && image6!= null
+                                && image8!= null  && image9 != null &&  image10 != null && image11!= null){
+                            SavePharmacyData("sync","hco");
+                        }else {
+                            Toast.makeText(PharmacyActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+
+                        }
+                    }else {
+                        Toast.makeText(PharmacyActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+                    }
                 }
 
                 break;
@@ -2460,7 +2489,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
 
 
 
-    public void SavePharmacyData(String from) {
+    public void SavePharmacyData(String from,String hospital_status) {
 
         pojo.setHospital_name("Hospital1");
         pojo.setHospital_id(7);
@@ -2755,42 +2784,81 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
         pojo.setLocal_fridge_temperature_record_Image(Local_image11);
 
         if (sql_status) {
-            databaseHandler.UPDATE_Ward_Pharmacy(pojo);
+            boolean sq_status = databaseHandler.UPDATE_Ward_Pharmacy(pojo);
+
+            if (sq_status){
+                if (!from.equalsIgnoreCase("sync")) {
+
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(7).getHospital_id());
+                    pojo.setAssessement_name("Wards and Pharmacy");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(7).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+
+                    Toast.makeText(PharmacyActivity.this, "Your data saved", Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(PharmacyActivity.this, HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    if (hospital_status.equalsIgnoreCase("shco")){
+
+                        progreesDialog();
+
+                        Post_SHCO_LaboratoryData();
+                    }else {
+                        progreesDialog();
+
+                        PostLaboratoryData();
+                    }
+                }
+            }
         } else {
-            boolean status = databaseHandler.INSERT_Ward_Pharmacy(pojo);
-            System.out.println(status);
+            boolean sqe_status = databaseHandler.INSERT_Ward_Pharmacy(pojo);
+            if (sqe_status){
+                if (!from.equalsIgnoreCase("sync")) {
+
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(7).getHospital_id());
+                    pojo.setAssessement_name("Wards and Pharmacy");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(7).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+
+                    Toast.makeText(PharmacyActivity.this, "Your data saved", Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(PharmacyActivity.this, HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    if (hospital_status.equalsIgnoreCase("shco")){
+
+                        progreesDialog();
+
+                        Post_SHCO_LaboratoryData();
+                    }else {
+                        progreesDialog();
+
+                        PostLaboratoryData();
+                    }
+                }
+            }
+
         }
 
-        if (!from.equalsIgnoreCase("sync")) {
 
-            assessement_list = databaseHandler.getAssessmentList(Hospital_id);
-
-            AssessmentStatusPojo pojo = new AssessmentStatusPojo();
-            pojo.setHospital_id(assessement_list.get(7).getHospital_id());
-            pojo.setAssessement_name("Wards and Pharmacy");
-            pojo.setAssessement_status("Draft");
-            pojo.setLocal_id(assessement_list.get(7).getLocal_id());
-
-            databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-
-            Toast.makeText(PharmacyActivity.this, "Your data saved", Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(PharmacyActivity.this, HospitalListActivity.class);
-            startActivity(intent);
-            finish();
-        }
     }
     private void PostLaboratoryData(){
 
-        SavePharmacyData("sync");
-
-        if (patient_care_area.length() > 0 && pharmacyStores_present.length() > 0 && drugs_pharmacy.length() >0 && medication_expiry.length() > 0 &&
-                emergency_medications.length() > 0 && high_risk_medications.length() > 0 && risk_medications_verified.length() > 0 && labelling_of_drug.length() > 0 && medication_order_checked.length() > 0
-        && medication_administration.length() > 0 && fridge_temperature.length() > 0){
-
-       if (image1 != null && image2 != null && image3!= null && image5!= null && image6!= null
-       && image8!= null  && image9 != null &&  image10 != null && image11!= null){
            pojo_dataSync.setTabName("wardspharmacy");
            pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
            pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -2870,15 +2938,13 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
 
            pojo_dataSync.setWardspharmacy(pojo);
 
-           final ProgressDialog d = AppDialog.showLoading(PharmacyActivity.this);
-           d.setCanceledOnTouchOutside(false);
 
            mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                @Override
                public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                    System.out.println("xxx sucess");
 
-                   d.dismiss();
+                   CloseProgreesDialog();
 
                    if (response.message().equalsIgnoreCase("Unauthorized")) {
                        Intent intent = new Intent(PharmacyActivity.this, LoginActivity.class);
@@ -2919,27 +2985,13 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                    System.out.println("xxx failed");
 
-                   d.dismiss();
+                   CloseProgreesDialog();
                }
            });
-       }else {
-           Toast.makeText(PharmacyActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
-       }
-        }else {
-            Toast.makeText(PharmacyActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
     }
 
     private void Post_SHCO_LaboratoryData(){
 
-        SavePharmacyData("sync");
-
-        if (patient_care_area.length() > 0 && pharmacyStores_present.length() > 0 && drugs_pharmacy.length() >0 && medication_expiry.length() > 0 &&
-                 high_risk_medications.length() > 0 &&  labelling_of_drug.length() > 0 && medication_order_checked.length() > 0
-                && medication_administration.length() > 0 && fridge_temperature.length() > 0){
-
-            if (image1 != null && image2 != null && image3!= null && image6!= null
-                    && image8!= null  && image10 != null && image11!= null){
                 pojo_dataSync.setTabName("wardspharmacy");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -2993,6 +3045,12 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 }
                 pojo.setLabelling_of_drug_image(labelling_of_drug_imageList_view);
 
+                for (int i=0;i<medication_order_checked_imagelist.size();i++){
+                    String value_medication_order_checked = medication_order_checked_imagelist.get(i);
+
+                    medication_order_checked_imageList_view = value_medication_order_checked + medication_order_checked_imageList_view;
+                }
+
                 pojo.setMedication_order_checked_image(medication_order_checked_imageList_view);
 
                 for (int i = 0; i< medication_administration_imageList.size();i++){
@@ -3013,15 +3071,12 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
 
                 pojo_dataSync.setWardspharmacy(pojo);
 
-                final ProgressDialog d = AppDialog.showLoading(PharmacyActivity.this);
-                d.setCanceledOnTouchOutside(false);
-
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
                             Intent intent = new Intent(PharmacyActivity.this, LoginActivity.class);
@@ -3062,15 +3117,9 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
                     }
                 });
-            }else {
-                Toast.makeText(PharmacyActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
-            }
-        }else {
-            Toast.makeText(PharmacyActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
     }
 
     private void ImageUpload(final String image_path,final String from){
@@ -3108,38 +3157,56 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                                 patientCareArea_imageList.add(response.body().getMessage());
                                 Local_patientCareArea_imageList.add(image_path);
                                 Image_patient_care_area.setImageResource(R.mipmap.camera_selected);
+
+                                image1 = "patient_care_area";
+
                             }else if (from.equalsIgnoreCase("pharmacyStores_present")){
                                 pharmacyStores_present_imageList.add(response.body().getMessage());
                                 Local_pharmacyStores_present_imageList.add(image_path);
                                 Image_pharmacyStores_present.setImageResource(R.mipmap.camera_selected);
+
+                                image2 = "pharmacyStores_present";
+
                             }else if (from.equalsIgnoreCase("drugs_pharmacy")){
 
                                 drugs_pharmacy_imageList.add(response.body().getMessage());
                                 Local_drugs_pharmacy_imageList.add(image_path);
                                 image_drugs_pharmacy.setImageResource(R.mipmap.camera_selected);
+
+                                image3 = "drugs_pharmacy";
                             }
                             else if (from.equalsIgnoreCase("emergency_medications")){
 
                                 emergency_medications_imageList.add(response.body().getMessage());
                                 Local_emergency_medications_imageList.add(image_path);
                                 Image_emergency_medications.setImageResource(R.mipmap.camera_selected);
+
+                                image5 = "emergency_medications";
+
                             }
                             else if (from.equalsIgnoreCase("high_risk_medications")){
 
                                 high_risk_medications_imageList.add(response.body().getMessage());
                                 Local_high_risk_medications_imageList.add(image_path);
                                 Image_high_risk_medications.setImageResource(R.mipmap.camera_selected);
+
+                                image6 = "high_risk_medications";
                             }
                             else if (from.equalsIgnoreCase("labelling_of_drug")){
 
                                 labelling_of_drug_imageList.add(response.body().getMessage());
                                 Local_labelling_of_drug_imageList.add(image_path);
                                 Image_labelling_of_drug.setImageResource(R.mipmap.camera_selected);
+
+                                image8 = "labelling_of_drug";
+
                             }else if (from.equalsIgnoreCase("medication_order_checked")){
                                 medication_order_checked_imagelist.add(response.body().getMessage());
                                 Local_medication_order_checkedt_imagelist.add(image_path);
 
                                 Image_medication_order_checked.setImageResource(R.mipmap.camera_selected);
+
+                                image9 = "medication_order_checked";
                             }
                             else if (from.equalsIgnoreCase("medication_administration")){
 
@@ -3147,11 +3214,15 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                                 Local_medication_administration_imageList.add(image_path);
                                 Image_medication_administration.setImageResource(R.mipmap.camera_selected);
 
+                                image10 = "medication_administration";
+
                             }else if (from.equalsIgnoreCase("fridge_temperature")){
 
                                 fridge_temperature_imageList.add(response.body().getMessage());
                                 Local_fridge_temperature_imageList.add(image_path);
                                 Image_fridge_temperature.setImageResource(R.mipmap.camera_selected);
+
+                                image11 = "fridge_temperature";
                             }
 
 
@@ -3332,7 +3403,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
         super.onBackPressed();
 
         if (!assessement_list.get(7).getAssessement_status().equalsIgnoreCase("Done")){
-            SavePharmacyData("save");
+            SavePharmacyData("save","");
         }else {
             Intent intent = new Intent(PharmacyActivity.this,HospitalListActivity.class);
             startActivity(intent);

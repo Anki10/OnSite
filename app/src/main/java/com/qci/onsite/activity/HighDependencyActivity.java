@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
@@ -419,7 +420,19 @@ public class HighDependencyActivity extends BaseActivity implements View.OnClick
                 break;
 
             case R.id.btnSync:
-                PostLaboratoryData();
+
+                if (high_Are_staff.length() > 0 && high_do_high.length() > 0){
+                    if (image2 != null && image3 != null){
+                        SaveLaboratoryData("sync");
+                    }else {
+                        Toast.makeText(HighDependencyActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+
+                    }
+                }else {
+                    Toast.makeText(HighDependencyActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+                }
+
                 break;
         }
     }
@@ -1056,32 +1069,59 @@ public class HighDependencyActivity extends BaseActivity implements View.OnClick
         pojo.setLocal_HIGH_DEPENDENCY_adequate_equipment_image(Local_image3);
 
         if (sql_status){
-            databaseHandler.UPDATE_HighDependency(pojo);
+            boolean sqlite_status = databaseHandler.UPDATE_HighDependency(pojo);
+
+            if (sqlite_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(4).getHospital_id());
+                    pojo.setAssessement_name("High dependency Areas");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(4).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                    Toast.makeText(HighDependencyActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(HighDependencyActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    progreesDialog();
+
+                    PostLaboratoryData();
+                }
+            }
         }else {
-            boolean status = databaseHandler.INSERT_HighDependency(pojo);
-            System.out.println(status);
+            boolean sqlit_status = databaseHandler.INSERT_HighDependency(pojo);
+
+            if (sqlit_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(4).getHospital_id());
+                    pojo.setAssessement_name("High dependency Areas");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(4).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                    Toast.makeText(HighDependencyActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(HighDependencyActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    progreesDialog();
+
+                    PostLaboratoryData();
+                }
+            }
+
         }
-
-        if (!from.equalsIgnoreCase("sync")){
-            assessement_list = databaseHandler.getAssessmentList(Hospital_id);
-
-            AssessmentStatusPojo pojo = new AssessmentStatusPojo();
-            pojo.setHospital_id(assessement_list.get(4).getHospital_id());
-            pojo.setAssessement_name("High dependency Areas");
-            pojo.setAssessement_status("Draft");
-            pojo.setLocal_id(assessement_list.get(4).getLocal_id());
-
-            databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-            Toast.makeText(HighDependencyActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(HighDependencyActivity.this,HospitalListActivity.class);
-            startActivity(intent);
-            finish();
-        }
-
-
-
     }
     public void showVideoDialog(final String path) {
         dialogLogout = new Dialog(HighDependencyActivity.this, android.R.style.Theme_Translucent_NoTitleBar);
@@ -1184,11 +1224,16 @@ public class HighDependencyActivity extends BaseActivity implements View.OnClick
                                 AreStaff_imageList.add(response.body().getMessage());
                                 Local_AreStaff_imageList.add(image_path);
                                 image_Are_staff.setImageResource(R.mipmap.camera_selected);
+
+                                image2 = "Are_staff";
+
                             }else if (from.equalsIgnoreCase("do_high")){
 
                                 DoHigh_imageList.add(response.body().getMessage());
                                 Local_DoHigh_imageList.add(image_path);
                                 image_do_high.setImageResource(R.mipmap.camera_selected);
+
+                                image3 = "do_high";
                             }
 
 
@@ -1232,11 +1277,6 @@ public class HighDependencyActivity extends BaseActivity implements View.OnClick
 
     private void PostLaboratoryData(){
 
-        SaveLaboratoryData("sync");
-
-        if (high_Are_staff.length() > 0 && high_do_high.length() > 0){
-
-            if (image2 != null && image3 != null){
                 pojo_dataSync.setTabName("highdependency");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -1262,19 +1302,14 @@ public class HighDependencyActivity extends BaseActivity implements View.OnClick
 
                 pojo.setHIGH_DEPENDENCY_adequate_equipment_image(DoHigh);
 
-
-
                 pojo_dataSync.setHighDependency(pojo);
-
-                final ProgressDialog d = AppDialog.showLoading(HighDependencyActivity.this);
-                d.setCanceledOnTouchOutside(false);
 
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
                             Intent intent = new Intent(HighDependencyActivity.this, LoginActivity.class);
@@ -1315,15 +1350,10 @@ public class HighDependencyActivity extends BaseActivity implements View.OnClick
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
                     }
                 });
-            }else {
-                Toast.makeText(HighDependencyActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
-            }
-        }else {
-            Toast.makeText(HighDependencyActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
+
     }
 
     private void DeleteList(int position,String from){

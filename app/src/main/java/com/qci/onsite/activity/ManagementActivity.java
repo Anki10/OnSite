@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
@@ -843,7 +844,34 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                 break;
 
             case R.id.btnSync:
-                PostLaboratoryData();
+
+                if (parameter_patient_identification_yes.isChecked()){
+                    Check_box1 = "By Name";
+                }
+                if (parameter_patient_identification_no.isChecked()){
+                    Check_box2 = "By Unique Identifier";
+                }
+
+                if (Check_box1.length() > 0 && Check_box2.length() > 0){
+                    parameter_patient_identification  = Check_box1 + "," + Check_box2;
+                }else if (Check_box1.length() > 0){
+                    parameter_patient_identification = Check_box1;
+                }else if (Check_box2.length() > 0){
+                    parameter_patient_identification = Check_box2;
+                }
+
+                if (requisite_fee_BMW.length() > 0 && management_guide_organization.length() > 0 && hospital_mission_present.length() > 0 && patient_maintained_OPD.length() > 0 && patient_maintained_OPD.length() > 0
+                        && patient_maintained_IPD.length() > 0 && patient_maintained_Emergency.length() > 0 && basic_Tariff_List.length() > 0 && parameter_patient_identification.length() > 0 && quality_improvement_programme.length() > 0){
+
+                    if (image3 != null && image4 != null && image5 != null && image6 != null && image7 != null){
+                        SavePharmacyData("sync");
+                    }else {
+                        Toast.makeText(ManagementActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+                    }
+                }else {
+                    Toast.makeText(ManagementActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+                }
                 break;
         }
     }
@@ -2072,40 +2100,63 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
         pojo.setQuality_improvement_programme_nc(nc9);
 
         if (sql_status){
-            databaseHandler.UPDATE_Management(pojo);
+           boolean sp_status = databaseHandler.UPDATE_Management(pojo);
+
+           if (sp_status){
+               if (!from.equalsIgnoreCase("sync")){
+                   assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                   AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                   pojo.setHospital_id(assessement_list.get(14).getHospital_id());
+                   pojo.setAssessement_name("Management");
+                   pojo.setAssessement_status("Draft");
+                   pojo.setLocal_id(assessement_list.get(14).getLocal_id());
+
+                   databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+
+                   Toast.makeText(ManagementActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                   Intent intent = new Intent(ManagementActivity.this,HospitalListActivity.class);
+                   startActivity(intent);
+                   finish();
+               }else {
+                   progreesDialog();
+                   PostLaboratoryData();
+               }
+           }
         }else {
-            boolean status = databaseHandler.INSERT_Management(pojo);
-            System.out.println(status);
-        }
+            boolean sp_status = databaseHandler.INSERT_Management(pojo);
 
-        if (!from.equalsIgnoreCase("sync")){
-            assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+            if (sp_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
 
-            AssessmentStatusPojo pojo = new AssessmentStatusPojo();
-            pojo.setHospital_id(assessement_list.get(14).getHospital_id());
-            pojo.setAssessement_name("Management");
-            pojo.setAssessement_status("Draft");
-            pojo.setLocal_id(assessement_list.get(14).getLocal_id());
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(14).getHospital_id());
+                    pojo.setAssessement_name("Management");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(14).getLocal_id());
 
-            databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
 
 
-            Toast.makeText(ManagementActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+                    Toast.makeText(ManagementActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
 
-            Intent intent = new Intent(ManagementActivity.this,HospitalListActivity.class);
-            startActivity(intent);
-            finish();
+                    Intent intent = new Intent(ManagementActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    progreesDialog();
+                    PostLaboratoryData();
+                }
+            }
+
         }
     }
 
     private void PostLaboratoryData(){
 
-        SavePharmacyData("sync");
-
-        if (requisite_fee_BMW.length() > 0 && management_guide_organization.length() > 0 && hospital_mission_present.length() > 0 && patient_maintained_OPD.length() > 0 && patient_maintained_OPD.length() > 0
-        && patient_maintained_IPD.length() > 0 && patient_maintained_Emergency.length() > 0 && basic_Tariff_List.length() > 0 && parameter_patient_identification.length() > 0 && quality_improvement_programme.length() > 0){
-
-            if (image3 != null && image4 != null && image5 != null && image6 != null && image7 != null){
                 pojo_dataSync.setTabName("management");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -2114,8 +2165,6 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
-
-
 
                 for (int i=0;i<hospital_mission_present_list.size();i++){
                     String value = hospital_mission_present_list.get(i);
@@ -2156,15 +2205,13 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
 
                 pojo_dataSync.setManagement(pojo);
 
-                final ProgressDialog d = AppDialog.showLoading(ManagementActivity.this);
-                d.setCanceledOnTouchOutside(false);
 
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        d.dismiss();
+                       CloseProgreesDialog();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
                             Intent intent = new Intent(ManagementActivity.this, LoginActivity.class);
@@ -2203,16 +2250,9 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
                     }
                 });
-            }else {
-                Toast.makeText(ManagementActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
-            }
-
-        }else {
-            Toast.makeText(ManagementActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
     }
 
 
@@ -2252,22 +2292,35 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                                 hospital_mission_present_list.add(response.body().getMessage());
                                 Local_hospital_mission_present_list.add(image_path);
                                 image_hospital_mission_present.setImageResource(R.mipmap.camera_selected);
+
+                                image3 = "hospital_mission_present";
+
                             }else if (from.equalsIgnoreCase("patient_maintained_OPD")){
                                 patient_maintained_OPD_list.add(response.body().getMessage());
                                 Local_patient_maintained_OPD_list.add(image_path);
                                 Image_patient_maintained_OPD.setImageResource(R.mipmap.camera_selected);
+
+                                image4 = "patient_maintained_OPD";
+
                             }else if (from.equalsIgnoreCase("patient_maintained_IPD")){
                                 patient_maintained_IPD_list.add(response.body().getMessage());
                                 Local_patient_maintained_IPD_list.add(image_path);
                                 Image_patient_maintained_IPD.setImageResource(R.mipmap.camera_selected);
+
+                                image5 = "patient_maintained_IPD";
+
                             }else if (from.equalsIgnoreCase("patient_maintained_Emergency")){
                                 patient_maintained_Emergency_list.add(response.body().getMessage());
                                 Local_patient_maintained_Emergency_list.add(image_path);
                                 Image_patient_maintained_Emergency.setImageResource(R.mipmap.camera_selected);
+
+                                image6 = "patient_maintained_Emergency";
                             }else if (from.equalsIgnoreCase("basic_Tariff_List")){
                                 basic_Tariff_List_list.add(response.body().getMessage());
                                 Local_basic_Tariff_List_list.add(image_path);
                                 Image_basic_Tariff_List.setImageResource(R.mipmap.camera_selected);
+
+                                image7 = "basic_Tariff_List";
                             }
 
                             Toast.makeText(ManagementActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();

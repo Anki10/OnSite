@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
@@ -430,7 +431,16 @@ public class MRDActivity extends BaseActivity implements View.OnClickListener {
                 break;
 
             case R.id.btnSync:
-                PostLaboratoryData();
+                if (medical_record_death_certificate.length() > 0 && documented_maintaining_confidentiality.length() > 0 && any_information_disclosed.length() > 0 && destruction_medical_records.length() > 0 && fire_extinguisher_present.length() > 0){
+                    if (image1 != null){
+                        SavePharmacyData("sync");
+                    }else {
+                        Toast.makeText(MRDActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+                    }
+                }else {
+                    Toast.makeText(MRDActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+                }
                 break;
         }
     }
@@ -1125,39 +1135,62 @@ public class MRDActivity extends BaseActivity implements View.OnClickListener {
         pojo.setLocal_fire_extinguisher_present_image(Local_image1);
 
         if (sql_status){
-            databaseHandler.UPDATE_MRD(pojo);
+            boolean sw_status = databaseHandler.UPDATE_MRD(pojo);
+
+            if (sw_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(11).getHospital_id());
+                    pojo.setAssessement_name("MRD");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(11).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                    Toast.makeText(MRDActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(MRDActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    progreesDialog();
+                    PostLaboratoryData();
+                }
+
+            }
+
         }else {
-            boolean status = databaseHandler.INSERT_MRD(pojo);
-            System.out.println(status);
-        }
+            boolean sw_status = databaseHandler.INSERT_MRD(pojo);
+            if (sw_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
 
-        if (!from.equalsIgnoreCase("sync")){
-            assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(11).getHospital_id());
+                    pojo.setAssessement_name("MRD");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(11).getLocal_id());
 
-            AssessmentStatusPojo pojo = new AssessmentStatusPojo();
-            pojo.setHospital_id(assessement_list.get(11).getHospital_id());
-            pojo.setAssessement_name("MRD");
-            pojo.setAssessement_status("Draft");
-            pojo.setLocal_id(assessement_list.get(11).getLocal_id());
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
 
-            databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+                    Toast.makeText(MRDActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
 
-            Toast.makeText(MRDActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(MRDActivity.this,HospitalListActivity.class);
-            startActivity(intent);
-            finish();
+                    Intent intent = new Intent(MRDActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    progreesDialog();
+                    PostLaboratoryData();
+                }
+            }
         }
 
     }
 
     private void PostLaboratoryData(){
 
-        SavePharmacyData("sync");
-
-        if (medical_record_death_certificate.length() > 0 && documented_maintaining_confidentiality.length() > 0 && any_information_disclosed.length() > 0 && destruction_medical_records.length() > 0 && fire_extinguisher_present.length() > 0){
-
-            if (image1 != null){
                 pojo_dataSync.setTabName("mrd");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -1179,15 +1212,12 @@ public class MRDActivity extends BaseActivity implements View.OnClickListener {
 
                 pojo_dataSync.setMrd(pojo);
 
-                final ProgressDialog d = AppDialog.showLoading(MRDActivity.this);
-                d.setCanceledOnTouchOutside(false);
-
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        d.dismiss();
+                       CloseProgreesDialog();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
                             Intent intent = new Intent(MRDActivity.this, LoginActivity.class);
@@ -1226,16 +1256,9 @@ public class MRDActivity extends BaseActivity implements View.OnClickListener {
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
                     }
                 });
-            }else {
-                Toast.makeText(MRDActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
-            }
-
-        }else {
-            Toast.makeText(MRDActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
     }
 
     private void ImageUpload(final String image_path,final String from){
@@ -1273,6 +1296,8 @@ public class MRDActivity extends BaseActivity implements View.OnClickListener {
                                 staffs_personal_files_maintained_list.add(response.body().getMessage());
                                 Local_staffs_personal_files_maintained_list.add(image_path);
                                 image_fire_extinguisher_present.setImageResource(R.mipmap.camera_selected);
+
+                                image1 = "fire_extinguisher_present";
                             }
 
                             Toast.makeText(MRDActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();

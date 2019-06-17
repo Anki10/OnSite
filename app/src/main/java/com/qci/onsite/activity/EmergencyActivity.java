@@ -9,6 +9,7 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.view.View;
@@ -486,7 +487,12 @@ public class EmergencyActivity extends BaseActivity {
                 break;
 
             case R.id.btnSync:
-                PostLaboratoryData();
+                if (radiology_status.length() > 0){
+                    SaveEmergencyData("sync");
+                }else {
+                    Toast.makeText(EmergencyActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+                }
                 break;
 
         }
@@ -572,41 +578,69 @@ public class EmergencyActivity extends BaseActivity {
          pojo.setLocal_EMERGENCY_down_Norms_video(Local_video1);
 
          if (sql_status){
-             databaseHandler.UPDATE_EMERGENCY(pojo);
+            boolean sqlite_status =  databaseHandler.UPDATE_EMERGENCY(pojo);
+
+            if (sqlite_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(3).getHospital_id());
+                    pojo.setAssessement_name("Emergency");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(3).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+
+                    Toast.makeText(EmergencyActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(EmergencyActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    progreesDialog();
+
+                    PostLaboratoryData();
+                }
+
+            }
          }else {
-             boolean status = databaseHandler.INSERT_EMERGENCY(pojo);
-             System.out.println(status);
+             boolean s_status = databaseHandler.INSERT_EMERGENCY(pojo);
+
+             if (s_status){
+                 if (!from.equalsIgnoreCase("sync")){
+                     assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                     AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                     pojo.setHospital_id(assessement_list.get(3).getHospital_id());
+                     pojo.setAssessement_name("Emergency");
+                     pojo.setAssessement_status("Draft");
+                     pojo.setLocal_id(assessement_list.get(3).getLocal_id());
+
+                     databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                     Toast.makeText(EmergencyActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                     Intent intent = new Intent(EmergencyActivity.this,HospitalListActivity.class);
+                     startActivity(intent);
+                     finish();
+                 }else {
+                     progreesDialog();
+
+                     PostLaboratoryData();
+                 }
+
+             }
+
          }
 
-         if (!from.equalsIgnoreCase("sync")){
-             assessement_list = databaseHandler.getAssessmentList(Hospital_id);
-
-             AssessmentStatusPojo pojo = new AssessmentStatusPojo();
-             pojo.setHospital_id(assessement_list.get(3).getHospital_id());
-             pojo.setAssessement_name("Emergency");
-             pojo.setAssessement_status("Draft");
-             pojo.setLocal_id(assessement_list.get(3).getLocal_id());
-
-             databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-
-
-             Toast.makeText(EmergencyActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
-
-             Intent intent = new Intent(EmergencyActivity.this,HospitalListActivity.class);
-             startActivity(intent);
-             finish();
-         }
 
 
 
     }
 
     private void PostLaboratoryData(){
-
-        SaveEmergencyData("sync");
-
-        if (radiology_status.length() > 0){
 
             pojo_dataSync.setTabName("emergency");
             pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
@@ -619,15 +653,13 @@ public class EmergencyActivity extends BaseActivity {
 
             pojo_dataSync.setEmergency(pojo);
 
-            final ProgressDialog d = AppDialog.showLoading(EmergencyActivity.this);
-            d.setCanceledOnTouchOutside(false);
 
             mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                 @Override
                 public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                     System.out.println("xxx sucess");
 
-                    d.dismiss();
+                    CloseProgreesDialog();
 
                     if (response.message().equalsIgnoreCase("Unauthorized")) {
                         Intent intent = new Intent(EmergencyActivity.this, LoginActivity.class);
@@ -669,12 +701,9 @@ public class EmergencyActivity extends BaseActivity {
                 public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                     System.out.println("xxx failed");
 
-                    d.dismiss();
+                    CloseProgreesDialog();
                 }
             });
-        }else {
-            Toast.makeText(EmergencyActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
     }
 
     @Override

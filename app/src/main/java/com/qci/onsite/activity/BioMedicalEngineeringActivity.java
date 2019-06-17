@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
@@ -339,7 +340,18 @@ public class BioMedicalEngineeringActivity extends BaseActivity implements View.
                 break;
 
             case R.id.btnSync:
-                PostLaboratoryData();
+                if (Maintenance_staff_contactable.length() > 0 && equipment_accordance_services.length() > 0 && BioMedicalEngineeringPojo.length() > 0){
+                    if (image3 != null){
+                        SaveLaboratoryData("sync");
+                    }else {
+                        Toast.makeText(BioMedicalEngineeringActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+                    }
+
+                }else {
+                    Toast.makeText(BioMedicalEngineeringActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+                }
+
                 break;
         }
     }
@@ -850,38 +862,63 @@ public class BioMedicalEngineeringActivity extends BaseActivity implements View.
         pojo.setLocal_documented_operational_maintenance_image(Local_image3);
 
         if (sql_status){
-            databaseHandler.UPDATE_Bio_medical_engineering(pojo);
+            boolean s_status = databaseHandler.UPDATE_Bio_medical_engineering(pojo);
+
+            if (s_status){
+                if (!from.equalsIgnoreCase("sync")) {
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(15).getHospital_id());
+                    pojo.setAssessement_name("Maintenance/Bio-medical engineering");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(15).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+
+                    Toast.makeText(BioMedicalEngineeringActivity.this, "Your data saved", Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(BioMedicalEngineeringActivity.this, HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    progreesDialog();
+                    PostLaboratoryData();
+                }
+            }
         }else {
-            boolean status = databaseHandler.INSERT_Bio_medical_engineering(pojo);
-            System.out.println(status);
+            boolean s_status = databaseHandler.INSERT_Bio_medical_engineering(pojo);
+
+            if (s_status){
+                if (!from.equalsIgnoreCase("sync")) {
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(15).getHospital_id());
+                    pojo.setAssessement_name("Maintenance/Bio-medical engineering");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(15).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+
+                    Toast.makeText(BioMedicalEngineeringActivity.this, "Your data saved", Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(BioMedicalEngineeringActivity.this, HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    progreesDialog();
+                    PostLaboratoryData();
+                }
+            }
+
         }
-        if (!from.equalsIgnoreCase("sync")) {
-            assessement_list = databaseHandler.getAssessmentList(Hospital_id);
 
-            AssessmentStatusPojo pojo = new AssessmentStatusPojo();
-            pojo.setHospital_id(assessement_list.get(15).getHospital_id());
-            pojo.setAssessement_name("Maintenance/Bio-medical engineering");
-            pojo.setAssessement_status("Draft");
-            pojo.setLocal_id(assessement_list.get(15).getLocal_id());
-
-            databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-
-            Toast.makeText(BioMedicalEngineeringActivity.this, "Your data saved", Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(BioMedicalEngineeringActivity.this, HospitalListActivity.class);
-            startActivity(intent);
-            finish();
-        }
     }
 
     private void PostLaboratoryData(){
-
-        SaveLaboratoryData("sync");
-
-        if (Maintenance_staff_contactable.length() > 0 && equipment_accordance_services.length() > 0 && BioMedicalEngineeringPojo.length() > 0){
-
-            if (image3 != null){
                 pojo_dataSync.setTabName("maintenancebiomedical");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -903,15 +940,12 @@ public class BioMedicalEngineeringActivity extends BaseActivity implements View.
 
                 pojo_dataSync.setMaintenancebio(pojo);
 
-                final ProgressDialog d = AppDialog.showLoading(BioMedicalEngineeringActivity.this);
-                d.setCanceledOnTouchOutside(false);
-
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
                             Intent intent = new Intent(BioMedicalEngineeringActivity.this, LoginActivity.class);
@@ -950,19 +984,11 @@ public class BioMedicalEngineeringActivity extends BaseActivity implements View.
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
                     }
                 });
-            }else {
-                Toast.makeText(BioMedicalEngineeringActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
-            }
 
-        }else {
-            Toast.makeText(BioMedicalEngineeringActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
     }
-
-
 
 
     private void ImageUpload(final String image_path,final String from){
@@ -1001,6 +1027,8 @@ public class BioMedicalEngineeringActivity extends BaseActivity implements View.
                                 DoHigh_imageList.add(response.body().getMessage());
                                 Local_DoHigh_imageList.add(image_path);
                                image_BioMedicalEngineeringPojo.setImageResource(R.mipmap.camera_selected);
+
+                               image3 = "do_high";
                             }
 
 

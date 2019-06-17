@@ -3,10 +3,13 @@ package com.qci.onsite.activity;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qci.onsite.MainActivity;
@@ -43,6 +46,8 @@ public class LoginActivity extends BaseActivity implements ActivityCompat.OnRequ
     @BindView(R.id.btn_login)
     Button btn_login;
 
+    private TextView tv_app_version;
+
 
     private APIService mAPIService;
 
@@ -68,6 +73,8 @@ public class LoginActivity extends BaseActivity implements ActivityCompat.OnRequ
 
         mAPIService = ApiUtils.getAPIService();
 
+
+
         permissionUtils=new PermissionUtils(LoginActivity.this);
 
         permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -85,6 +92,17 @@ public class LoginActivity extends BaseActivity implements ActivityCompat.OnRequ
                 finish();
             }
         }
+
+        tv_app_version = (TextView) findViewById(R.id.tv_app_version);
+
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String version = pInfo.versionName;
+            tv_app_version.setText("App Version : "+ version);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
 
         /*login_userName.setText("ahana@gmail.com");
         login_password.setText("Password1");*/

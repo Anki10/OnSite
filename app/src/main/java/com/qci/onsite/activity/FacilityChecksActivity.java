@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
@@ -544,9 +545,17 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
 
             case R.id.btnSync:
 
-                PostLaboratoryData();
+                if (medical_gas_cylinders.length() > 0 && smoke_detectors_installed.length() > 0 && extinguisher_present_patient.length() > 0 && fire_fighting_equipment.length() > 0
+                        && safe_exit_plan.length() > 0){
 
-
+                    if (image1 != null && image2 != null && image3 != null){
+                        SaveLaboratoryData("sync");
+                    }else {
+                        Toast.makeText(FacilityChecksActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+                    }
+                }else {
+                    Toast.makeText(FacilityChecksActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+                }
                 break;
 
         }
@@ -1314,31 +1323,62 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
 
 
         if (sql_status){
-            databaseHandler.UPDATE_Facility_Checks(pojo);
+            boolean st_status = databaseHandler.UPDATE_Facility_Checks(pojo);
+
+            if (st_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(16).getHospital_id());
+                    pojo.setAssessement_name("Maintenance/Facility Checks");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(16).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                    Toast.makeText(FacilityChecksActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(FacilityChecksActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                }else {
+                    progreesDialog();
+                    PostLaboratoryData();
+                }
+            }
         }else {
-            boolean status = databaseHandler.INSERT_Facility_Checks(pojo);
-            System.out.println(status);
+            boolean st_status = databaseHandler.INSERT_Facility_Checks(pojo);
+
+            if (st_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(16).getHospital_id());
+                    pojo.setAssessement_name("Maintenance/Facility Checks");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(16).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                    Toast.makeText(FacilityChecksActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(FacilityChecksActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                }else {
+                    progreesDialog();
+                    PostLaboratoryData();
+                }
+            }
         }
 
-        if (!from.equalsIgnoreCase("sync")){
-            assessement_list = databaseHandler.getAssessmentList(Hospital_id);
 
-
-            AssessmentStatusPojo pojo = new AssessmentStatusPojo();
-            pojo.setHospital_id(assessement_list.get(16).getHospital_id());
-            pojo.setAssessement_name("Maintenance/Facility Checks");
-            pojo.setAssessement_status("Draft");
-            pojo.setLocal_id(assessement_list.get(16).getLocal_id());
-
-            databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-            Toast.makeText(FacilityChecksActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(FacilityChecksActivity.this,HospitalListActivity.class);
-            startActivity(intent);
-            finish();
-
-        }
 
     }
     private void ImageUpload(final String image_path,final String from){
@@ -1376,14 +1416,21 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
                                 medical_gas_cylinders_list.add(response.body().getMessage());
                                 Local_medical_gas_cylinders_list.add(image_path);
                                 image_medical_gas_cylinders.setImageResource(R.mipmap.camera_selected);
+
+                                image1 = "medical_gas_cylinders";
+
                             }else if (from.equalsIgnoreCase("smoke_detectors_installed")){
                                 smoke_detectors_installed_list.add(response.body().getMessage());
                                 Local_smoke_detectors_installed_list.add(image_path);
                                 image_smoke_detectors_installed.setImageResource(R.mipmap.camera_selected);
+
+                                image2 = "smoke_detectors_installed";
                             }else if (from.equalsIgnoreCase("extinguisher_present_patient")){
                                 extinguisher_present_patient_list.add(response.body().getMessage());
                                 Local_extinguisher_present_patient_list.add(image_path);
                                 image_extinguisher_present_patient.setImageResource(R.mipmap.camera_selected);
+
+                                image3 = "extinguisher_present_patient";
                             }
 
                             Toast.makeText(FacilityChecksActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
@@ -1411,12 +1458,6 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
 
     private void PostLaboratoryData(){
 
-        SaveLaboratoryData("sync");
-
-        if (medical_gas_cylinders.length() > 0 && smoke_detectors_installed.length() > 0 && extinguisher_present_patient.length() > 0 && fire_fighting_equipment.length() > 0
-                && safe_exit_plan.length() > 0){
-
-            if (image1 != null && image2 != null && image3 != null){
                 pojo_dataSync.setTabName("maintenancefacility");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -1449,19 +1490,15 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
 
                 pojo.setExtinguisher_present_patient_image(extinguisher_present_patient_view);
 
-
-
                 pojo_dataSync.setMaintenancefacility(pojo);
 
-                final ProgressDialog d = AppDialog.showLoading(FacilityChecksActivity.this);
-                d.setCanceledOnTouchOutside(false);
 
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
                             Intent intent = new Intent(FacilityChecksActivity.this, LoginActivity.class);
@@ -1502,15 +1539,10 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
                     }
                 });
-            }else {
-                Toast.makeText(FacilityChecksActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
-            }
-        }else {
-            Toast.makeText(FacilityChecksActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
+
     }
 
     @Override

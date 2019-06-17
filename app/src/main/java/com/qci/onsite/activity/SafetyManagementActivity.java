@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
@@ -674,7 +675,18 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
 
             case R.id.btnSync:
 
-                PostLaboratoryData();
+                if (safety_device_lab.length() > 0 && body_parts_staff_patients.length() > 0 && staff_member_radiation_area.length() > 0 && standardised_colur_coding.length() > 0
+                        && safe_storage_medical.length() > 0){
+                    if (image3 != null && image4 != null && image5 != null){
+                        SaveLaboratoryData("sync");
+                    }else {
+                        Toast.makeText(SafetyManagementActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+
+                    }
+                }else {
+                    Toast.makeText(SafetyManagementActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+                }
 
                 break;
 
@@ -1511,31 +1523,62 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
 
 
         if (sql_status){
-            databaseHandler.UPDATE_SAFETY_MANAGEMENT(pojo);
+            boolean sa_status = databaseHandler.UPDATE_SAFETY_MANAGEMENT(pojo);
+
+            if (sa_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(17).getHospital_id());
+                    pojo.setAssessement_name("Safety Management");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(17).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                    Toast.makeText(SafetyManagementActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(SafetyManagementActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                }else {
+                    progreesDialog();
+                    PostLaboratoryData();
+                }
+            }
         }else {
-            boolean status = databaseHandler.INSERT_SAFETY_MANAGEMENT(pojo);
-            System.out.println(status);
+            boolean sa_status = databaseHandler.INSERT_SAFETY_MANAGEMENT(pojo);
+
+            if (sa_status){
+                if (!from.equalsIgnoreCase("sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(17).getHospital_id());
+                    pojo.setAssessement_name("Safety Management");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(17).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                    Toast.makeText(SafetyManagementActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(SafetyManagementActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                } else {
+                    progreesDialog();
+                    PostLaboratoryData();
+                }
+            }
         }
 
-        if (!from.equalsIgnoreCase("sync")){
-            assessement_list = databaseHandler.getAssessmentList(Hospital_id);
 
-
-            AssessmentStatusPojo pojo = new AssessmentStatusPojo();
-            pojo.setHospital_id(assessement_list.get(17).getHospital_id());
-            pojo.setAssessement_name("Safety Management");
-            pojo.setAssessement_status("Draft");
-            pojo.setLocal_id(assessement_list.get(17).getLocal_id());
-
-            databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-            Toast.makeText(SafetyManagementActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(SafetyManagementActivity.this,HospitalListActivity.class);
-            startActivity(intent);
-            finish();
-
-        }
 
     }
     private void ImageUpload(final String image_path,final String from){
@@ -1573,22 +1616,35 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                                 safety_device_lab_list.add(response.body().getMessage());
                                 Local_safety_device_lab_list.add(image_path);
                                 image_safety_device_lab.setImageResource(R.mipmap.camera_selected);
+
+                                image1 = "safety_device_lab";
+
                             }else if (from.equalsIgnoreCase("body_parts_staff_patients")){
                                 body_parts_staff_patients_list.add(response.body().getMessage());
                                 Local_body_parts_staff_patients_list.add(image_path);
                                 image_body_parts_staff_patients.setImageResource(R.mipmap.camera_selected);
+
+                                image2 = "body_parts_staff_patients";
                             }else if (from.equalsIgnoreCase("staff_member_radiation_area")){
                                 staff_member_radiation_area_list.add(response.body().getMessage());
                                 Local_staff_member_radiation_area_list.add(image_path);
                                 image_staff_member_radiation_area.setImageResource(R.mipmap.camera_selected);
+
+                                image3 = "staff_member_radiation_area";
+
                             }else if (from.equalsIgnoreCase("standardised_colur_coding")){
                                 standardised_colur_coding_list.add(response.body().getMessage());
                                 Local_standardised_colur_coding_list.add(image_path);
                                 image_standardised_colur_coding.setImageResource(R.mipmap.camera_selected);
+
+                                image4 = "standardised_colur_coding";
+
                             }else if (from.equalsIgnoreCase("safe_storage_medical")){
                                 safe_storage_medical_list.add(response.body().getMessage());
                                 Local_safe_storage_medical_list.add(image_path);
                                 image_safe_storage_medical.setImageResource(R.mipmap.camera_selected);
+
+                                image5 = "safe_storage_medical";
                             }
 
                             Toast.makeText(SafetyManagementActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
@@ -1616,12 +1672,6 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
 
     private void PostLaboratoryData(){
 
-        SaveLaboratoryData("sync");
-
-        if (safety_device_lab.length() > 0 && body_parts_staff_patients.length() > 0 && staff_member_radiation_area.length() > 0 && standardised_colur_coding.length() > 0
-                && safe_storage_medical.length() > 0){
-
-            if (image3 != null && image4 != null && image5 != null){
                 pojo_dataSync.setTabName("safetymanagement");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -1630,7 +1680,6 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
-
 
                 for (int i=0;i<safety_device_lab_list.size();i++){
                     String value_rail = safety_device_lab_list.get(i);
@@ -1672,15 +1721,13 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
 
                 pojo_dataSync.setSafetymanagement(pojo);
 
-                final ProgressDialog d = AppDialog.showLoading(SafetyManagementActivity.this);
-                d.setCanceledOnTouchOutside(false);
 
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
                             Intent intent = new Intent(SafetyManagementActivity.this, LoginActivity.class);
@@ -1721,15 +1768,10 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
                     }
                 });
-            }else {
-                Toast.makeText(SafetyManagementActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
-            }
-        }else {
-            Toast.makeText(SafetyManagementActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
+
     }
 
     @Override

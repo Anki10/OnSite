@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
@@ -750,7 +751,18 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
                 break;
 
             case R.id.btnSync:
-                PostLaboratoryData();
+                if (radiology_status.length() > 0 && radiology_defined_turnaround.length() > 0){
+                    if (image1 != null && image2 != null){
+                        SaveRadioLogyData("sync");
+                    }else {
+                        Toast.makeText(RadiologyActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+
+                    }
+                }else {
+                    Toast.makeText(RadiologyActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+                }
+
                 break;
         }
     }
@@ -763,8 +775,6 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
          }else {
              pojo.setId(0);
          }
-
-
 
      pojo.setRADIOLOGY_Appropriate_safety_equipment(radiology_status);
      pojo.setRADIOLOGY_Appropriate_safety_equipment_remark(remark1);
@@ -829,29 +839,61 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
         pojo.setLocal_RADIOLOGY_defined_turnaround_image(Local_image2);
 
         if(sql_status){
-            databaseHandler.UPDATE_RADIOLOGy(pojo);
+            boolean sqlite_status = databaseHandler.UPDATE_RADIOLOGy(pojo);
+
+            if (sqlite_status){
+                if (!from.equalsIgnoreCase("Sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(2).getHospital_id());
+                    pojo.setAssessement_name("Radiology / Imaging");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(2).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                    Toast.makeText(RadiologyActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(RadiologyActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    progreesDialog();
+
+                    PostLaboratoryData();
+                }
+            }
         }else {
-            boolean status = databaseHandler.INSERT_RADIOLOGy(pojo);
-            System.out.println(status);
+            boolean sqlite_status = databaseHandler.INSERT_RADIOLOGy(pojo);
+
+            if (sqlite_status){
+                if (!from.equalsIgnoreCase("Sync")){
+                    assessement_list = databaseHandler.getAssessmentList(Hospital_id);
+
+                    AssessmentStatusPojo pojo = new AssessmentStatusPojo();
+                    pojo.setHospital_id(assessement_list.get(2).getHospital_id());
+                    pojo.setAssessement_name("Radiology / Imaging");
+                    pojo.setAssessement_status("Draft");
+                    pojo.setLocal_id(assessement_list.get(2).getLocal_id());
+
+                    databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+
+                    Toast.makeText(RadiologyActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(RadiologyActivity.this,HospitalListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    progreesDialog();
+
+                    PostLaboratoryData();
+                }
+            }
+
         }
 
-        if (!from.equalsIgnoreCase("Sync")){
-            assessement_list = databaseHandler.getAssessmentList(Hospital_id);
 
-            AssessmentStatusPojo pojo = new AssessmentStatusPojo();
-            pojo.setHospital_id(assessement_list.get(2).getHospital_id());
-            pojo.setAssessement_name("Radiology / Imaging");
-            pojo.setAssessement_status("Draft");
-            pojo.setLocal_id(assessement_list.get(2).getLocal_id());
-
-            databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-            Toast.makeText(RadiologyActivity.this,"Your data saved",Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(RadiologyActivity.this,HospitalListActivity.class);
-            startActivity(intent);
-            finish();
-        }
     }
 
     private void ImageUpload(final String image_path,final String from){
@@ -889,11 +931,16 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
                                 radiology_list.add(response.body().getMessage());
                                 Local_radiology_list.add(image_path);
                                 image_radiology.setImageResource(R.mipmap.camera_selected);
+
+                                image1 = "radiology";
+
                             }else if (from.equalsIgnoreCase("radiology_defined_turnaround")){
 
                                 radiology_defined_turnaround_list.add(response.body().getMessage());
                                 Local_radiology_defined_turnaround_list.add(image_path);
                                 image_radiology_defined_turnaround.setImageResource(R.mipmap.camera_selected);
+
+                                image2 = "radiology_defined_turnaround";
                             }
 
 
@@ -971,12 +1018,6 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void PostLaboratoryData(){
-
-        SaveRadioLogyData("sync");
-
-        if (radiology_status.length() > 0 && radiology_defined_turnaround.length() > 0){
-
-            if (image1 != null && image2 != null){
                 pojo_dataSync.setTabName("radiology");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -1005,17 +1046,13 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
 
                 pojo_dataSync.setRadioLogy(pojo);
 
-                final ProgressDialog d = AppDialog.showLoading(RadiologyActivity.this);
-                d.setCanceledOnTouchOutside(false);
 
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        if (d.isShowing() || d != null){
-                            d.dismiss();
-                        }
+                        CloseProgreesDialog();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
                             Intent intent = new Intent(RadiologyActivity.this, LoginActivity.class);
@@ -1055,15 +1092,10 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
 
-                        d.dismiss();
+                        CloseProgreesDialog();
                     }
                 });
-            }else {
-                Toast.makeText(RadiologyActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
-            }
-        }else {
-            Toast.makeText(RadiologyActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-        }
+
     }
 
     @Override
@@ -1077,7 +1109,5 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
             startActivity(intent);
             finish();
         }
-
-
     }
 }
