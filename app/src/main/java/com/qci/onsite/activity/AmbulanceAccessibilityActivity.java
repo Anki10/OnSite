@@ -15,6 +15,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -1632,7 +1633,24 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
 
         if(list.size()==2)
         {
-            btn_add_more.setEnabled(false);
+            btn_add_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast toast = Toast.makeText(AmbulanceAccessibilityActivity.this, "You cannot upload more than 2 images.", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+            });
+        }
+        else
+        {
+            btn_add_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogLogout.dismiss();
+                    captureImage(position);
+                }
+            });
         }
     }
 
@@ -1897,6 +1915,7 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
 
     private void PostLaboratoryData(){
 
+        check =1;
         for(int i = hospital_mission_present_list.size() ; i<  Local_hospital_mission_present_list.size();i++)
         {
             latch = new CountDownLatch(1);
@@ -1919,6 +1938,15 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 });
                 break;
             }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(AmbulanceAccessibilityActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
         }
 
         for(int i = patient_maintained_OPD_list.size() ; i<  Local_patient_maintained_OPD_list.size();i++)
@@ -1944,6 +1972,15 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 break;
             }
         }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(AmbulanceAccessibilityActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
 
         for(int i = patient_maintained_IPD_list.size() ; i<  Local_patient_maintained_IPD_list.size();i++)
         {
@@ -1968,6 +2005,15 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 break;
             }
         }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(AmbulanceAccessibilityActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
         for(int i = patient_maintained_Emergency_list.size() ; i<  Local_patient_maintained_Emergency_list.size();i++)
         {
             latch = new CountDownLatch(1);
@@ -1991,7 +2037,15 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 break;
             }
         }
-
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(AmbulanceAccessibilityActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
         for(int i = nurses_available_ambulances_list.size() ; i<  Local_nurses_available_ambulances_list.size();i++)
         {
             latch = new CountDownLatch(1);
@@ -2014,6 +2068,15 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 });
                 break;
             }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(AmbulanceAccessibilityActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
         }
 
               pojo_dataSync.setTabName("AmbulanceAccessibility");
@@ -2163,6 +2226,7 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
     }
 
     private void Post_SHCO_LaboratoryData(){
+        check =1;
         for(int i = hospital_mission_present_list.size() ; i<  Local_hospital_mission_present_list.size();i++)
         {
             latch = new CountDownLatch(1);
@@ -2185,6 +2249,15 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 });
                 break;
             }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(AmbulanceAccessibilityActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
         }
 
         for(int i = patient_maintained_OPD_list.size() ; i<  Local_patient_maintained_OPD_list.size();i++)
@@ -2210,6 +2283,15 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 break;
             }
         }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(AmbulanceAccessibilityActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
 
         for(int i = patient_maintained_IPD_list.size() ; i<  Local_patient_maintained_IPD_list.size();i++)
         {
@@ -2234,6 +2316,15 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 break;
             }
         }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(AmbulanceAccessibilityActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
         for(int i = patient_maintained_Emergency_list.size() ; i<  Local_patient_maintained_Emergency_list.size();i++)
         {
             latch = new CountDownLatch(1);
@@ -2257,7 +2348,15 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 break;
             }
         }
-
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(AmbulanceAccessibilityActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
         for(int i = nurses_available_ambulances_list.size() ; i<  Local_nurses_available_ambulances_list.size();i++)
         {
             latch = new CountDownLatch(1);
@@ -2280,6 +2379,15 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 });
                 break;
             }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(AmbulanceAccessibilityActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
         }
                 pojo_dataSync.setTabName("AmbulanceAccessibility");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
