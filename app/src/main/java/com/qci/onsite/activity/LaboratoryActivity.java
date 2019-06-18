@@ -864,10 +864,8 @@ LaboratoryActivity extends BaseActivity implements View.OnClickListener  {
             Log.d("Capture", "UrI: "+picUri.toString());
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageF));
-                picUri = Uri.fromFile(imageF);
             } else {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(LaboratoryActivity.this, getApplicationContext().getPackageName() + ".provider", imageF));
-                picUri = FileProvider.getUriForFile(LaboratoryActivity.this, getApplicationContext().getPackageName() + ".provider", imageF);
             }
         } catch (IOException e) {
             e.printStackTrace();
