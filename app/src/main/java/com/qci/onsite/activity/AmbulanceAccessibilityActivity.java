@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,6 +14,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -47,6 +49,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.CountDownLatch;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -233,7 +236,8 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
 
     DataSyncRequest pojo_dataSync;
 
-
+    int check;
+    CountDownLatch latch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -417,7 +421,7 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
             }
 
             if (pojo.getLocal_total_number_ambulance_available_image() != null){
-
+                image_total_number_ambulance_available.setImageResource(R.mipmap.camera_selected);
                 Local_image3 = pojo.getLocal_total_number_ambulance_available_image();
 
                 JSONObject json = null;
@@ -470,6 +474,7 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
             }
 
             if (pojo.getLocal_ambulance_appropriately_equiped_image() != null){
+                image_ambulance_appropriately_equiped.setImageResource(R.mipmap.camera_selected);
 
                 Local_image4 = pojo.getLocal_ambulance_appropriately_equiped_image();
 
@@ -522,6 +527,7 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 }
             }
             if (pojo.getLocal_drivers_ambulances_available_image() != null){
+                image_drivers_ambulances_available.setImageResource(R.mipmap.camera_selected);
 
                 Local_image5 = pojo.getLocal_drivers_ambulances_available_image();
 
@@ -574,6 +580,7 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
             }
 
             if (pojo.getLocal_doctors_available_ambulances_image() != null){
+                image_doctors_available_ambulances.setImageResource(R.mipmap.camera_selected);
 
                 Local_image6 = pojo.getLocal_doctors_available_ambulances_image();
 
@@ -627,6 +634,7 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
             }
 
             if (pojo.getLocal_nurses_available_ambulances_image() != null){
+                image_nurses_available_ambulances.setImageResource(R.mipmap.camera_selected);
 
                 Local_image8 = pojo.getLocal_nurses_available_ambulances_image();
 
@@ -776,7 +784,7 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                     if (ambulance_patient_drop.length() > 0 && ownership_the_ambulance.length() > 0 && ambulance_appropriately_equiped.length() > 0 && ed_total_number_ambulance_available.getText().toString().length() > 0
                             && ed_drivers_ambulances_available.getText().toString().length() > 0 && ed_doctors_available_ambulances.getText().toString().length() > 0 && ed_nurses_available_ambulances.getText().toString().length() > 0){
 
-                        if (image3 != null && image4 != null && image5 != null && image6 != null && image8 != null){
+                        if (Local_image3 != null && Local_image4 != null && Local_image5 != null && Local_image6 != null && Local_image8 != null){
                             SavePharmacyData("sync","hco");
                         }else {
                             Toast.makeText(AmbulanceAccessibilityActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
@@ -892,7 +900,7 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                     String image2 = compressImage(uri.toString());
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                    ImageUpload(image2,"hospital_mission_present");
+                    SaveImage(image2,"hospital_mission_present");
 
                 }
 
@@ -902,7 +910,7 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                     String image2 = compressImage(uri.toString());
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                    ImageUpload(image2,"patient_maintained_OPD");
+                    SaveImage(image2,"patient_maintained_OPD");
 
                 }
             }else if (requestCode == 5) {
@@ -911,7 +919,7 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                     String image2 = compressImage(uri.toString());
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                    ImageUpload(image2,"patient_maintained_IPD");
+                    SaveImage(image2,"patient_maintained_IPD");
 
                 }
             }else if (requestCode == 6) {
@@ -920,7 +928,7 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                     String image2 = compressImage(uri.toString());
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                    ImageUpload(image2,"patient_maintained_Emergency");
+                    SaveImage(image2,"patient_maintained_Emergency");
 
                 }
             }else if (requestCode == 7) {
@@ -929,7 +937,7 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                     String image2 = compressImage(uri.toString());
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                    ImageUpload(image2,"basic_Tariff_List");
+                    SaveImage(image2,"basic_Tariff_List");
 
                 }
             }else if (requestCode == 8){
@@ -938,7 +946,7 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                     String image2 = compressImage(uri.toString());
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                    ImageUpload(image2,"nurses_available_ambulances");
+                    SaveImage(image2,"nurses_available_ambulances");
 
                 }
 
@@ -1621,6 +1629,11 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 captureImage(position);
             }
         });
+
+        if(list.size()==2)
+        {
+            btn_add_more.setEnabled(false);
+        }
     }
 
 
@@ -1812,13 +1825,13 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 }  else {
                     if (hospital_status.equalsIgnoreCase("shco")){
 
-                        progreesDialog();
+                        //progreesDialog();
 
-                        Post_SHCO_LaboratoryData();
+                        new PostSHCODataTask().execute();
                     }else {
-                        progreesDialog();
+                        //progreesDialog();
 
-                        PostLaboratoryData();
+                        new PostDataTask().execute();
                     }
                 }
             }
@@ -1846,13 +1859,13 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 } else {
                     if (hospital_status.equalsIgnoreCase("shco")){
 
-                        progreesDialog();
+                        //progreesDialog();
 
-                        Post_SHCO_LaboratoryData();
+                        new PostSHCODataTask().execute();
                     }else {
-                        progreesDialog();
+                        //progreesDialog();
 
-                        PostLaboratoryData();
+                        new PostDataTask().execute();
                     }
                 }
             }
@@ -1861,7 +1874,147 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
 
     }
 
+    private class PostDataTask extends AsyncTask<Void, Void, Void> {
+        ProgressDialog d;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progreesDialog();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            PostLaboratoryData();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            CloseProgreesDialog();
+        }
+    }
+
     private void PostLaboratoryData(){
+
+        for(int i = hospital_mission_present_list.size() ; i<  Local_hospital_mission_present_list.size();i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_hospital_mission_present_list.get(i)+"hospital_mission_present");
+            UploadImage(Local_hospital_mission_present_list.get(i),"hospital_mission_present");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(AmbulanceAccessibilityActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+
+        for(int i = patient_maintained_OPD_list.size() ; i<  Local_patient_maintained_OPD_list.size();i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_patient_maintained_OPD_list.get(i)+"patient_maintained_OPD");
+            UploadImage(Local_patient_maintained_OPD_list.get(i),"patient_maintained_OPD");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(AmbulanceAccessibilityActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+
+        for(int i = patient_maintained_IPD_list.size() ; i<  Local_patient_maintained_IPD_list.size();i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_patient_maintained_IPD_list.get(i)+"patient_maintained_IPD");
+            UploadImage(Local_patient_maintained_IPD_list.get(i),"patient_maintained_IPD");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(AmbulanceAccessibilityActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        for(int i = patient_maintained_Emergency_list.size() ; i<  Local_patient_maintained_Emergency_list.size();i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_patient_maintained_Emergency_list.get(i)+"patient_maintained_Emergency");
+            UploadImage(Local_patient_maintained_Emergency_list.get(i),"patient_maintained_Emergency");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(AmbulanceAccessibilityActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+
+        for(int i = nurses_available_ambulances_list.size() ; i<  Local_nurses_available_ambulances_list.size();i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_nurses_available_ambulances_list.get(i)+"nurses_available_ambulances");
+            UploadImage(Local_nurses_available_ambulances_list.get(i),"nurses_available_ambulances");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(AmbulanceAccessibilityActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
 
               pojo_dataSync.setTabName("AmbulanceAccessibility");
               pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
@@ -1913,27 +2066,38 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
 
               pojo_dataSync.setAmbulanceaccessibility(pojo);
 
-
+            latch = new CountDownLatch(1);
+            check = 0;
               mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                   @Override
                   public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                       System.out.println("xxx sucess");
 
-                     CloseProgreesDialog();
+                     //CloseProgreesDialog();
 
                       if (response.message().equalsIgnoreCase("Unauthorized")) {
-                          Intent intent = new Intent(AmbulanceAccessibilityActivity.this, LoginActivity.class);
-                          startActivity(intent);
-                          finish();
-
-                          Toast.makeText(AmbulanceAccessibilityActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
-                      }else {
-                          if (response.body() != null){
-                              if (response.body().getSuccess()){
-                                  Intent intent = new Intent(AmbulanceAccessibilityActivity.this,HospitalListActivity.class);
+                          runOnUiThread(new Runnable() {
+                              @Override
+                              public void run() {
+                                  Intent intent = new Intent(AmbulanceAccessibilityActivity.this, LoginActivity.class);
                                   startActivity(intent);
                                   finish();
 
+                                  Toast.makeText(AmbulanceAccessibilityActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+
+                              }
+                          });
+                      }else {
+                          if (response.body() != null){
+                              if (response.body().getSuccess()){
+                                  runOnUiThread(new Runnable() {
+                                      @Override
+                                      public void run() {
+                                          Intent intent = new Intent(AmbulanceAccessibilityActivity.this,HospitalListActivity.class);
+                                          startActivity(intent);
+                                          finish();
+                                      }
+                                  });
 
                                   saveIntoPrefs("asmtId"+Hospital_id, String.valueOf(response.body().getAsmtId()));
 
@@ -1948,23 +2112,175 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
 
                                   databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
 
-                                  Toast.makeText(AmbulanceAccessibilityActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                  runOnUiThread(new Runnable() {
+                                      @Override
+                                      public void run() {
+                                          Toast.makeText(AmbulanceAccessibilityActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                      }
+                                  });
                               }
 
                           }
+                          latch.countDown();
                       }
                   }
 
                   @Override
                   public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                       System.out.println("xxx failed");
-
-                      CloseProgreesDialog();
+                      latch.countDown();
+                      //CloseProgreesDialog();
                   }
               });
+        try {
+            latch.await();
+        }
+        catch(Exception e)
+        {
+            Log.e("Upload",e.getMessage());
+        }
+    }
+
+    private class PostSHCODataTask extends AsyncTask<Void, Void, Void> {
+        ProgressDialog d;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progreesDialog();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Post_SHCO_LaboratoryData();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            CloseProgreesDialog();
+        }
     }
 
     private void Post_SHCO_LaboratoryData(){
+        for(int i = hospital_mission_present_list.size() ; i<  Local_hospital_mission_present_list.size();i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_hospital_mission_present_list.get(i)+"hospital_mission_present");
+            UploadImage(Local_hospital_mission_present_list.get(i),"hospital_mission_present");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(AmbulanceAccessibilityActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+
+        for(int i = patient_maintained_OPD_list.size() ; i<  Local_patient_maintained_OPD_list.size();i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_patient_maintained_OPD_list.get(i)+"patient_maintained_OPD");
+            UploadImage(Local_patient_maintained_OPD_list.get(i),"patient_maintained_OPD");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(AmbulanceAccessibilityActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+
+        for(int i = patient_maintained_IPD_list.size() ; i<  Local_patient_maintained_IPD_list.size();i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_patient_maintained_IPD_list.get(i)+"patient_maintained_IPD");
+            UploadImage(Local_patient_maintained_IPD_list.get(i),"patient_maintained_IPD");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(AmbulanceAccessibilityActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        for(int i = patient_maintained_Emergency_list.size() ; i<  Local_patient_maintained_Emergency_list.size();i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_patient_maintained_Emergency_list.get(i)+"patient_maintained_Emergency");
+            UploadImage(Local_patient_maintained_Emergency_list.get(i),"patient_maintained_Emergency");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(AmbulanceAccessibilityActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+
+        for(int i = nurses_available_ambulances_list.size() ; i<  Local_nurses_available_ambulances_list.size();i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_nurses_available_ambulances_list.get(i)+"nurses_available_ambulances");
+            UploadImage(Local_nurses_available_ambulances_list.get(i),"nurses_available_ambulances");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(AmbulanceAccessibilityActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
                 pojo_dataSync.setTabName("AmbulanceAccessibility");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -2014,26 +2330,34 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
 
 
                 pojo_dataSync.setAmbulanceaccessibility(pojo);
-
+                latch = new CountDownLatch(1);
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        CloseProgreesDialog();
-
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
-                            Intent intent = new Intent(AmbulanceAccessibilityActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            finish();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(AmbulanceAccessibilityActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
 
-                            Toast.makeText(AmbulanceAccessibilityActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(AmbulanceAccessibilityActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                                }
+                            });
                         }else {
                             if (response.body() != null){
                                 if (response.body().getSuccess()){
-                                    Intent intent = new Intent(AmbulanceAccessibilityActivity.this,HospitalListActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Intent intent = new Intent(AmbulanceAccessibilityActivity.this,HospitalListActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
 
 
                                     saveIntoPrefs("asmtId"+Hospital_id, String.valueOf(response.body().getAsmtId()));
@@ -2048,27 +2372,79 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                                     pojo.setLocal_id(assessement_list.get(18).getLocal_id());
 
                                     databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-                                    Toast.makeText(AmbulanceAccessibilityActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(AmbulanceAccessibilityActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                                 }
 
                             }
+                            latch.countDown();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
-
-                        CloseProgreesDialog();
+                        latch.countDown();
+                        //CloseProgreesDialog();
                     }
                 });
+        try {
+            latch.await();
+        }
+        catch(Exception e)
+        {
+            Log.e("Upload",e.getMessage());
+        }
 
     }
 
 
 
-    private void ImageUpload(final String image_path,final String from){
+    private void SaveImage(final String image_path,final String from){
+        if (from.equalsIgnoreCase("hospital_mission_present")){
+            //hospital_mission_present_list.add(response.body().getMessage());
+            Local_hospital_mission_present_list.add(image_path);
+            image_total_number_ambulance_available.setImageResource(R.mipmap.camera_selected);
+
+            Local_image3 = "hospital_mission_present";
+
+        }else if (from.equalsIgnoreCase("patient_maintained_OPD")){
+            //patient_maintained_OPD_list.add(response.body().getMessage());
+            Local_patient_maintained_OPD_list.add(image_path);
+            image_ambulance_appropriately_equiped.setImageResource(R.mipmap.camera_selected);
+
+            Local_image4 = "patient_maintained_OPD";
+
+        }else if (from.equalsIgnoreCase("patient_maintained_IPD")){
+            //patient_maintained_IPD_list.add(response.body().getMessage());
+            Local_patient_maintained_IPD_list.add(image_path);
+            image_drivers_ambulances_available.setImageResource(R.mipmap.camera_selected);
+
+            Local_image5 = "patient_maintained_IPD";
+
+        }else if (from.equalsIgnoreCase("patient_maintained_Emergency")){
+            //patient_maintained_Emergency_list.add(response.body().getMessage());
+            Local_patient_maintained_Emergency_list.add(image_path);
+            image_doctors_available_ambulances.setImageResource(R.mipmap.camera_selected);
+
+            Local_image6 = "patient_maintained_Emergency";
+
+        }else if (from.equalsIgnoreCase("nurses_available_ambulances")){
+            //nurses_available_ambulances_list.add(response.body().getMessage());
+            Local_nurses_available_ambulances_list.add(image_path);
+            image_nurses_available_ambulances.setImageResource(R.mipmap.camera_selected);
+
+            Local_image8= "nurses_available_ambulances";
+        }
+
+        Toast.makeText(AmbulanceAccessibilityActivity.this,"Image Saved Locally",Toast.LENGTH_LONG).show();
+    }
+
+    private void UploadImage(final String image_path,final String from){
         File file = new File(image_path);
 
         //pass it like this
@@ -2079,20 +2455,25 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
         MultipartBody.Part body =
                 MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
-        final ProgressDialog d = ImageDialog.showLoading(AmbulanceAccessibilityActivity.this);
-        d.setCanceledOnTouchOutside(false);
+        //final ProgressDialog d = ImageDialog.showLoading(AmbulanceAccessibilityActivity.this);
+        //d.setCanceledOnTouchOutside(false);
 
         mAPIService.ImageUploadRequest("Bearer " + getFromPrefs(AppConstant.ACCESS_Token),body).enqueue(new Callback<ImageUploadResponse>() {
             @Override
             public void onResponse(Call<ImageUploadResponse> call, Response<ImageUploadResponse> response) {
-                d.cancel();
+                //d.cancel();
                 if (response.message().equalsIgnoreCase("Unauthorized")) {
-                    Intent intent = new Intent(AmbulanceAccessibilityActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(AmbulanceAccessibilityActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
 
-                    Toast.makeText(AmbulanceAccessibilityActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(AmbulanceAccessibilityActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }else {
                     if (response.body() != null){
                         if (response.body().getSuccess()){
@@ -2101,47 +2482,52 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
 
                             if (from.equalsIgnoreCase("hospital_mission_present")){
                                 hospital_mission_present_list.add(response.body().getMessage());
-                                Local_hospital_mission_present_list.add(image_path);
+                                //Local_hospital_mission_present_list.add(image_path);
                                 image_total_number_ambulance_available.setImageResource(R.mipmap.camera_selected);
 
                                 image3 = "hospital_mission_present";
 
                             }else if (from.equalsIgnoreCase("patient_maintained_OPD")){
                                 patient_maintained_OPD_list.add(response.body().getMessage());
-                                Local_patient_maintained_OPD_list.add(image_path);
+                                //Local_patient_maintained_OPD_list.add(image_path);
                                 image_ambulance_appropriately_equiped.setImageResource(R.mipmap.camera_selected);
 
                                 image4 = "patient_maintained_OPD";
 
                             }else if (from.equalsIgnoreCase("patient_maintained_IPD")){
                                 patient_maintained_IPD_list.add(response.body().getMessage());
-                                Local_patient_maintained_IPD_list.add(image_path);
+                                //Local_patient_maintained_IPD_list.add(image_path);
                                 image_drivers_ambulances_available.setImageResource(R.mipmap.camera_selected);
 
                                 image5 = "patient_maintained_IPD";
 
                             }else if (from.equalsIgnoreCase("patient_maintained_Emergency")){
                                 patient_maintained_Emergency_list.add(response.body().getMessage());
-                                Local_patient_maintained_Emergency_list.add(image_path);
+                               // Local_patient_maintained_Emergency_list.add(image_path);
                                 image_doctors_available_ambulances.setImageResource(R.mipmap.camera_selected);
 
                                 image6 = "patient_maintained_Emergency";
 
                             }else if (from.equalsIgnoreCase("nurses_available_ambulances")){
                                 nurses_available_ambulances_list.add(response.body().getMessage());
-                                Local_nurses_available_ambulances_list.add(image_path);
+                                //Local_nurses_available_ambulances_list.add(image_path);
                                 image_nurses_available_ambulances.setImageResource(R.mipmap.camera_selected);
 
                                 image8= "nurses_available_ambulances";
                             }
-
-                            Toast.makeText(AmbulanceAccessibilityActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
+                            check = 1;
+                            latch.countDown();
+                            //Toast.makeText(AmbulanceAccessibilityActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
 
                         }else {
-                            Toast.makeText(AmbulanceAccessibilityActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                            check = 0;
+                            latch.countDown();
+                            //Toast.makeText(AmbulanceAccessibilityActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
                         }
                     }else {
-                        Toast.makeText(AmbulanceAccessibilityActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                        check = 0;
+                        latch.countDown();
+                        //Toast.makeText(AmbulanceAccessibilityActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -2151,13 +2537,13 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
             public void onFailure(Call<ImageUploadResponse> call, Throwable t) {
                 System.out.println("xxx fail");
 
-                d.cancel();
-
-                Toast.makeText(AmbulanceAccessibilityActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                //d.cancel();
+                check = 0;
+                latch.countDown();
+                //Toast.makeText(AmbulanceAccessibilityActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
             }
         });
     }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()){
