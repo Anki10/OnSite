@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,6 +14,8 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -46,6 +49,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.CountDownLatch;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -138,7 +142,9 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
     private String radiology = "",radiology_defined_turnaround_view = "";
 
     private ArrayList<AssessmentStatusPojo> assessement_list;
-
+    
+    int check;
+    CountDownLatch latch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -373,7 +379,7 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
 
-                    ImageUpload(image2,"radiology");
+                    SaveImage(image2,"radiology");
 
                 }
             }
@@ -384,7 +390,7 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
 
-                    ImageUpload(image2,"radiology_defined_turnaround");
+                    SaveImage(image2,"radiology_defined_turnaround");
 
                 }
             }
@@ -451,13 +457,27 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
             }
         });
 
-        btn_add_more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogLogout.dismiss();
-                captureImage(position);
-            }
-        });
+        if(list.size()==2)
+        {
+            btn_add_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast toast = Toast.makeText(RadiologyActivity.this, "You cannot upload more than 2 images.", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+            });
+        }
+        else
+        {
+            btn_add_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogLogout.dismiss();
+                    captureImage(position);
+                }
+            });
+        }
     }
 
     public void displayNCDialog(final String header, final int position) {
@@ -752,7 +772,7 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
 
             case R.id.btnSync:
                 if (radiology_status.length() > 0 && radiology_defined_turnaround.length() > 0){
-                    if (image1 != null && image2 != null){
+                    if (Local_image1 != null && Local_image2 != null){
                         SaveRadioLogyData("sync");
                     }else {
                         Toast.makeText(RadiologyActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
@@ -859,9 +879,7 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
                     startActivity(intent);
                     finish();
                 }else {
-                    progreesDialog();
-
-                    PostLaboratoryData();
+                    new PostDataTask().execute();
                 }
             }
         }else {
@@ -885,9 +903,8 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
                     startActivity(intent);
                     finish();
                 }else {
-                    progreesDialog();
+                    new PostDataTask().execute();
 
-                    PostLaboratoryData();
                 }
             }
 
@@ -896,7 +913,29 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
 
     }
 
-    private void ImageUpload(final String image_path,final String from){
+    private void SaveImage(final String image_path,final String from){
+        if (from.equalsIgnoreCase("radiology")){
+            //radiology_list.add(response.body().getMessage());
+            Local_radiology_list.add(image_path);
+            image_radiology.setImageResource(R.mipmap.camera_selected);
+
+            Local_image1 = "radiology";
+
+        }else if (from.equalsIgnoreCase("radiology_defined_turnaround")){
+
+            //radiology_defined_turnaround_list.add(response.body().getMessage());
+            Local_radiology_defined_turnaround_list.add(image_path);
+            image_radiology_defined_turnaround.setImageResource(R.mipmap.camera_selected);
+
+            Local_image2 = "radiology_defined_turnaround";
+        }
+
+
+        Toast.makeText(RadiologyActivity.this,"Image saved locally",Toast.LENGTH_LONG).show();
+
+    }
+
+    private void UploadImage(final String image_path,final String from){
         File file = new File(image_path);
 
         //pass it like this
@@ -907,20 +946,22 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
         MultipartBody.Part body =
                 MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
-        final ProgressDialog d = ImageDialog.showLoading(RadiologyActivity.this);
-        d.setCanceledOnTouchOutside(false);
-
         mAPIService.ImageUploadRequest("Bearer " + getFromPrefs(AppConstant.ACCESS_Token),body).enqueue(new Callback<ImageUploadResponse>() {
             @Override
             public void onResponse(Call<ImageUploadResponse> call, Response<ImageUploadResponse> response) {
-                d.cancel();
                 if (response.message().equalsIgnoreCase("Unauthorized")) {
-                    Intent intent = new Intent(RadiologyActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(RadiologyActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
 
-                    Toast.makeText(RadiologyActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(RadiologyActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
                 }else {
                     if (response.body() != null){
                         if (response.body().getSuccess()){
@@ -929,7 +970,7 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
 
                             if (from.equalsIgnoreCase("radiology")){
                                 radiology_list.add(response.body().getMessage());
-                                Local_radiology_list.add(image_path);
+                                //Local_radiology_list.add(image_path);
                                 image_radiology.setImageResource(R.mipmap.camera_selected);
 
                                 image1 = "radiology";
@@ -937,20 +978,21 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
                             }else if (from.equalsIgnoreCase("radiology_defined_turnaround")){
 
                                 radiology_defined_turnaround_list.add(response.body().getMessage());
-                                Local_radiology_defined_turnaround_list.add(image_path);
+                                //Local_radiology_defined_turnaround_list.add(image_path);
                                 image_radiology_defined_turnaround.setImageResource(R.mipmap.camera_selected);
 
                                 image2 = "radiology_defined_turnaround";
                             }
 
-
-                            Toast.makeText(RadiologyActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
-
+                            check = 1;
+                            latch.countDown();
                         }else {
-                            Toast.makeText(RadiologyActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                            check = 0;
+                            latch.countDown();
                         }
                     }else {
-                        Toast.makeText(RadiologyActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                        check = 0;
+                        latch.countDown();
                     }
                 }
 
@@ -959,10 +1001,8 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onFailure(Call<ImageUploadResponse> call, Throwable t) {
                 System.out.println("xxx fail");
-
-                d.cancel();
-
-                Toast.makeText(RadiologyActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                check = 0;
+                latch.countDown();
             }
         });
     }
@@ -979,6 +1019,27 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
                 DeleteList(pos,from);
 
                 break;
+        }
+    }
+
+    private class PostDataTask extends AsyncTask<Void, Void, Void> {
+        ProgressDialog d;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progreesDialog();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            PostLaboratoryData();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            CloseProgreesDialog();
         }
     }
 
@@ -1018,6 +1079,71 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void PostLaboratoryData(){
+        check = 1;
+        for(int i=radiology_list.size(); i<Local_radiology_list.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_radiology_list.get(i) + "radiology");
+            UploadImage(Local_radiology_list.get(i),"radiology");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(RadiologyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(RadiologyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=radiology_defined_turnaround_list.size(); i<Local_radiology_defined_turnaround_list.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_radiology_defined_turnaround_list.get(i) + "radiology_defined_turnaround");
+            UploadImage(Local_radiology_defined_turnaround_list.get(i),"radiology_defined_turnaround");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(RadiologyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(RadiologyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
                 pojo_dataSync.setTabName("radiology");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -1046,27 +1172,36 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
 
                 pojo_dataSync.setRadioLogy(pojo);
 
-
+                latch = new CountDownLatch(1);
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        CloseProgreesDialog();
-
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
-                            Intent intent = new Intent(RadiologyActivity.this, LoginActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            finish();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(RadiologyActivity.this, LoginActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    finish();
 
-                            Toast.makeText(RadiologyActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(RadiologyActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+
+                                }
+                            });
                         }else {
                             if (response.body() != null){
                                 if (response.body().getSuccess()){
-                                    Intent intent = new Intent(RadiologyActivity.this,HospitalListActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Intent intent = new Intent(RadiologyActivity.this,HospitalListActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
 
                                     assessement_list = databaseHandler.getAssessmentList(Hospital_id);
 
@@ -1081,21 +1216,33 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
                                     pojo.setLocal_id(assessement_list.get(2).getLocal_id());
 
                                     databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(RadiologyActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
 
-                                    Toast.makeText(RadiologyActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                                 }
                             }
+                            latch.countDown();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
+                        latch.countDown();
 
-                        CloseProgreesDialog();
                     }
                 });
-
+        try {
+            latch.await();
+        }
+        catch(Exception e)
+        {
+            Log.e("Upload",e.getMessage());
+        }
     }
 
     @Override
