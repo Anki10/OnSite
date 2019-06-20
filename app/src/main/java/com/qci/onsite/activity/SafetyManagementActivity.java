@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,6 +14,8 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -46,6 +49,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.CountDownLatch;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -199,7 +203,8 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
     private String safety_device_lab = "",body_parts_staff_patients = "",staff_member_radiation_area = "",
             standardised_colur_coding = "",safe_storage_medical = "";
 
-
+    int check;
+    CountDownLatch latch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -340,6 +345,7 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
             }
 
             if (pojo.getLocal_safety_device_lab_image() != null){
+                image_safety_device_lab.setImageResource(R.mipmap.camera_selected);
 
                 Local_image1 = pojo.getLocal_safety_device_lab_image();
 
@@ -395,6 +401,7 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
             }
 
             if (pojo.getLocal_body_parts_staff_patients_image() != null){
+                image_body_parts_staff_patients.setImageResource(R.mipmap.camera_selected);
 
                 Local_image2 = pojo.getLocal_body_parts_staff_patients_image();
 
@@ -449,6 +456,7 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
             }
 
             if (pojo.getLocal_staff_member_radiation_area_image() != null){
+                image_staff_member_radiation_area.setImageResource(R.mipmap.camera_selected);
 
                 Local_image3 = pojo.getLocal_staff_member_radiation_area_image();
 
@@ -677,7 +685,7 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
 
                 if (safety_device_lab.length() > 0 && body_parts_staff_patients.length() > 0 && staff_member_radiation_area.length() > 0 && standardised_colur_coding.length() > 0
                         && safe_storage_medical.length() > 0){
-                    if (image3 != null && image4 != null && image5 != null){
+                    if (Local_image3 != null && Local_image4 != null && Local_image5 != null){
                         SaveLaboratoryData("sync");
                     }else {
                         Toast.makeText(SafetyManagementActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
@@ -809,7 +817,7 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                     String image2 = compressImage(uri.toString());
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                    ImageUpload(image2, "safety_device_lab");
+                    SaveImage(image2, "safety_device_lab");
 
 
                 }
@@ -820,7 +828,7 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                     String image3 = compressImage(uri.toString());
                     //                  saveIntoPrefs(AppConstant.statutory_PollutionControl,image3);
 
-                    ImageUpload(image3, "body_parts_staff_patients");
+                    SaveImage(image3, "body_parts_staff_patients");
                 }
 
             } else if (requestCode == 3) {
@@ -830,7 +838,7 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                     //                  saveIntoPrefs(AppConstant.statutory_Registration,image4);
 
 
-                    ImageUpload(image4, "staff_member_radiation_area");
+                    SaveImage(image4, "staff_member_radiation_area");
 
                 }
             } else if (requestCode == 4) {
@@ -840,7 +848,7 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                     //                  saveIntoPrefs(AppConstant.statutory_Registration,image4);
 
 
-                    ImageUpload(image4, "standardised_colur_coding");
+                    SaveImage(image4, "standardised_colur_coding");
 
                 }
             } else if (requestCode == 5) {
@@ -850,7 +858,7 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                     //                  saveIntoPrefs(AppConstant.statutory_Registration,image4);
 
 
-                    ImageUpload(image4, "safe_storage_medical");
+                    SaveImage(image4, "safe_storage_medical");
 
                 }
             }
@@ -1355,15 +1363,49 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
             }
         });
 
-        btn_add_more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogLogout.dismiss();
-                captureImage(position);
-            }
-        });
+        if(list.size()==2)
+        {
+            btn_add_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast toast = Toast.makeText(SafetyManagementActivity.this, "You cannot upload more than 2 images.", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+            });
+        }
+        else
+        {
+            btn_add_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogLogout.dismiss();
+                    captureImage(position);
+                }
+            });
+        }
     }
 
+    private class PostDataTask extends AsyncTask<Void, Void, Void> {
+        ProgressDialog d;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progreesDialog();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            PostLaboratoryData();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            CloseProgreesDialog();
+        }
+    }
 
 
     public void SaveLaboratoryData(String from){
@@ -1545,8 +1587,7 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                     finish();
 
                 }else {
-                    progreesDialog();
-                    PostLaboratoryData();
+                    new PostDataTask().execute();
                 }
             }
         }else {
@@ -1572,8 +1613,7 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                     finish();
 
                 } else {
-                    progreesDialog();
-                    PostLaboratoryData();
+                    new PostDataTask().execute();
                 }
             }
         }
@@ -1581,7 +1621,46 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
 
 
     }
-    private void ImageUpload(final String image_path,final String from){
+    private void SaveImage(final String image_path,final String from){
+        if (from.equalsIgnoreCase("safety_device_lab")){
+            //safety_device_lab_list.add(response.body().getMessage());
+            Local_safety_device_lab_list.add(image_path);
+            image_safety_device_lab.setImageResource(R.mipmap.camera_selected);
+
+            Local_image1 = "safety_device_lab";
+
+        }else if (from.equalsIgnoreCase("body_parts_staff_patients")){
+            //body_parts_staff_patients_list.add(response.body().getMessage());
+            Local_body_parts_staff_patients_list.add(image_path);
+            image_body_parts_staff_patients.setImageResource(R.mipmap.camera_selected);
+
+            Local_image2 = "body_parts_staff_patients";
+        }else if (from.equalsIgnoreCase("staff_member_radiation_area")){
+            //staff_member_radiation_area_list.add(response.body().getMessage());
+            Local_staff_member_radiation_area_list.add(image_path);
+            image_staff_member_radiation_area.setImageResource(R.mipmap.camera_selected);
+
+            Local_image3 = "staff_member_radiation_area";
+
+        }else if (from.equalsIgnoreCase("standardised_colur_coding")){
+            //standardised_colur_coding_list.add(response.body().getMessage());
+            Local_standardised_colur_coding_list.add(image_path);
+            image_standardised_colur_coding.setImageResource(R.mipmap.camera_selected);
+
+            Local_image4 = "standardised_colur_coding";
+
+        }else if (from.equalsIgnoreCase("safe_storage_medical")){
+            //safe_storage_medical_list.add(response.body().getMessage());
+            Local_safe_storage_medical_list.add(image_path);
+            image_safe_storage_medical.setImageResource(R.mipmap.camera_selected);
+
+            Local_image5 = "safe_storage_medical";
+        }
+
+        Toast.makeText(SafetyManagementActivity.this,"Image saved locally",Toast.LENGTH_LONG).show();
+    }
+
+    private void UploadImage(final String image_path,final String from){
         File file = new File(image_path);
 
         //pass it like this
@@ -1592,20 +1671,23 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
         MultipartBody.Part body =
                 MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
-        final ProgressDialog d = ImageDialog.showLoading(SafetyManagementActivity.this);
-        d.setCanceledOnTouchOutside(false);
-
         mAPIService.ImageUploadRequest("Bearer " + getFromPrefs(AppConstant.ACCESS_Token),body).enqueue(new Callback<ImageUploadResponse>() {
             @Override
             public void onResponse(Call<ImageUploadResponse> call, Response<ImageUploadResponse> response) {
-                d.cancel();
+                //d.cancel();
                 if (response.message().equalsIgnoreCase("Unauthorized")) {
-                    Intent intent = new Intent(SafetyManagementActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(SafetyManagementActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
 
-                    Toast.makeText(SafetyManagementActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SafetyManagementActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
                 }else {
                     if (response.body() != null){
                         if (response.body().getSuccess()){
@@ -1614,46 +1696,51 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
 
                             if (from.equalsIgnoreCase("safety_device_lab")){
                                 safety_device_lab_list.add(response.body().getMessage());
-                                Local_safety_device_lab_list.add(image_path);
+                                //Local_safety_device_lab_list.add(image_path);
                                 image_safety_device_lab.setImageResource(R.mipmap.camera_selected);
 
                                 image1 = "safety_device_lab";
 
                             }else if (from.equalsIgnoreCase("body_parts_staff_patients")){
                                 body_parts_staff_patients_list.add(response.body().getMessage());
-                                Local_body_parts_staff_patients_list.add(image_path);
+                                //Local_body_parts_staff_patients_list.add(image_path);
                                 image_body_parts_staff_patients.setImageResource(R.mipmap.camera_selected);
 
                                 image2 = "body_parts_staff_patients";
                             }else if (from.equalsIgnoreCase("staff_member_radiation_area")){
                                 staff_member_radiation_area_list.add(response.body().getMessage());
-                                Local_staff_member_radiation_area_list.add(image_path);
+                                //Local_staff_member_radiation_area_list.add(image_path);
                                 image_staff_member_radiation_area.setImageResource(R.mipmap.camera_selected);
 
                                 image3 = "staff_member_radiation_area";
 
                             }else if (from.equalsIgnoreCase("standardised_colur_coding")){
                                 standardised_colur_coding_list.add(response.body().getMessage());
-                                Local_standardised_colur_coding_list.add(image_path);
+                                //Local_standardised_colur_coding_list.add(image_path);
                                 image_standardised_colur_coding.setImageResource(R.mipmap.camera_selected);
 
                                 image4 = "standardised_colur_coding";
 
                             }else if (from.equalsIgnoreCase("safe_storage_medical")){
                                 safe_storage_medical_list.add(response.body().getMessage());
-                                Local_safe_storage_medical_list.add(image_path);
+                                //Local_safe_storage_medical_list.add(image_path);
                                 image_safe_storage_medical.setImageResource(R.mipmap.camera_selected);
 
                                 image5 = "safe_storage_medical";
                             }
-
-                            Toast.makeText(SafetyManagementActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
+                            check = 1;
+                            latch.countDown();
+                            //Toast.makeText(SafetyManagementActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
 
                         }else {
-                            Toast.makeText(SafetyManagementActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                            check = 0;
+                            latch.countDown();
+                            //Toast.makeText(SafetyManagementActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
                         }
                     }else {
-                        Toast.makeText(SafetyManagementActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                        check = 0;
+                        latch.countDown();
+                        //Toast.makeText(SafetyManagementActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -1662,15 +1749,174 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
             @Override
             public void onFailure(Call<ImageUploadResponse> call, Throwable t) {
                 System.out.println("xxx fail");
-
-                d.cancel();
-
-                Toast.makeText(SafetyManagementActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                check = 0;
+                latch.countDown();
             }
         });
     }
 
     private void PostLaboratoryData(){
+        check = 1;
+        for(int i=safety_device_lab_list.size(); i<Local_safety_device_lab_list.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_safety_device_lab_list.get(i) + "safety_device_lab");
+            UploadImage(Local_safety_device_lab_list.get(i),"safety_device_lab");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(SafetyManagementActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(SafetyManagementActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=body_parts_staff_patients_list.size(); i<Local_body_parts_staff_patients_list.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_body_parts_staff_patients_list.get(i) + "body_parts_staff_patients");
+            UploadImage(Local_body_parts_staff_patients_list.get(i),"body_parts_staff_patients");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(SafetyManagementActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(SafetyManagementActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=staff_member_radiation_area_list.size(); i<Local_staff_member_radiation_area_list.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_staff_member_radiation_area_list.get(i) + "staff_member_radiation_area");
+            UploadImage(Local_staff_member_radiation_area_list.get(i),"staff_member_radiation_area");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(SafetyManagementActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(SafetyManagementActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=standardised_colur_coding_list.size(); i<Local_standardised_colur_coding_list.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_standardised_colur_coding_list.get(i) + "standardised_colur_coding");
+            UploadImage(Local_standardised_colur_coding_list.get(i),"standardised_colur_coding");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(SafetyManagementActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(SafetyManagementActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=safe_storage_medical_list.size(); i<Local_safe_storage_medical_list.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_safe_storage_medical_list.get(i) + "safe_storage_medical");
+            UploadImage(Local_safe_storage_medical_list.get(i),"safe_storage_medical");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(SafetyManagementActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(SafetyManagementActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
 
                 pojo_dataSync.setTabName("safetymanagement");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
@@ -1721,26 +1967,35 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
 
                 pojo_dataSync.setSafetymanagement(pojo);
 
-
+                latch = new CountDownLatch(1);
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        CloseProgreesDialog();
-
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
-                            Intent intent = new Intent(SafetyManagementActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            finish();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(SafetyManagementActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
 
-                            Toast.makeText(SafetyManagementActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SafetyManagementActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+
+                                }
+                            });
                         }else {
                             if (response.body() != null){
                                 if (response.body().getSuccess()){
-                                    Intent intent = new Intent(SafetyManagementActivity.this,HospitalListActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Intent intent = new Intent(SafetyManagementActivity.this,HospitalListActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
 
                                     saveIntoPrefs("Laboratory_tabId"+Hospital_id, String.valueOf(response.body().getTabId()));
 
@@ -1756,21 +2011,32 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                                     pojo.setLocal_id(assessement_list.get(17).getLocal_id());
 
                                     databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-                                    Toast.makeText(SafetyManagementActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(SafetyManagementActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                                 }
 
                             }
+                            latch.countDown();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
-
-                        CloseProgreesDialog();
+                        latch.countDown();
                     }
                 });
+        try {
+            latch.await();
+        }
+        catch(Exception e)
+        {
+            Log.e("Upload",e.getMessage());
+        }
 
     }
 
