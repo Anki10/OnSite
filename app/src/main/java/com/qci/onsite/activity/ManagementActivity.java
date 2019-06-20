@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,6 +16,8 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -50,6 +53,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.CountDownLatch;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -250,7 +254,8 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
     String hospital_mission_present_view = "",patient_maintained_OPD_view ="",patient_maintained_IPD_view = "",patient_maintained_Emergency_view = "",
             basic_Tariff_List_view = "";
 
-
+    int check;
+    CountDownLatch latch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -447,6 +452,7 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
             }
 
             if (pojo.getLocal_hospital_mission_present_Image() != null){
+                image_hospital_mission_present.setImageResource(R.mipmap.camera_selected);
 
                 Local_image3 = pojo.getLocal_hospital_mission_present_Image();
 
@@ -500,6 +506,7 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
             }
 
             if (pojo.getLocal_patient_maintained_OPD_image() != null){
+                Image_patient_maintained_OPD.setImageResource(R.mipmap.camera_selected);
 
                 Local_image4 = pojo.getLocal_patient_maintained_OPD_image();
 
@@ -552,6 +559,7 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                 }
             }
             if (pojo.getLocal_patient_maintained_IPD_image() != null){
+                Image_patient_maintained_IPD.setImageResource(R.mipmap.camera_selected);
 
                 Local_image5 = pojo.getLocal_patient_maintained_IPD_image();
 
@@ -604,6 +612,7 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
             }
 
             if (pojo.getLocal_patient_maintained_Emergency_image() != null){
+                Image_patient_maintained_Emergency.setImageResource(R.mipmap.camera_selected);
 
                 Local_image6 = pojo.getLocal_patient_maintained_Emergency_image();
 
@@ -657,6 +666,7 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
             }
 
             if (pojo.getLocal_basic_Tariff_List_image() != null){
+                Image_basic_Tariff_List.setImageResource(R.mipmap.camera_selected);
 
                 Local_image7 = pojo.getLocal_basic_Tariff_List_image();
 
@@ -863,7 +873,7 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                 if (requisite_fee_BMW.length() > 0 && management_guide_organization.length() > 0 && hospital_mission_present.length() > 0 && patient_maintained_OPD.length() > 0 && patient_maintained_OPD.length() > 0
                         && patient_maintained_IPD.length() > 0 && patient_maintained_Emergency.length() > 0 && basic_Tariff_List.length() > 0 && parameter_patient_identification.length() > 0 && quality_improvement_programme.length() > 0){
 
-                    if (image3 != null && image4 != null && image5 != null && image6 != null && image7 != null){
+                    if (Local_image3 != null && Local_image4 != null && Local_image5 != null && Local_image6 != null && Local_image7 != null){
                         SavePharmacyData("sync");
                     }else {
                         Toast.makeText(ManagementActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
@@ -1018,7 +1028,7 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                     String image2 = compressImage(uri.toString());
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                    ImageUpload(image2,"hospital_mission_present");
+                    SaveImage(image2,"hospital_mission_present");
 
                 }
 
@@ -1028,7 +1038,7 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                     String image2 = compressImage(uri.toString());
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                    ImageUpload(image2,"patient_maintained_OPD");
+                    SaveImage(image2,"patient_maintained_OPD");
 
                 }
             }else if (requestCode == 5) {
@@ -1037,7 +1047,7 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                     String image2 = compressImage(uri.toString());
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                    ImageUpload(image2,"patient_maintained_IPD");
+                    SaveImage(image2,"patient_maintained_IPD");
 
                 }
             }else if (requestCode == 6) {
@@ -1046,7 +1056,7 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                     String image2 = compressImage(uri.toString());
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                    ImageUpload(image2,"patient_maintained_Emergency");
+                    SaveImage(image2,"patient_maintained_Emergency");
 
                 }
             }else if (requestCode == 7) {
@@ -1055,7 +1065,7 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                     String image2 = compressImage(uri.toString());
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                    ImageUpload(image2,"basic_Tariff_List");
+                    SaveImage(image2,"basic_Tariff_List");
 
                 }
             }
@@ -1897,13 +1907,27 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
             }
         });
 
-        btn_add_more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogLogout.dismiss();
-                captureImage(position);
-            }
-        });
+        if(list.size()==2)
+        {
+            btn_add_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast toast = Toast.makeText(ManagementActivity.this, "You cannot upload more than 2 images.", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+            });
+        }
+        else
+        {
+            btn_add_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogLogout.dismiss();
+                    captureImage(position);
+                }
+            });
+        }
     }
 
 
@@ -2121,8 +2145,7 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                    startActivity(intent);
                    finish();
                }else {
-                   progreesDialog();
-                   PostLaboratoryData();
+                   new PostDataTask().execute();
                }
            }
         }else {
@@ -2147,16 +2170,198 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                     startActivity(intent);
                     finish();
                 }else {
-                    progreesDialog();
-                    PostLaboratoryData();
+                    new PostDataTask().execute();
                 }
             }
 
         }
     }
 
-    private void PostLaboratoryData(){
+    private class PostDataTask extends AsyncTask<Void, Void, Void> {
+        ProgressDialog d;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progreesDialog();
+        }
 
+        @Override
+        protected Void doInBackground(Void... voids) {
+            PostLaboratoryData();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            CloseProgreesDialog();
+        }
+    }
+
+
+    private void PostLaboratoryData(){
+        check = 1;
+        for(int i=hospital_mission_present_list.size(); i<Local_hospital_mission_present_list.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_hospital_mission_present_list.get(i) + "hospital_mission_present");
+            UploadImage(Local_hospital_mission_present_list.get(i),"hospital_mission_present");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(ManagementActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(ManagementActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=patient_maintained_OPD_list.size(); i<Local_patient_maintained_OPD_list.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_patient_maintained_OPD_list.get(i) + "patient_maintained_OPD");
+            UploadImage(Local_patient_maintained_OPD_list.get(i),"patient_maintained_OPD");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(ManagementActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(ManagementActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=patient_maintained_IPD_list.size(); i<Local_patient_maintained_IPD_list.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_patient_maintained_IPD_list.get(i) + "patient_maintained_IPD");
+            UploadImage(Local_patient_maintained_IPD_list.get(i),"patient_maintained_IPD");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(ManagementActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(ManagementActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=patient_maintained_Emergency_list.size(); i<Local_patient_maintained_Emergency_list.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_patient_maintained_Emergency_list.get(i) + "patient_maintained_Emergency");
+            UploadImage(Local_patient_maintained_Emergency_list.get(i),"patient_maintained_Emergency");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(ManagementActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(ManagementActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+
+        for(int i=basic_Tariff_List_list.size(); i<Local_basic_Tariff_List_list.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_basic_Tariff_List_list.get(i) + "basic_Tariff_List");
+            UploadImage(Local_basic_Tariff_List_list.get(i),"basic_Tariff_List");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(ManagementActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(ManagementActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
                 pojo_dataSync.setTabName("management");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -2205,27 +2410,38 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
 
                 pojo_dataSync.setManagement(pojo);
 
-
+                latch = new CountDownLatch(1);
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                       CloseProgreesDialog();
+                       //CloseProgreesDialog();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
-                            Intent intent = new Intent(ManagementActivity.this, LoginActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            finish();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(ManagementActivity.this, LoginActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    finish();
 
-                            Toast.makeText(ManagementActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(ManagementActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+
+                                }
+                            });
                         }else {
                             if (response.body() != null){
                                 if (response.body().getSuccess()){
-                                    Intent intent = new Intent(ManagementActivity.this,HospitalListActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Intent intent = new Intent(ManagementActivity.this,HospitalListActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
 
                                     saveIntoPrefs("WardsEmergency_tabId"+Hospital_id, String.valueOf(response.body().getTabId()));
 
@@ -2239,25 +2455,34 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                                     pojo.setAssessement_status("Done");
                                     pojo.setLocal_id(assessement_list.get(14).getLocal_id());
                                     databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-                                    Toast.makeText(ManagementActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(ManagementActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                                 }
                             }
+                            latch.countDown();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
-
-                        CloseProgreesDialog();
+                        latch.countDown();
                     }
                 });
+        try {
+            latch.await();
+        }
+        catch(Exception e)
+        {
+            Log.e("Upload",e.getMessage());
+        }
     }
 
-
-
-    private void ImageUpload(final String image_path,final String from){
+    private void UploadImage(final String image_path,final String from){
         File file = new File(image_path);
 
         //pass it like this
@@ -2268,20 +2493,23 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
         MultipartBody.Part body =
                 MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
-        final ProgressDialog d = ImageDialog.showLoading(ManagementActivity.this);
-        d.setCanceledOnTouchOutside(false);
-
         mAPIService.ImageUploadRequest("Bearer " + getFromPrefs(AppConstant.ACCESS_Token),body).enqueue(new Callback<ImageUploadResponse>() {
             @Override
             public void onResponse(Call<ImageUploadResponse> call, Response<ImageUploadResponse> response) {
-                d.cancel();
+                //d.cancel();
                 if (response.message().equalsIgnoreCase("Unauthorized")) {
-                    Intent intent = new Intent(ManagementActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(ManagementActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
 
-                    Toast.makeText(ManagementActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ManagementActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
                 }else {
                     if (response.body() != null){
                         if (response.body().getSuccess()){
@@ -2290,46 +2518,51 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
 
                             if (from.equalsIgnoreCase("hospital_mission_present")){
                                 hospital_mission_present_list.add(response.body().getMessage());
-                                Local_hospital_mission_present_list.add(image_path);
+                                //Local_hospital_mission_present_list.add(image_path);
                                 image_hospital_mission_present.setImageResource(R.mipmap.camera_selected);
 
                                 image3 = "hospital_mission_present";
 
                             }else if (from.equalsIgnoreCase("patient_maintained_OPD")){
                                 patient_maintained_OPD_list.add(response.body().getMessage());
-                                Local_patient_maintained_OPD_list.add(image_path);
+                                //Local_patient_maintained_OPD_list.add(image_path);
                                 Image_patient_maintained_OPD.setImageResource(R.mipmap.camera_selected);
 
                                 image4 = "patient_maintained_OPD";
 
                             }else if (from.equalsIgnoreCase("patient_maintained_IPD")){
                                 patient_maintained_IPD_list.add(response.body().getMessage());
-                                Local_patient_maintained_IPD_list.add(image_path);
+                                //Local_patient_maintained_IPD_list.add(image_path);
                                 Image_patient_maintained_IPD.setImageResource(R.mipmap.camera_selected);
 
                                 image5 = "patient_maintained_IPD";
 
                             }else if (from.equalsIgnoreCase("patient_maintained_Emergency")){
                                 patient_maintained_Emergency_list.add(response.body().getMessage());
-                                Local_patient_maintained_Emergency_list.add(image_path);
+                               // Local_patient_maintained_Emergency_list.add(image_path);
                                 Image_patient_maintained_Emergency.setImageResource(R.mipmap.camera_selected);
 
                                 image6 = "patient_maintained_Emergency";
                             }else if (from.equalsIgnoreCase("basic_Tariff_List")){
                                 basic_Tariff_List_list.add(response.body().getMessage());
-                                Local_basic_Tariff_List_list.add(image_path);
+                                //Local_basic_Tariff_List_list.add(image_path);
                                 Image_basic_Tariff_List.setImageResource(R.mipmap.camera_selected);
 
                                 image7 = "basic_Tariff_List";
                             }
 
-                            Toast.makeText(ManagementActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
-
+                            //Toast.m   akeText(ManagementActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
+                            check = 1;
+                            latch.countDown();
                         }else {
-                            Toast.makeText(ManagementActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                            check = 0;
+                            latch.countDown();
+                            //Toast.makeText(ManagementActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
                         }
                     }else {
-                        Toast.makeText(ManagementActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                        check = 0;
+                        latch.countDown();
+                        //Toast.makeText(ManagementActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -2338,12 +2571,49 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onFailure(Call<ImageUploadResponse> call, Throwable t) {
                 System.out.println("xxx fail");
-
-                d.cancel();
-
-                Toast.makeText(ManagementActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                check = 0;
+                latch.countDown();
             }
         });
+    }
+
+    private void SaveImage(final String image_path,final String from){
+        if (from.equalsIgnoreCase("hospital_mission_present")){
+            //hospital_mission_present_list.add(response.body().getMessage());
+            Local_hospital_mission_present_list.add(image_path);
+            image_hospital_mission_present.setImageResource(R.mipmap.camera_selected);
+
+            Local_image3 = "hospital_mission_present";
+
+        }else if (from.equalsIgnoreCase("patient_maintained_OPD")){
+            //patient_maintained_OPD_list.add(response.body().getMessage());
+            Local_patient_maintained_OPD_list.add(image_path);
+            Image_patient_maintained_OPD.setImageResource(R.mipmap.camera_selected);
+
+            Local_image4 = "patient_maintained_OPD";
+
+        }else if (from.equalsIgnoreCase("patient_maintained_IPD")){
+            //patient_maintained_IPD_list.add(response.body().getMessage());
+            Local_patient_maintained_IPD_list.add(image_path);
+            Image_patient_maintained_IPD.setImageResource(R.mipmap.camera_selected);
+
+            Local_image5 = "patient_maintained_IPD";
+
+        }else if (from.equalsIgnoreCase("patient_maintained_Emergency")){
+            //patient_maintained_Emergency_list.add(response.body().getMessage());
+            Local_patient_maintained_Emergency_list.add(image_path);
+            Image_patient_maintained_Emergency.setImageResource(R.mipmap.camera_selected);
+
+            Local_image6 = "patient_maintained_Emergency";
+        }else if (from.equalsIgnoreCase("basic_Tariff_List")){
+            //basic_Tariff_List_list.add(response.body().getMessage());
+            Local_basic_Tariff_List_list.add(image_path);
+            Image_basic_Tariff_List.setImageResource(R.mipmap.camera_selected);
+
+            Local_image7 = "basic_Tariff_List";
+        }
+
+        Toast.makeText(ManagementActivity.this,"Image saved locally",Toast.LENGTH_LONG).show();
     }
 
     @Override

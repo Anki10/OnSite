@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,6 +14,8 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -47,6 +50,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.CountDownLatch;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -173,7 +177,9 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
     LinearLayout ll_hospital_provide_adequate_gloves;
 
     int Bed_no = 0;
-
+    
+    int check;
+    CountDownLatch latch;
 
 
 
@@ -463,7 +469,7 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
 
                 if (Bed_no < 51){
                     if (hospital_maintain_cleanliness.length() > 0 && admissions_discharge_home.length() > 0 && staff_present_in_ICU.length() > 0 ){
-                        if (image1 != null){
+                        if (Local_image1 != null){
                             SavePharmacyData("sync","shco");
                         }else {
                             Toast.makeText(Ward_OT_EmergencyActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
@@ -476,7 +482,7 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
                 }else {
 
                     if (hospital_maintain_cleanliness.length() > 0 && hospital_adhere_standard.length() > 0 && hospital_provide_adequate_gloves.length() > 0 && admissions_discharge_home.length() > 0 && staff_present_in_ICU.length() > 0 ){
-                        if (image1 != null){
+                        if (Local_image1 != null){
                             SavePharmacyData("sync","hco");
                         }else {
                             Toast.makeText(Ward_OT_EmergencyActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
@@ -607,7 +613,7 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
                     String image2 = compressImage(uri.toString());
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                    ImageUpload(image2,"admissions_discharge_home");
+                    SaveImage(image2,"admissions_discharge_home");
 
                 }
 
@@ -1124,13 +1130,27 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
             }
         });
 
-        btn_add_more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogLogout.dismiss();
-                captureImage(position);
-            }
-        });
+        if(list.size()==2)
+        {
+            btn_add_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast toast = Toast.makeText(Ward_OT_EmergencyActivity.this, "You cannot upload more than 2 images.", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+            });
+        }
+        else
+        {
+            btn_add_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogLogout.dismiss();
+                    captureImage(position);
+                }
+            });
+        }
     }
 
 
@@ -1222,14 +1242,9 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
 
                 }else {
                     if (hospital_status.equalsIgnoreCase("shco")){
-
-                        progreesDialog();
-
-                        Post_SHCO_LaboratoryData();
+                        new PostSHCODataTask().execute();
                     }else {
-                        progreesDialog();
-
-                        PostLaboratoryData();
+                        new PostDataTask().execute();
                     }
                 }
             }
@@ -1256,14 +1271,9 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
 
                 }else {
                     if (hospital_status.equalsIgnoreCase("shco")){
-
-                        progreesDialog();
-
-                        Post_SHCO_LaboratoryData();
+                        new PostSHCODataTask().execute();
                     }else {
-                        progreesDialog();
-
-                        PostLaboratoryData();
+                        new PostDataTask().execute();
                     }
                 }
             }
@@ -1273,8 +1283,82 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
 
     }
 
-    private void PostLaboratoryData(){
+    private class PostDataTask extends AsyncTask<Void, Void, Void> {
+        ProgressDialog d;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progreesDialog();
+        }
 
+        @Override
+        protected Void doInBackground(Void... voids) {
+            PostLaboratoryData();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            CloseProgreesDialog();
+        }
+    }
+
+    private class PostSHCODataTask extends AsyncTask<Void, Void, Void> {
+        ProgressDialog d;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progreesDialog();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Post_SHCO_LaboratoryData();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            CloseProgreesDialog();
+        }
+    }
+
+    private void PostLaboratoryData(){
+        check = 1;
+        for(int i=admissions_discharge_home_list.size(); i<Local_admissions_discharge_home_list.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_admissions_discharge_home_list.get(i) + "admissions_discharge_home");
+            UploadImage(Local_admissions_discharge_home_list.get(i),"admissions_discharge_home");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(Ward_OT_EmergencyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(Ward_OT_EmergencyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
         if (hospital_maintain_cleanliness.length() > 0 && hospital_adhere_standard.length() > 0 && hospital_provide_adequate_gloves.length() > 0 && admissions_discharge_home.length() > 0 && staff_present_in_ICU.length() > 0 ){
 
             if (image1 != null){
@@ -1299,27 +1383,36 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
 
                 pojo_dataSync.setWardOtEmergency(pojo);
 
-
+                latch = new CountDownLatch(1);
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        CloseProgreesDialog();
-
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
-                            Intent intent = new Intent(Ward_OT_EmergencyActivity.this, LoginActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            finish();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(Ward_OT_EmergencyActivity.this, LoginActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    finish();
 
-                            Toast.makeText(Ward_OT_EmergencyActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(Ward_OT_EmergencyActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+
+                                }
+                            });
                         }else {
                             if (response.body() != null){
                                 if (response.body().getSuccess()){
-                                    Intent intent = new Intent(Ward_OT_EmergencyActivity.this,HospitalListActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Intent intent = new Intent(Ward_OT_EmergencyActivity.this,HospitalListActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
 
                                     saveIntoPrefs("WardsEmergency_tabId"+Hospital_id, String.valueOf(response.body().getTabId()));
 
@@ -1334,35 +1427,87 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
                                     pojo.setAssessement_status("Done");
                                     pojo.setLocal_id(assessement_list.get(9).getLocal_id());
                                     databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(Ward_OT_EmergencyActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
 
-                                    Toast.makeText(Ward_OT_EmergencyActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                                 }
                             }
+                            latch.countDown();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
-
-                        CloseProgreesDialog();
+                        latch.countDown();
                     }
                 });
+                try {
+                    latch.await();
+                }
+                catch(Exception e)
+                {
+                    Log.e("Upload",e.getMessage());
+                }
             }else {
-                Toast.makeText(Ward_OT_EmergencyActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(Ward_OT_EmergencyActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
 
-                CloseProgreesDialog();
+                    }
+                });
             }
 
         }else {
-            Toast.makeText(Ward_OT_EmergencyActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(Ward_OT_EmergencyActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
 
-            CloseProgreesDialog();
+                }
+            });
         }
     }
 
     private void Post_SHCO_LaboratoryData(){
-
+        check = 1;
+        for(int i=admissions_discharge_home_list.size(); i<Local_admissions_discharge_home_list.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_admissions_discharge_home_list.get(i) + "admissions_discharge_home");
+            UploadImage(Local_admissions_discharge_home_list.get(i),"admissions_discharge_home");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(Ward_OT_EmergencyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(Ward_OT_EmergencyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
                 pojo_dataSync.setTabName("wardsotemergency");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -1383,27 +1528,35 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
                 pojo.setAdmissions_discharge_home_image(admissions_discharge_home_view);
 
                 pojo_dataSync.setWardOtEmergency(pojo);
-
+                latch = new CountDownLatch(1);
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        CloseProgreesDialog();
-
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
-                            Intent intent = new Intent(Ward_OT_EmergencyActivity.this, LoginActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            finish();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(Ward_OT_EmergencyActivity.this, LoginActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    finish();
 
-                            Toast.makeText(Ward_OT_EmergencyActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(Ward_OT_EmergencyActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                                }
+                            });
                         }else {
                             if (response.body() != null){
                                 if (response.body().getSuccess()){
-                                    Intent intent = new Intent(Ward_OT_EmergencyActivity.this,HospitalListActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Intent intent = new Intent(Ward_OT_EmergencyActivity.this,HospitalListActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
 
                                     saveIntoPrefs("WardsEmergency_tabId"+Hospital_id, String.valueOf(response.body().getTabId()));
 
@@ -1418,24 +1571,49 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
                                     pojo.setAssessement_status("Done");
                                     pojo.setLocal_id(assessement_list.get(9).getLocal_id());
                                     databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
-
-                                    Toast.makeText(Ward_OT_EmergencyActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(Ward_OT_EmergencyActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                                 }
                             }
+                            latch.countDown();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
-
-                        CloseProgreesDialog();
+                        latch.countDown();
                     }
                 });
+        try {
+            latch.await();
+        }
+        catch(Exception e)
+        {
+            Log.e("Upload",e.getMessage());
+        }
 
     }
 
-    private void ImageUpload(final String image_path,final String from){
+    private void SaveImage(final String image_path,final String from){
+        if (from.equalsIgnoreCase("admissions_discharge_home")){
+            //admissions_discharge_home_list.add(response.body().getMessage());
+            Local_admissions_discharge_home_list.add(image_path);
+            Video_admissions_discharge_home.setImageResource(R.mipmap.camera_selected);
+
+            Local_image1 = "admissions_discharge_home";
+
+        }
+
+
+        Toast.makeText(Ward_OT_EmergencyActivity.this,"Image saved locally",Toast.LENGTH_LONG).show();
+    }
+
+    private void UploadImage(final String image_path,final String from){
         File file = new File(image_path);
 
         //pass it like this
@@ -1445,21 +1623,23 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
 // MultipartBody.Part is used to send also the actual file name
         MultipartBody.Part body =
                 MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-
-        final ProgressDialog d = ImageDialog.showLoading(Ward_OT_EmergencyActivity.this);
-        d.setCanceledOnTouchOutside(false);
-
         mAPIService.ImageUploadRequest("Bearer " + getFromPrefs(AppConstant.ACCESS_Token),body).enqueue(new Callback<ImageUploadResponse>() {
             @Override
             public void onResponse(Call<ImageUploadResponse> call, Response<ImageUploadResponse> response) {
-                d.cancel();
+                //d.cancel();
                 if (response.message().equalsIgnoreCase("Unauthorized")) {
-                    Intent intent = new Intent(Ward_OT_EmergencyActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(Ward_OT_EmergencyActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
 
-                    Toast.makeText(Ward_OT_EmergencyActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(Ward_OT_EmergencyActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
                 }else {
                     if (response.body() != null){
                         if (response.body().getSuccess()){
@@ -1468,21 +1648,26 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
 
                             if (from.equalsIgnoreCase("admissions_discharge_home")){
                                 admissions_discharge_home_list.add(response.body().getMessage());
-                                Local_admissions_discharge_home_list.add(image_path);
+                                //Local_admissions_discharge_home_list.add(image_path);
                                 Video_admissions_discharge_home.setImageResource(R.mipmap.camera_selected);
 
                                 image1 = "admissions_discharge_home";
 
                             }
 
-
-                            Toast.makeText(Ward_OT_EmergencyActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
+                            check  = 1;
+                            latch.countDown();
+                            //Toast.makeText(Ward_OT_EmergencyActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
 
                         }else {
-                            Toast.makeText(Ward_OT_EmergencyActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                            check  = 0;
+                            latch.countDown();
+                            //Toast.makeText(Ward_OT_EmergencyActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
                         }
                     }else {
-                        Toast.makeText(Ward_OT_EmergencyActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                        check  = 0;
+                        latch.countDown();
+                        //Toast.makeText(Ward_OT_EmergencyActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -1492,9 +1677,8 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
             public void onFailure(Call<ImageUploadResponse> call, Throwable t) {
                 System.out.println("xxx fail");
 
-                d.cancel();
-
-                Toast.makeText(Ward_OT_EmergencyActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                check  = 0;
+                latch.countDown();
             }
         });
     }

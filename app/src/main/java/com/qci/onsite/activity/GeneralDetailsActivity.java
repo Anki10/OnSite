@@ -8,11 +8,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,6 +43,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.CountDownLatch;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -98,7 +101,8 @@ public class GeneralDetailsActivity extends BaseActivity {
 
     @BindView(R.id.image_side_view2)
     ImageView image_side_view2;
-
+    @BindView(R.id.btnSave)
+    Button btnSave;
 
     private static final String CAMERA_DIR = "/dcim/";
     private Uri picUri;
@@ -124,7 +128,10 @@ public class GeneralDetailsActivity extends BaseActivity {
     private ArrayList<AssessmentStatusPojo> assessement_list;
 
     private DatabaseHandler databaseHandler;
-
+    
+    int check;
+    CountDownLatch latch;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,6 +171,7 @@ public class GeneralDetailsActivity extends BaseActivity {
             }
             if (pojo.getImage_assessor_selfie().length() > 0){
                 img_selfie_url = pojo.getImage_assessor_selfie();
+                image_selfie.setImageResource(R.mipmap.camera_selected);
 
             }
             if (pojo.getLocal_image_assessor_selfie().length() > 0){
@@ -179,6 +187,7 @@ public class GeneralDetailsActivity extends BaseActivity {
             }
             if (pojo.getImage_hospital_board().length() > 0){
                 img_hospital_board_url = pojo.getImage_hospital_board();
+                image_hospital_board.setImageResource(R.mipmap.camera_selected);
 
             }
             if (pojo.getLocal_image_hospital_board().length() > 0){
@@ -197,6 +206,7 @@ public class GeneralDetailsActivity extends BaseActivity {
             }
             if (pojo.getAuthperson_image().length() > 0){
                 img_authorised_person_url = pojo.getAuthperson_image();
+                image_authorised_person.setImageResource(R.mipmap.camera_selected);
 
             }
             if (pojo.getLocal_authperson_image().length() > 0){
@@ -206,6 +216,7 @@ public class GeneralDetailsActivity extends BaseActivity {
             }
             if (pojo.getHospitalbuildingfrontface_image().length() > 0){
                 img_front_hospital_url = pojo.getHospitalbuildingfrontface_image();
+                image_front_hospital.setImageResource(R.mipmap.camera_selected);
 
             }
             if (pojo.getLocal_hospitalbuildingfrontface_image().length() > 0){
@@ -215,6 +226,7 @@ public class GeneralDetailsActivity extends BaseActivity {
             }
             if (pojo.getHospitalbuildingbackview_image().length() > 0){
                 img_back_hospital_url = pojo.getHospitalbuildingbackview_image();
+                image_back_hospital.setImageResource(R.mipmap.camera_selected);
 
             }
             if (pojo.getLocal_hospitalbuildingbackview_image().length() > 0){
@@ -224,6 +236,7 @@ public class GeneralDetailsActivity extends BaseActivity {
             }
             if (pojo.getHospitalbuilding1sideface_image().length() > 0){
                 img_side_view1_url = pojo.getHospitalbuilding1sideface_image();
+                image_side_view1.setImageResource(R.mipmap.camera_selected);
 
             }
             if (pojo.getLocal_hospitalbuilding1sideface_image().length() > 0){
@@ -233,6 +246,7 @@ public class GeneralDetailsActivity extends BaseActivity {
             }
             if (pojo.getHospitalbuilding2sideface_image().length() > 0){
                 img_side_view2_url = pojo.getHospitalbuilding2sideface_image();
+                image_side_view2.setImageResource(R.mipmap.camera_selected);
 
             }
             if (pojo.getLocal_hospitalbuilding2sideface_image().length() > 0){
@@ -245,7 +259,7 @@ public class GeneralDetailsActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.image_mark_location,R.id.image_selfie,R.id.image_hospital_board,R.id.image_authorised_person,R.id.image_front_hospital,
+    @OnClick({R.id.btnSave,R.id.image_mark_location,R.id.image_selfie,R.id.image_hospital_board,R.id.image_authorised_person,R.id.image_front_hospital,
             R.id.image_back_hospital,R.id.image_side_view1,R.id.image_side_view2,R.id.btnSync})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -315,11 +329,16 @@ public class GeneralDetailsActivity extends BaseActivity {
                     captureImage(8);
                 }
                 break;
+            case R.id.btnSave:
+                SaveGeneralData();
 
-
+                Intent intent = new Intent(GeneralDetailsActivity.this,HospitalListActivity.class);
+                startActivity(intent);
+                finish();
+                break;
 
             case R.id.btnSync:
-                PostLaboratoryData();
+                new PostDataTask().execute();
                 break;
         }
     }
@@ -385,7 +404,7 @@ public class GeneralDetailsActivity extends BaseActivity {
                     String image2 = compressImage(uri.toString());
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                    ImageUpload(image2,"selfie");
+                    SaveImage(image2,"selfie");
 
                 }
             }else if (requestCode == 3) {
@@ -394,7 +413,7 @@ public class GeneralDetailsActivity extends BaseActivity {
                     String image2 = compressImage(uri.toString());
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                    ImageUpload(image2,"hospital_board");
+                    SaveImage(image2,"hospital_board");
 
                 }
             }
@@ -404,7 +423,7 @@ public class GeneralDetailsActivity extends BaseActivity {
                   String image2 = compressImage(uri.toString());
                   //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                  ImageUpload(image2,"authorised_person");
+                  SaveImage(image2,"authorised_person");
 
               }
           }
@@ -415,7 +434,7 @@ public class GeneralDetailsActivity extends BaseActivity {
                   String image2 = compressImage(uri.toString());
                   //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                  ImageUpload(image2,"front_hospital");
+                  SaveImage(image2,"front_hospital");
 
               }
           }
@@ -425,7 +444,7 @@ public class GeneralDetailsActivity extends BaseActivity {
                   String image2 = compressImage(uri.toString());
                   //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                  ImageUpload(image2,"back_hospital");
+                  SaveImage(image2,"back_hospital");
 
               }
           }
@@ -436,7 +455,7 @@ public class GeneralDetailsActivity extends BaseActivity {
                   String image2 = compressImage(uri.toString());
                   //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                  ImageUpload(image2,"side_view1");
+                  SaveImage(image2,"side_view1");
 
               }
           }
@@ -447,14 +466,14 @@ public class GeneralDetailsActivity extends BaseActivity {
                   String image2 = compressImage(uri.toString());
                   //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
-                  ImageUpload(image2,"side_view2");
+                  SaveImage(image2,"side_view2");
 
               }
           }
         }
     }
 
-    private void ImageUpload(final String image_path,final String from){
+    private void UploadImage(final String image_path,final String from){
         File file = new File(image_path);
 
         //pass it like this
@@ -465,20 +484,22 @@ public class GeneralDetailsActivity extends BaseActivity {
         MultipartBody.Part body =
                 MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
-        final ProgressDialog d = ImageDialog.showLoading(GeneralDetailsActivity.this);
-        d.setCanceledOnTouchOutside(false);
-
         mAPIService.ImageUploadRequest("Bearer " + getFromPrefs(AppConstant.ACCESS_Token),body).enqueue(new Callback<ImageUploadResponse>() {
             @Override
             public void onResponse(Call<ImageUploadResponse> call, Response<ImageUploadResponse> response) {
-                d.cancel();
+                //d.cancel();
                 if (response.message().equalsIgnoreCase("Unauthorized")) {
-                    Intent intent = new Intent(GeneralDetailsActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(GeneralDetailsActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
 
-                    Toast.makeText(GeneralDetailsActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(GeneralDetailsActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }else {
                     if (response.body() != null){
                         if (response.body().getSuccess()){
@@ -487,41 +508,46 @@ public class GeneralDetailsActivity extends BaseActivity {
 
                             if (from.equalsIgnoreCase("selfie")){
                                 img_selfie_url = response.body().getMessage();
-                                img_selfie = image_path;
+                                //img_selfie = image_path;
                                 image_selfie.setImageResource(R.mipmap.camera_selected);
                             }else if (from.equalsIgnoreCase("hospital_board")){
                                 img_hospital_board_url = response.body().getMessage();
-                                img_hospital_board = image_path;
+                                //img_hospital_board = image_path;
                                 image_hospital_board.setImageResource(R.mipmap.camera_selected);
                             }else if (from.equalsIgnoreCase("authorised_person")){
                                 img_authorised_person_url = response.body().getMessage();
-                                img_authorised_person = image_path;
+                                //img_authorised_person = image_path;
                                 image_authorised_person.setImageResource(R.mipmap.camera_selected);
                             }else if (from.equalsIgnoreCase("front_hospital")){
                                 img_front_hospital_url = response.body().getMessage();
-                                img_front_hospital = image_path;
+                                //img_front_hospital = image_path;
                                 image_front_hospital.setImageResource(R.mipmap.camera_selected);
                             }else if (from.equalsIgnoreCase("back_hospital")){
                                 img_back_hospital_url = response.body().getMessage();
-                                img_back_hospital = image_path;
+                                //img_back_hospital = image_path;
                                 image_back_hospital.setImageResource(R.mipmap.camera_selected);
                             }else if (from.equalsIgnoreCase("side_view1")){
                                 img_side_view1_url = response.body().getMessage();
-                                img_side_view1 = image_path;
+                                //img_side_view1 = image_path;
                                 image_side_view1.setImageResource(R.mipmap.camera_selected);
                             }else if (from.equalsIgnoreCase("side_view2")){
                                 img_side_view2_url = response.body().getMessage();
-                                img_side_view2 = image_path;
+                                //img_side_view2 = image_path;
                                 image_side_view2.setImageResource(R.mipmap.camera_selected);
                             }
-
-                            Toast.makeText(GeneralDetailsActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
+                            check = 1;
+                            latch.countDown();
+                            //Toast.makeText(GeneralDetailsActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
 
                         }else {
-                            Toast.makeText(GeneralDetailsActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                            check = 0;
+                            latch.countDown();
+                            //Toast.makeText(GeneralDetailsActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
                         }
                     }else {
-                        Toast.makeText(GeneralDetailsActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                        check = 0;
+                        latch.countDown();
+                        //Toast.makeText(GeneralDetailsActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -530,12 +556,41 @@ public class GeneralDetailsActivity extends BaseActivity {
             @Override
             public void onFailure(Call<ImageUploadResponse> call, Throwable t) {
                 System.out.println("xxx fail");
+                check = 0;
+                latch.countDown();
+                //d.cancel();
 
-                d.cancel();
-
-                Toast.makeText(GeneralDetailsActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                //Toast.makeText(GeneralDetailsActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void SaveImage(final String image_path,final String from){
+        if (from.equalsIgnoreCase("selfie")){
+            img_selfie = image_path;
+            image_selfie.setImageResource(R.mipmap.camera_selected);
+        }else if (from.equalsIgnoreCase("hospital_board")){
+            img_hospital_board = image_path;
+            image_hospital_board.setImageResource(R.mipmap.camera_selected);
+        }else if (from.equalsIgnoreCase("authorised_person")){
+            img_authorised_person = image_path;
+            image_authorised_person.setImageResource(R.mipmap.camera_selected);
+        }else if (from.equalsIgnoreCase("front_hospital")){
+            img_front_hospital = image_path;
+            image_front_hospital.setImageResource(R.mipmap.camera_selected);
+        }else if (from.equalsIgnoreCase("back_hospital")){
+            img_back_hospital = image_path;
+            image_back_hospital.setImageResource(R.mipmap.camera_selected);
+        }else if (from.equalsIgnoreCase("side_view1")){
+            img_side_view1 = image_path;
+            image_side_view1.setImageResource(R.mipmap.camera_selected);
+        }else if (from.equalsIgnoreCase("side_view2")){
+            img_side_view2 = image_path;
+            image_side_view2.setImageResource(R.mipmap.camera_selected);
+        }
+
+        Toast.makeText(GeneralDetailsActivity.this,"Image saved locally",Toast.LENGTH_LONG).show();
+
     }
 
     public void showImageDialog(final String path, final int position) {
@@ -619,13 +674,192 @@ public class GeneralDetailsActivity extends BaseActivity {
         databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
     }
 
+    private class PostDataTask extends AsyncTask<Void, Void, Void> {
+        ProgressDialog d;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progreesDialog();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            PostLaboratoryData();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            CloseProgreesDialog();
+        }
+    }
+
+
     private void PostLaboratoryData(){
 
-        if (location_status.length() > 0 && ed_name.getText().toString().length() > 0 && img_selfie_url.length() > 0 && ed_name_hospital.getText().toString().length() > 0
-                && ed_hospital_address.getText().toString().length() > 0 && img_hospital_board_url.length() > 0 && ed_name_authorised_person.getText().toString().length() > 0
+        if (location_status.length() > 0 && ed_name.getText().toString().length() > 0 && img_selfie.length() > 0 && ed_name_hospital.getText().toString().length() > 0
+                && ed_hospital_address.getText().toString().length() > 0 && img_hospital_board.length() > 0 && ed_name_authorised_person.getText().toString().length() > 0
         && ed_designation_authorised.getText().toString().length() > 0 && ed_contact_number.getText().toString().length() > 0
-        && img_authorised_person_url.length() > 0 && img_front_hospital_url.length() > 0 && img_back_hospital_url.length() > 0
-        && img_side_view1_url.length() > 0 && img_side_view2_url.length() > 0){
+        && img_authorised_person.length() > 0 && img_front_hospital.length() > 0 && img_back_hospital.length() > 0
+        && img_side_view1.length() > 0 && img_side_view2.length() > 0){
+            check = 1;
+            if(!img_selfie.equals(img_selfie_url))
+            {
+                latch = new CountDownLatch(1);
+                UploadImage(img_selfie,"selfie");
+                try {
+                    latch.await();
+                }
+                catch(Exception ex)
+                {
+                    Log.e("Upload",ex.getMessage());
+                }
+                if(check==0)
+                {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(GeneralDetailsActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    return;
+                }
+            }
+            if(!img_authorised_person.equals(img_authorised_person_url))
+            {
+                latch = new CountDownLatch(1);
+                UploadImage(img_authorised_person,"authorised_person");
+                try {
+                    latch.await();
+                }
+                catch(Exception ex)
+                {
+                    Log.e("Upload",ex.getMessage());
+                }
+                if(check==0)
+                {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(GeneralDetailsActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    return;
+                }
+            }
+            if(!img_back_hospital.equals(img_back_hospital_url))
+            {
+                latch = new CountDownLatch(1);
+                UploadImage(img_back_hospital,"back_hospital");
+                try {
+                    latch.await();
+                }
+                catch(Exception ex)
+                {
+                    Log.e("Upload",ex.getMessage());
+                }
+                if(check==0)
+                {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(GeneralDetailsActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    return;
+                }
+            }
+            if(!img_front_hospital.equals(img_front_hospital_url))
+            {
+                latch = new CountDownLatch(1);
+                UploadImage(img_front_hospital,"front_hospital");
+                try {
+                    latch.await();
+                }
+                catch(Exception ex)
+                {
+                    Log.e("Upload",ex.getMessage());
+                }
+                if(check==0)
+                {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(GeneralDetailsActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    return;
+                }
+            }
+            if(!img_hospital_board.equals(img_hospital_board_url))
+            {
+                latch = new CountDownLatch(1);
+                UploadImage(img_hospital_board,"hospital_board");
+                try {
+                    latch.await();
+                }
+                catch(Exception ex)
+                {
+                    Log.e("Upload",ex.getMessage());
+                }
+                if(check==0)
+                {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(GeneralDetailsActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    return;
+                }
+            }
+            if(!img_side_view1.equals(img_side_view1_url))
+            {
+                latch = new CountDownLatch(1);
+                UploadImage(img_side_view1,"side_view1");
+                try {
+                    latch.await();
+                }
+                catch(Exception ex)
+                {
+                    Log.e("Upload",ex.getMessage());
+                }
+                if(check==0)
+                {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(GeneralDetailsActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    return;
+                }
+            }
+            if(!img_side_view2.equals(img_side_view2_url))
+            {
+                latch = new CountDownLatch(1);
+                UploadImage(img_side_view2,"side_view2");
+                try {
+                    latch.await();
+                }
+                catch(Exception ex)
+                {
+                    Log.e("Upload",ex.getMessage());
+                }
+                if(check==0)
+                {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(GeneralDetailsActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    return;
+                }
+            }
+
+
 
                 pojo_dataSync.setTabName("GeneralInfo");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
@@ -663,28 +897,39 @@ public class GeneralDetailsActivity extends BaseActivity {
 
                 pojo_dataSync.setGeneral(pojo);
 
-                final ProgressDialog d = AppDialog.showLoading(GeneralDetailsActivity.this);
-                d.setCanceledOnTouchOutside(false);
-
+                //final ProgressDialog d = AppDialog.showLoading(GeneralDetailsActivity.this);
+                //d.setCanceledOnTouchOutside(false);
+                latch = new CountDownLatch(1);
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        d.dismiss();
+                        //d.dismiss();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
-                            Intent intent = new Intent(GeneralDetailsActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            finish();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(GeneralDetailsActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
 
-                            Toast.makeText(GeneralDetailsActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(GeneralDetailsActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                                }
+                            });
                         }else {
                             if (response.body() != null){
                                 if (response.body().getSuccess()){
-                                    Intent intent = new Intent(GeneralDetailsActivity.this,HospitalListActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Intent intent = new Intent(GeneralDetailsActivity.this,HospitalListActivity.class);
+                                            startActivity(intent);
+                                            finish();
+
+                                        }
+                                    });
 
                                     saveIntoPrefs(AppConstant.General_status,"submit");
 
@@ -699,23 +944,41 @@ public class GeneralDetailsActivity extends BaseActivity {
                                     pojo.setLocal_id(assessement_list.get(0).getLocal_id());
 
                                     databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(GeneralDetailsActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
 
-                                    Toast.makeText(GeneralDetailsActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                                 }
 
                             }
+                            latch.countDown();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
-
-                        d.dismiss();
+                        latch.countDown();
+                        //d.dismiss();
                     }
                 });
+            try {
+                latch.await();
+            }
+            catch(Exception e)
+            {
+                Log.e("Upload",e.getMessage());
+            }
         }else {
-            Toast.makeText(GeneralDetailsActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(GeneralDetailsActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+                }
+            });
         }
     }
 

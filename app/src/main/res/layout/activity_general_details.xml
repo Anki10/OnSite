@@ -31,22 +31,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center">
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:labelFor="@+id/gen_edit1"
-                        android:gravity="center"
-                        android:text="1. Mark your location"
                         android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:labelFor="@+id/gen_edit1"
+                        android:text="1. Mark your location"
                         android:textColor="@color/textHeadColor"
                         android:textSize="@dimen/font_large"
                         android:textStyle="bold" />
@@ -56,17 +56,18 @@
                         android:id="@+id/image_mark_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginLeft="15dp"
                         android:layout_marginBottom="5dp"
-                        android:layout_gravity="center"
                         android:src="@mipmap/mark_location" />
 
-                    <TextView android:id="@+id/tv_latLong"
+                    <TextView
+                        android:id="@+id/tv_latLong"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:text=""
                         android:layout_marginTop="5dp"
+                        android:text=""
                         android:textColor="@color/textHeadColor"
                         android:textSize="14sp"
                         android:textStyle="normal" />
@@ -97,13 +98,14 @@
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
 
-                <EditText android:id="@+id/ed_name"
+                <EditText
+                    android:id="@+id/ed_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:inputType="text"
+                    android:layout_marginRight="10dp"
                     android:hint="Enter your name"
-                    android:layout_marginRight="10dp" />
+                    android:inputType="text" />
 
                 <View
                     android:layout_width="match_parent"
@@ -117,8 +119,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="5dp">
 
 
                 <LinearLayout
@@ -135,7 +137,8 @@
                         android:textSize="@dimen/font_large"
                         android:textStyle="bold" />
 
-                    <ImageView android:id="@+id/image_selfie"
+                    <ImageView
+                        android:id="@+id/image_selfie"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
@@ -158,8 +161,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -169,13 +172,14 @@
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
 
-                <EditText android:id="@+id/ed_name_hospital"
+                <EditText
+                    android:id="@+id/ed_name_hospital"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:inputType="text"
+                    android:layout_marginRight="10dp"
                     android:hint="Enter hospital name"
-                    android:layout_marginRight="10dp" />
+                    android:inputType="text" />
 
 
                 <View
@@ -190,8 +194,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -202,13 +206,14 @@
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
 
-                <EditText android:id="@+id/ed_hospital_address"
+                <EditText
+                    android:id="@+id/ed_hospital_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:inputType="text"
+                    android:layout_marginRight="10dp"
                     android:hint="Enter hospital address"
-                    android:layout_marginRight="10dp" />
+                    android:inputType="text" />
 
 
                 <View
@@ -224,29 +229,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:orientation="horizontal"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:labelFor="@+id/gen_edit1"
                         android:layout_weight="1"
+                        android:labelFor="@+id/gen_edit1"
                         android:text="6. Photograph of front face of the hospital along with hospital board"
                         android:textColor="@color/textHeadColor"
                         android:textSize="@dimen/font_large"
                         android:textStyle="bold" />
 
 
-
-                    <ImageView android:id="@+id/image_hospital_board"
+                    <ImageView
+                        android:id="@+id/image_hospital_board"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
@@ -268,8 +273,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -280,14 +285,15 @@
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
 
-                <EditText android:id="@+id/ed_name_authorised_person"
+                <EditText
+                    android:id="@+id/ed_name_authorised_person"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:inputType="text"
-                    android:hint="Enter name"
+                    android:layout_marginTop="5dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginTop="5dp" />
+                    android:hint="Enter name"
+                    android:inputType="text" />
 
 
                 <View
@@ -302,8 +308,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -314,13 +320,14 @@
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
 
-                <EditText android:id="@+id/ed_designation_authorised"
+                <EditText
+                    android:id="@+id/ed_designation_authorised"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:inputType="text"
+                    android:layout_marginRight="10dp"
                     android:hint="Enter designation"
-                    android:layout_marginRight="10dp" />
+                    android:inputType="text" />
 
 
                 <View
@@ -336,8 +343,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -348,15 +355,16 @@
                     android:textSize="@dimen/font_large"
                     android:textStyle="bold" />
 
-                <EditText android:id="@+id/ed_contact_number"
+                <EditText
+                    android:id="@+id/ed_contact_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:hint="Enter number"
                     android:inputType="number"
                     android:maxLength="10"
-                    android:singleLine="true"
-                    android:hint="Enter number"
-                    android:layout_marginRight="10dp" />
+                    android:singleLine="true" />
 
 
                 <View
@@ -371,19 +379,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="5dp">
 
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:labelFor="@+id/gen_edit1"
-                        android:layout_weight="1"
-                        android:text="10. Photograph of the authorised person"
-                        android:textColor="@color/textHeadColor"
-                        android:textSize="@dimen/font_large"
-                        android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="10. Photograph of the authorised person"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
 
 
                 <View
@@ -393,13 +401,13 @@
                     android:layout_marginBottom="10dp"
                     android:background="@color/colorPrimaryTransparent"></View>
 
-                    <ImageView android:id="@+id/image_authorised_person"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_gravity="center"
-                        android:src="@mipmap/camera" />
-
+                <ImageView
+                    android:id="@+id/image_authorised_person"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:src="@mipmap/camera" />
 
 
                 <View
@@ -414,15 +422,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="5dp">
 
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:labelFor="@+id/gen_edit1"
                     android:layout_weight="1"
+                    android:labelFor="@+id/gen_edit1"
                     android:text="11. Photograph of front face of the hospital building"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
@@ -432,9 +440,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
+                    android:text="Note: Photograph should cover the complete view of the building"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:text="Note: Photograph should cover the complete view of the building"/>
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
@@ -443,13 +451,13 @@
                     android:layout_marginBottom="10dp"
                     android:background="@color/colorPrimaryTransparent"></View>
 
-                <ImageView android:id="@+id/image_front_hospital"
+                <ImageView
+                    android:id="@+id/image_front_hospital"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
                     android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
                     android:src="@mipmap/camera" />
-
 
 
                 <View
@@ -464,15 +472,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="5dp">
 
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:labelFor="@+id/gen_edit1"
                     android:layout_weight="1"
+                    android:labelFor="@+id/gen_edit1"
                     android:text="12. Photograph of back view of the hospital building"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
@@ -482,9 +490,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
+                    android:text="Note: Photograph should cover the complete view of the building"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:text="Note: Photograph should cover the complete view of the building"/>
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
@@ -493,13 +501,13 @@
                     android:layout_marginBottom="10dp"
                     android:background="@color/colorPrimaryTransparent"></View>
 
-                <ImageView android:id="@+id/image_back_hospital"
+                <ImageView
+                    android:id="@+id/image_back_hospital"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
                     android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
                     android:src="@mipmap/camera" />
-
 
 
                 <View
@@ -514,15 +522,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="5dp">
 
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:labelFor="@+id/gen_edit1"
                     android:layout_weight="1"
+                    android:labelFor="@+id/gen_edit1"
                     android:text="13. Photograph of side face of the hospital building-1"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
@@ -532,9 +540,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
+                    android:text="Note: Photograph should cover the complete view of the building"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:text="Note: Photograph should cover the complete view of the building"/>
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
@@ -543,13 +551,13 @@
                     android:layout_marginBottom="10dp"
                     android:background="@color/colorPrimaryTransparent"></View>
 
-                <ImageView android:id="@+id/image_side_view1"
+                <ImageView
+                    android:id="@+id/image_side_view1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
                     android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
                     android:src="@mipmap/camera" />
-
 
 
                 <View
@@ -564,15 +572,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="5dp">
 
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:labelFor="@+id/gen_edit1"
                     android:layout_weight="1"
+                    android:labelFor="@+id/gen_edit1"
                     android:text="14. Photograph of side face of the hospital building-2"
                     android:textColor="@color/textHeadColor"
                     android:textSize="@dimen/font_large"
@@ -582,9 +590,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
+                    android:text="Note: Photograph should cover the complete view of the building"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:text="Note: Photograph should cover the complete view of the building"/>
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
@@ -593,13 +601,13 @@
                     android:layout_marginBottom="10dp"
                     android:background="@color/colorPrimaryTransparent"></View>
 
-                <ImageView android:id="@+id/image_side_view2"
+                <ImageView
+                    android:id="@+id/image_side_view2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
                     android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
                     android:src="@mipmap/camera" />
-
 
 
                 <View
@@ -619,6 +627,16 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/btnSave"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@color/login_btn"
+                    android:textColor="@color/white"
+                    android:layout_margin="10dp"
+                    android:text="Save" />
+
+                <Button
                     android:id="@+id/btnSync"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -627,7 +645,6 @@
                     android:layout_weight="1"
                     android:layout_margin="10dp"
                     android:text="SYNC" />
-
 
 
             </LinearLayout>

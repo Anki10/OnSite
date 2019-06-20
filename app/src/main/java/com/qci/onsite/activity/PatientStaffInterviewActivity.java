@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,6 +16,8 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -50,6 +53,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.CountDownLatch;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -221,7 +225,8 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
 
     int Bed_no = 0;
 
-
+    int check;
+    CountDownLatch latch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -624,7 +629,7 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
                     if (privacy_maintained.length() > 0 && patients_protected_physical_abuse.length() > 0 && patient_information_confidential.length() > 0 && patients_consent_carrying.length() > 0 && patient_voice_complaint.length() > 0 &&
                             patients_cost_treatment.length() > 0 && patient_clinical_records.length() > 0 ){
 
-                        if (image1 != null){
+                        if (Local_image1 != null){
                             SavePharmacyData("sync","shco");
                         }else {
                             Toast.makeText(PatientStaffInterviewActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
@@ -638,7 +643,7 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
                     if (privacy_maintained.length() > 0 && patients_protected_physical_abuse.length() > 0 && patient_information_confidential.length() > 0 && patients_consent_carrying.length() > 0 && patient_voice_complaint.length() > 0 &&
                             patients_cost_treatment.length() > 0 && patient_clinical_records.length() > 0 && patient_aware_plan_care.length() > 0){
 
-                        if (image1 != null){
+                        if (Local_image1 != null){
                             SavePharmacyData("sync","hco");
                         }else {
                             Toast.makeText(PatientStaffInterviewActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
@@ -879,7 +884,7 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
 
-                    ImageUpload(image2,"privacy_maintained");
+                    SaveImage(image2,"privacy_maintained");
 
                 }
 
@@ -1707,13 +1712,27 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
             }
         });
 
-        btn_add_more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogLogout.dismiss();
-                captureImage(position);
-            }
-        });
+        if(list.size()==2)
+        {
+            btn_add_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast toast = Toast.makeText(PatientStaffInterviewActivity.this, "You cannot upload more than 2 images.", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+            });
+        }
+        else
+        {
+            btn_add_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogLogout.dismiss();
+                    captureImage(position);
+                }
+            });
+        }
     }
 
 
@@ -1821,14 +1840,9 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
                     finish();
                 } else {
                     if (hospital_status.equalsIgnoreCase("shco")){
-
-                        progreesDialog();
-
-                        PostLaboratory_SHCO_Data();
+                        new PostSHCODataTask().execute();
                     }else {
-                        progreesDialog();
-
-                        PostLaboratoryData();
+                        new PostDataTask().execute();
                     }
                 }
             }
@@ -1853,14 +1867,9 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
                     finish();
                 } else {
                     if (hospital_status.equalsIgnoreCase("shco")){
-
-                        progreesDialog();
-
-                        PostLaboratory_SHCO_Data();
+                        new PostSHCODataTask().execute();
                     }else {
-                        progreesDialog();
-
-                        PostLaboratoryData();
+                        new PostDataTask().execute();
                     }
                 }
             }
@@ -1869,9 +1878,82 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
 
 
     }
+    private class PostDataTask extends AsyncTask<Void, Void, Void> {
+        ProgressDialog d;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progreesDialog();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            PostLaboratoryData();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            CloseProgreesDialog();
+        }
+    }
+
+    private class PostSHCODataTask extends AsyncTask<Void, Void, Void> {
+        ProgressDialog d;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progreesDialog();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            PostLaboratory_SHCO_Data();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            CloseProgreesDialog();
+        }
+    }
 
     private void PostLaboratoryData(){
-
+        check = 1;
+        for(int i=privacy_maintained_list.size(); i<Local_privacy_maintained_list.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_privacy_maintained_list.get(i) + "privacy_maintained");
+            UploadImage(Local_privacy_maintained_list.get(i),"privacy_maintained");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PatientStaffInterviewActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PatientStaffInterviewActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
                 pojo_dataSync.setTabName("patientstaffinterview");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -1891,27 +1973,37 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
 
                 pojo_dataSync.setPatientStaffInterview(pojo);
 
-
+                latch = new CountDownLatch(1);
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        CloseProgreesDialog();
-
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
-                            Intent intent = new Intent(PatientStaffInterviewActivity.this, LoginActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            finish();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(PatientStaffInterviewActivity.this, LoginActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    finish();
 
-                            Toast.makeText(PatientStaffInterviewActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(PatientStaffInterviewActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+
+                                }
+                            });
                         }else {
                             if (response.body() != null){
                                 if (response.body().getSuccess()){
-                                    Intent intent = new Intent(PatientStaffInterviewActivity.this,HospitalListActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Intent intent = new Intent(PatientStaffInterviewActivity.this,HospitalListActivity.class);
+                                            startActivity(intent);
+                                            finish();
+
+                                        }
+                                    });
 
                                     saveIntoPrefs("PatientStaff_tabId"+Hospital_id, String.valueOf(response.body().getTabId()));
 
@@ -1927,24 +2019,68 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
                                     pojo.setLocal_id(assessement_list.get(8).getLocal_id());
 
                                     databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(PatientStaffInterviewActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
 
-                                    Toast.makeText(PatientStaffInterviewActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                                 }
                             }
+                            latch.countDown();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
-
-                        CloseProgreesDialog();
+                        latch.countDown();
                     }
                 });
+        try {
+            latch.await();
+        }
+        catch(Exception e)
+        {
+            Log.e("Upload",e.getMessage());
+        }
     }
 
     private void PostLaboratory_SHCO_Data(){
-
+        check = 1;
+        for(int i=privacy_maintained_list.size(); i<Local_privacy_maintained_list.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_privacy_maintained_list.get(i) + "privacy_maintained");
+            UploadImage(Local_privacy_maintained_list.get(i),"privacy_maintained");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PatientStaffInterviewActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PatientStaffInterviewActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
                 pojo_dataSync.setTabName("patientstaffinterview");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -1965,27 +2101,37 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
                 pojo_dataSync.setPatientStaffInterview(pojo);
 
 
-
+                latch = new CountDownLatch(1);
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        CloseProgreesDialog();
-
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
-                            Intent intent = new Intent(PatientStaffInterviewActivity.this, LoginActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            finish();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(PatientStaffInterviewActivity.this, LoginActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    finish();
 
-                            Toast.makeText(PatientStaffInterviewActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(PatientStaffInterviewActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+
+                                }
+                            });
                         }else {
                             if (response.body() != null){
                                 if (response.body().getSuccess()){
-                                    Intent intent = new Intent(PatientStaffInterviewActivity.this,HospitalListActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Intent intent = new Intent(PatientStaffInterviewActivity.this,HospitalListActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
+
 
                                     saveIntoPrefs("PatientStaff_tabId"+Hospital_id, String.valueOf(response.body().getTabId()));
 
@@ -2001,25 +2147,50 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
                                     pojo.setLocal_id(assessement_list.get(8).getLocal_id());
 
                                     databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(PatientStaffInterviewActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
 
-                                    Toast.makeText(PatientStaffInterviewActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                                 }
                             }
+                            latch.countDown();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
+                        latch.countDown();
 
-                        CloseProgreesDialog();
                     }
                 });
+        try {
+            latch.await();
+        }
+        catch(Exception e)
+        {
+            Log.e("Upload",e.getMessage());
+        }
 
     }
 
 
-    private void ImageUpload(final String image_path,final String from){
+    private void SaveImage(final String image_path,final String from){
+        if (from.equalsIgnoreCase("privacy_maintained")){
+            //privacy_maintained_list.add(response.body().getMessage());
+            Local_privacy_maintained_list.add(image_path);
+            Image_privacy_maintained.setImageResource(R.mipmap.camera_selected);
+
+            Local_image1 = "privacy_maintained";
+        }
+
+        Toast.makeText(PatientStaffInterviewActivity.this,"Image saved locally",Toast.LENGTH_LONG).show();
+    }
+
+    private void UploadImage(final String image_path,final String from){
         File file = new File(image_path);
 
         //pass it like this
@@ -2030,20 +2201,22 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
         MultipartBody.Part body =
                 MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
-        final ProgressDialog d = ImageDialog.showLoading(PatientStaffInterviewActivity.this);
-        d.setCanceledOnTouchOutside(false);
-
         mAPIService.ImageUploadRequest("Bearer " + getFromPrefs(AppConstant.ACCESS_Token),body).enqueue(new Callback<ImageUploadResponse>() {
             @Override
             public void onResponse(Call<ImageUploadResponse> call, Response<ImageUploadResponse> response) {
-                d.cancel();
+                //d.cancel();
                 if (response.message().equalsIgnoreCase("Unauthorized")) {
-                    Intent intent = new Intent(PatientStaffInterviewActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(PatientStaffInterviewActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
 
-                    Toast.makeText(PatientStaffInterviewActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(PatientStaffInterviewActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }else {
                     if (response.body() != null){
                         if (response.body().getSuccess()){
@@ -2052,19 +2225,24 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
 
                             if (from.equalsIgnoreCase("privacy_maintained")){
                                 privacy_maintained_list.add(response.body().getMessage());
-                                Local_privacy_maintained_list.add(image_path);
+                                //Local_privacy_maintained_list.add(image_path);
                                 Image_privacy_maintained.setImageResource(R.mipmap.camera_selected);
 
                                 image1 = "privacy_maintained";
                             }
-
-                            Toast.makeText(PatientStaffInterviewActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
+                            check = 1;
+                            latch.countDown();
+                            //Toast.makeText(PatientStaffInterviewActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
 
                         }else {
-                            Toast.makeText(PatientStaffInterviewActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                            check = 0;
+                            latch.countDown();
+                            //Toast.makeText(PatientStaffInterviewActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
                         }
                     }else {
-                        Toast.makeText(PatientStaffInterviewActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                        check = 0;
+                        latch.countDown();
+                        //Toast.makeText(PatientStaffInterviewActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -2073,10 +2251,8 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
             @Override
             public void onFailure(Call<ImageUploadResponse> call, Throwable t) {
                 System.out.println("xxx fail");
-
-                d.cancel();
-
-                Toast.makeText(PatientStaffInterviewActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                check = 0;
+                latch.countDown();
             }
         });
     }

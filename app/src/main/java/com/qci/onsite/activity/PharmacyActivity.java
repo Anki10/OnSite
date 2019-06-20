@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,6 +14,8 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -46,6 +49,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.CountDownLatch;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -234,7 +238,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
 
     int Bed_no = 0;
 
-
+    int check;
+    CountDownLatch latch;
 
 
     private String remark1, remark2, remark3,remark4,remark5,remark6,remark7,remark8,remark9,remark10,remark11;
@@ -548,6 +553,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
             }
 
             if (pojo.getLocal_pharmacyStores_present_Image() != null){
+                Image_pharmacyStores_present.setImageResource(R.mipmap.camera_selected);
 
                 Local_image2 = pojo.getLocal_pharmacyStores_present_Image();
 
@@ -1182,8 +1188,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                             high_risk_medications.length() > 0 &&  labelling_of_drug.length() > 0 && medication_order_checked.length() > 0
                             && medication_administration.length() > 0 && fridge_temperature.length() > 0){
 
-                        if (image1 != null && image2 != null && image3!= null && image6!= null
-                                && image8!= null  && image10 != null && image11!= null){
+                        if (Local_image1 != null && Local_image2 != null && Local_image3!= null && Local_image6!= null
+                                && Local_image8!= null  && Local_image10 != null && Local_image11!= null){
                             SavePharmacyData("sync","shco");
                         }else {
                             Toast.makeText(PharmacyActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
@@ -1198,8 +1204,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                             emergency_medications.length() > 0 && high_risk_medications.length() > 0 && risk_medications_verified.length() > 0 && labelling_of_drug.length() > 0 && medication_order_checked.length() > 0
                             && medication_administration.length() > 0 && fridge_temperature.length() > 0){
 
-                        if (image1 != null && image2 != null && image3!= null && image5!= null && image6!= null
-                                && image8!= null  && image9 != null &&  image10 != null && image11!= null){
+                        if (Local_image1 != null && Local_image2 != null && Local_image3!= null && Local_image5!= null && Local_image6!= null
+                                && Local_image8!= null  && Local_image9 != null &&  Local_image10 != null && Local_image11!= null){
                             SavePharmacyData("sync","hco");
                         }else {
                             Toast.makeText(PharmacyActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
@@ -1382,7 +1388,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
 
-                    ImageUpload(image2,"patient_care_area");
+                    SaveImage(image2,"patient_care_area");
 
                 }
 
@@ -1394,7 +1400,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                     //                  saveIntoPrefs(AppConstant.statutory_PollutionControl,image3);
 
 
-                    ImageUpload(image3,"pharmacyStores_present");
+                    SaveImage(image3,"pharmacyStores_present");
 
                 }
 
@@ -1405,7 +1411,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                    String image3 = compressImage(uri.toString());
                    //                  saveIntoPrefs(AppConstant.statutory_PollutionControl,image3);
 
-                   ImageUpload(image3,"drugs_pharmacy");
+                   SaveImage(image3,"drugs_pharmacy");
 
                }
 
@@ -1416,7 +1422,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                    String image3 = compressImage(uri.toString());
                    //                  saveIntoPrefs(AppConstant.statutory_PollutionControl,image3);
 
-                   ImageUpload(image3,"emergency_medications");
+                   SaveImage(image3,"emergency_medications");
 
                }
 
@@ -1427,7 +1433,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                    String image3 = compressImage(uri.toString());
                    //                  saveIntoPrefs(AppConstant.statutory_PollutionControl,image3);
 
-                   ImageUpload(image3,"high_risk_medications");
+                   SaveImage(image3,"high_risk_medications");
 
                }
 
@@ -1439,7 +1445,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                    //                  saveIntoPrefs(AppConstant.statutory_PollutionControl,image3);
 
 
-                   ImageUpload(image3,"labelling_of_drug");
+                   SaveImage(image3,"labelling_of_drug");
 
                }
 
@@ -1450,7 +1456,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                    String image3 = compressImage(uri.toString());
                    //                  saveIntoPrefs(AppConstant.statutory_PollutionControl,image3);
 
-                   ImageUpload(image3,"medication_order_checked");
+                   SaveImage(image3,"medication_order_checked");
 
                }
 
@@ -1461,7 +1467,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                    String image3 = compressImage(uri.toString());
                    //                  saveIntoPrefs(AppConstant.statutory_PollutionControl,image3);
 
-                   ImageUpload(image3,"medication_administration");
+                   SaveImage(image3,"medication_administration");
 
                }
 
@@ -1473,7 +1479,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                    //                  saveIntoPrefs(AppConstant.statutory_PollutionControl,image3);
 
 
-                   ImageUpload(image3,"fridge_temperature");
+                   SaveImage(image3,"fridge_temperature");
 
                }
 
@@ -2478,13 +2484,27 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
-        btn_add_more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogLogout.dismiss();
-                captureImage(position);
-            }
-        });
+        if(list.size()==2)
+        {
+            btn_add_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast toast = Toast.makeText(PharmacyActivity.this, "You cannot upload more than 2 images.", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+            });
+        }
+        else
+        {
+            btn_add_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogLogout.dismiss();
+                    captureImage(position);
+                }
+            });
+        }
     }
 
 
@@ -2807,14 +2827,11 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                     finish();
                 }else {
                     if (hospital_status.equalsIgnoreCase("shco")){
+                        new PostSHCODataTask().execute();
 
-                        progreesDialog();
-
-                        Post_SHCO_LaboratoryData();
                     }else {
-                        progreesDialog();
+                        new PostDataTask().execute();
 
-                        PostLaboratoryData();
                     }
                 }
             }
@@ -2841,14 +2858,10 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                     finish();
                 }else {
                     if (hospital_status.equalsIgnoreCase("shco")){
-
-                        progreesDialog();
-
-                        Post_SHCO_LaboratoryData();
+                        new PostSHCODataTask().execute();
                     }else {
-                        progreesDialog();
+                        new PostDataTask().execute();
 
-                        PostLaboratoryData();
                     }
                 }
             }
@@ -2857,8 +2870,318 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
 
 
     }
+    private class PostDataTask extends AsyncTask<Void, Void, Void> {
+        ProgressDialog d;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progreesDialog();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            PostLaboratoryData();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            CloseProgreesDialog();
+        }
+    }
+
     private void PostLaboratoryData(){
 
+        check = 1;
+        for(int i=patientCareArea_imageList.size(); i<Local_patientCareArea_imageList.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_patientCareArea_imageList.get(i) + "patient_care_area");
+            UploadImage(Local_patientCareArea_imageList.get(i),"patient_care_area");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PharmacyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PharmacyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=pharmacyStores_present_imageList.size(); i<Local_pharmacyStores_present_imageList.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_pharmacyStores_present_imageList.get(i) + "pharmacyStores_present");
+            UploadImage(Local_pharmacyStores_present_imageList.get(i),"pharmacyStores_present");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PharmacyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PharmacyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=drugs_pharmacy_imageList.size(); i<Local_drugs_pharmacy_imageList.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_drugs_pharmacy_imageList.get(i) + "drugs_pharmacy");
+            UploadImage(Local_drugs_pharmacy_imageList.get(i),"drugs_pharmacy");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PharmacyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PharmacyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=emergency_medications_imageList.size(); i<Local_emergency_medications_imageList.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_emergency_medications_imageList.get(i) + "emergency_medications");
+            UploadImage(Local_emergency_medications_imageList.get(i),"emergency_medications");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PharmacyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PharmacyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=high_risk_medications_imageList.size(); i<Local_high_risk_medications_imageList.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_high_risk_medications_imageList.get(i) + "high_risk_medications");
+            UploadImage(Local_high_risk_medications_imageList.get(i),"high_risk_medications");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PharmacyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PharmacyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=labelling_of_drug_imageList.size(); i<Local_labelling_of_drug_imageList.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_labelling_of_drug_imageList.get(i) + "labelling_of_drug");
+            UploadImage(Local_labelling_of_drug_imageList.get(i),"labelling_of_drug");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PharmacyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PharmacyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=medication_order_checked_imagelist.size(); i<Local_medication_order_checkedt_imagelist.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_medication_order_checkedt_imagelist.get(i) + "medication_order_checked");
+            UploadImage(Local_medication_order_checkedt_imagelist.get(i),"medication_order_checked");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PharmacyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PharmacyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=medication_administration_imageList.size(); i<Local_medication_administration_imageList.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_medication_administration_imageList.get(i) + "medication_administration");
+            UploadImage(Local_medication_administration_imageList.get(i),"medication_administration");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PharmacyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PharmacyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=fridge_temperature_imageList.size(); i<Local_fridge_temperature_imageList.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_fridge_temperature_imageList.get(i) + "fridge_temperature");
+            UploadImage(Local_fridge_temperature_imageList.get(i),"fridge_temperature");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PharmacyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PharmacyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
            pojo_dataSync.setTabName("wardspharmacy");
            pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
            pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -2938,27 +3261,37 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
 
            pojo_dataSync.setWardspharmacy(pojo);
 
-
+            latch = new CountDownLatch(1);
            mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                @Override
                public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                    System.out.println("xxx sucess");
 
-                   CloseProgreesDialog();
-
                    if (response.message().equalsIgnoreCase("Unauthorized")) {
-                       Intent intent = new Intent(PharmacyActivity.this, LoginActivity.class);
-                       intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                       startActivity(intent);
-                       finish();
+                       runOnUiThread(new Runnable() {
+                           @Override
+                           public void run() {
+                               Intent intent = new Intent(PharmacyActivity.this, LoginActivity.class);
+                               intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                               startActivity(intent);
+                               finish();
 
-                       Toast.makeText(PharmacyActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                               Toast.makeText(PharmacyActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+
+                           }
+                       });
                    }else {
                        if (response.body() != null){
                            if (response.body().getSuccess()){
-                               Intent intent = new Intent(PharmacyActivity.this,HospitalListActivity.class);
-                               startActivity(intent);
-                               finish();
+                               runOnUiThread(new Runnable() {
+                                   @Override
+                                   public void run() {
+                                       Intent intent = new Intent(PharmacyActivity.this,HospitalListActivity.class);
+                                       startActivity(intent);
+                                       finish();
+
+                                   }
+                               });
 
                                saveIntoPrefs("Pharmacy_tabId"+Hospital_id, String.valueOf(response.body().getTabId()));
 
@@ -2973,8 +3306,13 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                                pojo.setLocal_id(assessement_list.get(7).getLocal_id());
 
                                databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(PharmacyActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
 
-                               Toast.makeText(PharmacyActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                    }
+                                });
 
                            }
                        }
@@ -2984,14 +3322,328 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                @Override
                public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                    System.out.println("xxx failed");
-
-                   CloseProgreesDialog();
+                    latch.countDown();
                }
            });
+        try {
+            latch.await();
+        }
+        catch(Exception e)
+        {
+            Log.e("Upload",e.getMessage());
+        }
+    }
+    private class PostSHCODataTask extends AsyncTask<Void, Void, Void> {
+        ProgressDialog d;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progreesDialog();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Post_SHCO_LaboratoryData();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            CloseProgreesDialog();
+        }
     }
 
     private void Post_SHCO_LaboratoryData(){
-
+        check = 1;
+        for(int i=patientCareArea_imageList.size(); i<Local_patientCareArea_imageList.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_patientCareArea_imageList.get(i) + "patient_care_area");
+            UploadImage(Local_patientCareArea_imageList.get(i),"patient_care_area");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PharmacyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PharmacyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=pharmacyStores_present_imageList.size(); i<Local_pharmacyStores_present_imageList.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_pharmacyStores_present_imageList.get(i) + "pharmacyStores_present");
+            UploadImage(Local_pharmacyStores_present_imageList.get(i),"pharmacyStores_present");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PharmacyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PharmacyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=drugs_pharmacy_imageList.size(); i<Local_drugs_pharmacy_imageList.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_drugs_pharmacy_imageList.get(i) + "drugs_pharmacy");
+            UploadImage(Local_drugs_pharmacy_imageList.get(i),"drugs_pharmacy");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PharmacyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PharmacyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=emergency_medications_imageList.size(); i<Local_emergency_medications_imageList.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_emergency_medications_imageList.get(i) + "emergency_medications");
+            UploadImage(Local_emergency_medications_imageList.get(i),"emergency_medications");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PharmacyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PharmacyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=high_risk_medications_imageList.size(); i<Local_high_risk_medications_imageList.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_high_risk_medications_imageList.get(i) + "high_risk_medications");
+            UploadImage(Local_high_risk_medications_imageList.get(i),"high_risk_medications");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PharmacyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PharmacyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=labelling_of_drug_imageList.size(); i<Local_labelling_of_drug_imageList.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_labelling_of_drug_imageList.get(i) + "labelling_of_drug");
+            UploadImage(Local_labelling_of_drug_imageList.get(i),"labelling_of_drug");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PharmacyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PharmacyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=medication_order_checked_imagelist.size(); i<Local_medication_order_checkedt_imagelist.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_medication_order_checkedt_imagelist.get(i) + "medication_order_checked");
+            UploadImage(Local_medication_order_checkedt_imagelist.get(i),"medication_order_checked");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PharmacyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PharmacyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=medication_administration_imageList.size(); i<Local_medication_administration_imageList.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_medication_administration_imageList.get(i) + "medication_administration");
+            UploadImage(Local_medication_administration_imageList.get(i),"medication_administration");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PharmacyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PharmacyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        for(int i=fridge_temperature_imageList.size(); i<Local_fridge_temperature_imageList.size(); i++)
+        {
+            latch = new CountDownLatch(1);
+            Log.e("UploadImage",Local_fridge_temperature_imageList.get(i) + "fridge_temperature");
+            UploadImage(Local_fridge_temperature_imageList.get(i),"fridge_temperature");
+            try {
+                latch.await();
+            }
+            catch(Exception ex)
+            {
+                Log.e("Upload",ex.getMessage());
+            }
+            if(check==0)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(PharmacyActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        if(check==0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PharmacyActivity.this, "Sync Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
                 pojo_dataSync.setTabName("wardspharmacy");
                 pojo_dataSync.setHospital_id(Integer.parseInt(Hospital_id));
                 pojo_dataSync.setAssessor_id(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));
@@ -3070,27 +3722,38 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 pojo.setFridge_temperature_record_Image(fridge_temperature_View);
 
                 pojo_dataSync.setWardspharmacy(pojo);
-
+                latch = new CountDownLatch(1);
                 mAPIService.DataSync("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),pojo_dataSync).enqueue(new Callback<DataSyncResponse>() {
                     @Override
                     public void onResponse(Call<DataSyncResponse> call, Response<DataSyncResponse> response) {
                         System.out.println("xxx sucess");
 
-                        CloseProgreesDialog();
 
                         if (response.message().equalsIgnoreCase("Unauthorized")) {
-                            Intent intent = new Intent(PharmacyActivity.this, LoginActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            finish();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(PharmacyActivity.this, LoginActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    finish();
 
-                            Toast.makeText(PharmacyActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(PharmacyActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+
+                                }
+                            });
                         }else {
                             if (response.body() != null){
                                 if (response.body().getSuccess()){
-                                    Intent intent = new Intent(PharmacyActivity.this,HospitalListActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Intent intent = new Intent(PharmacyActivity.this,HospitalListActivity.class);
+                                            startActivity(intent);
+                                            finish();
+
+                                        }
+                                    });
 
                                     saveIntoPrefs("Pharmacy_tabId"+Hospital_id, String.valueOf(response.body().getTabId()));
 
@@ -3105,24 +3768,114 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                                     pojo.setLocal_id(assessement_list.get(7).getLocal_id());
 
                                     databaseHandler.UPDATE_ASSESSMENT_STATUS(pojo);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(PharmacyActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
 
-                                    Toast.makeText(PharmacyActivity.this,AppConstant.SYNC_MESSAGE,Toast.LENGTH_LONG).show();
+                                        }
+                                    });
 
                                 }
                             }
+                            latch.countDown();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<DataSyncResponse> call, Throwable t) {
                         System.out.println("xxx failed");
+                        latch.countDown();
 
-                        CloseProgreesDialog();
                     }
                 });
+        try {
+            latch.await();
+        }
+        catch(Exception e)
+        {
+            Log.e("Upload",e.getMessage());
+        }
     }
 
-    private void ImageUpload(final String image_path,final String from){
+    private void SaveImage(final String image_path,final String from){
+        if (from.equalsIgnoreCase("patient_care_area")){
+            //patientCareArea_imageList.add(response.body().getMessage());
+            Local_patientCareArea_imageList.add(image_path);
+            Image_patient_care_area.setImageResource(R.mipmap.camera_selected);
+
+            Local_image1 = "patient_care_area";
+
+        }else if (from.equalsIgnoreCase("pharmacyStores_present")){
+            //pharmacyStores_present_imageList.add(response.body().getMessage());
+            Local_pharmacyStores_present_imageList.add(image_path);
+            Image_pharmacyStores_present.setImageResource(R.mipmap.camera_selected);
+
+            Local_image2 = "pharmacyStores_present";
+
+        }else if (from.equalsIgnoreCase("drugs_pharmacy")){
+
+            //drugs_pharmacy_imageList.add(response.body().getMessage());
+            Local_drugs_pharmacy_imageList.add(image_path);
+            image_drugs_pharmacy.setImageResource(R.mipmap.camera_selected);
+
+            Local_image3 = "drugs_pharmacy";
+        }
+        else if (from.equalsIgnoreCase("emergency_medications")){
+
+            //emergency_medications_imageList.add(response.body().getMessage());
+            Local_emergency_medications_imageList.add(image_path);
+            Image_emergency_medications.setImageResource(R.mipmap.camera_selected);
+
+            Local_image5 = "emergency_medications";
+
+        }
+        else if (from.equalsIgnoreCase("high_risk_medications")){
+
+            //high_risk_medications_imageList.add(response.body().getMessage());
+            Local_high_risk_medications_imageList.add(image_path);
+            Image_high_risk_medications.setImageResource(R.mipmap.camera_selected);
+
+            Local_image6 = "high_risk_medications";
+        }
+        else if (from.equalsIgnoreCase("labelling_of_drug")){
+
+            //labelling_of_drug_imageList.add(response.body().getMessage());
+            Local_labelling_of_drug_imageList.add(image_path);
+            Image_labelling_of_drug.setImageResource(R.mipmap.camera_selected);
+
+            Local_image8 = "labelling_of_drug";
+
+        }else if (from.equalsIgnoreCase("medication_order_checked")){
+            //medication_order_checked_imagelist.add(response.body().getMessage());
+            Local_medication_order_checkedt_imagelist.add(image_path);
+
+            Image_medication_order_checked.setImageResource(R.mipmap.camera_selected);
+
+            Local_image9 = "medication_order_checked";
+        }
+        else if (from.equalsIgnoreCase("medication_administration")){
+
+            //medication_administration_imageList.add(response.body().getMessage());
+            Local_medication_administration_imageList.add(image_path);
+            Image_medication_administration.setImageResource(R.mipmap.camera_selected);
+
+            Local_image10 = "medication_administration";
+
+        }else if (from.equalsIgnoreCase("fridge_temperature")){
+
+            //fridge_temperature_imageList.add(response.body().getMessage());
+            Local_fridge_temperature_imageList.add(image_path);
+            Image_fridge_temperature.setImageResource(R.mipmap.camera_selected);
+
+            Local_image11 = "fridge_temperature";
+        }
+
+
+        Toast.makeText(PharmacyActivity.this,"Image saved locally",Toast.LENGTH_LONG).show();
+    }
+
+    private void UploadImage(final String image_path,final String from){
         File file = new File(image_path);
 
         //pass it like this
@@ -3133,20 +3886,23 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
         MultipartBody.Part body =
                 MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
-        final ProgressDialog d = ImageDialog.showLoading(PharmacyActivity.this);
-        d.setCanceledOnTouchOutside(false);
-
         mAPIService.ImageUploadRequest("Bearer " + getFromPrefs(AppConstant.ACCESS_Token),body).enqueue(new Callback<ImageUploadResponse>() {
             @Override
             public void onResponse(Call<ImageUploadResponse> call, Response<ImageUploadResponse> response) {
-                d.cancel();
+                //d.cancel();
                 if (response.message().equalsIgnoreCase("Unauthorized")) {
-                    Intent intent = new Intent(PharmacyActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(PharmacyActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
 
-                    Toast.makeText(PharmacyActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(PharmacyActivity.this, "Application seems to be logged in using some other device also. Please login again to upload pictures.", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
                 }else {
                     if (response.body() != null){
                         if (response.body().getSuccess()){
@@ -3155,14 +3911,14 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
 
                             if (from.equalsIgnoreCase("patient_care_area")){
                                 patientCareArea_imageList.add(response.body().getMessage());
-                                Local_patientCareArea_imageList.add(image_path);
+                                //Local_patientCareArea_imageList.add(image_path);
                                 Image_patient_care_area.setImageResource(R.mipmap.camera_selected);
 
                                 image1 = "patient_care_area";
 
                             }else if (from.equalsIgnoreCase("pharmacyStores_present")){
                                 pharmacyStores_present_imageList.add(response.body().getMessage());
-                                Local_pharmacyStores_present_imageList.add(image_path);
+                                //Local_pharmacyStores_present_imageList.add(image_path);
                                 Image_pharmacyStores_present.setImageResource(R.mipmap.camera_selected);
 
                                 image2 = "pharmacyStores_present";
@@ -3170,7 +3926,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                             }else if (from.equalsIgnoreCase("drugs_pharmacy")){
 
                                 drugs_pharmacy_imageList.add(response.body().getMessage());
-                                Local_drugs_pharmacy_imageList.add(image_path);
+                                //L/ocal_drugs_pharmacy_imageList.add(image_path);
                                 image_drugs_pharmacy.setImageResource(R.mipmap.camera_selected);
 
                                 image3 = "drugs_pharmacy";
@@ -3178,7 +3934,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                             else if (from.equalsIgnoreCase("emergency_medications")){
 
                                 emergency_medications_imageList.add(response.body().getMessage());
-                                Local_emergency_medications_imageList.add(image_path);
+                                //Local_emergency_medications_imageList.add(image_path);
                                 Image_emergency_medications.setImageResource(R.mipmap.camera_selected);
 
                                 image5 = "emergency_medications";
@@ -3187,7 +3943,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                             else if (from.equalsIgnoreCase("high_risk_medications")){
 
                                 high_risk_medications_imageList.add(response.body().getMessage());
-                                Local_high_risk_medications_imageList.add(image_path);
+                                //Local_high_risk_medications_imageList.add(image_path);
                                 Image_high_risk_medications.setImageResource(R.mipmap.camera_selected);
 
                                 image6 = "high_risk_medications";
@@ -3195,14 +3951,14 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                             else if (from.equalsIgnoreCase("labelling_of_drug")){
 
                                 labelling_of_drug_imageList.add(response.body().getMessage());
-                                Local_labelling_of_drug_imageList.add(image_path);
+                                //Local_labelling_of_drug_imageList.add(image_path);
                                 Image_labelling_of_drug.setImageResource(R.mipmap.camera_selected);
 
                                 image8 = "labelling_of_drug";
 
                             }else if (from.equalsIgnoreCase("medication_order_checked")){
                                 medication_order_checked_imagelist.add(response.body().getMessage());
-                                Local_medication_order_checkedt_imagelist.add(image_path);
+                                //Local_medication_order_checkedt_imagelist.add(image_path);
 
                                 Image_medication_order_checked.setImageResource(R.mipmap.camera_selected);
 
@@ -3211,7 +3967,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                             else if (from.equalsIgnoreCase("medication_administration")){
 
                                 medication_administration_imageList.add(response.body().getMessage());
-                                Local_medication_administration_imageList.add(image_path);
+                                //Local_medication_administration_imageList.add(image_path);
                                 Image_medication_administration.setImageResource(R.mipmap.camera_selected);
 
                                 image10 = "medication_administration";
@@ -3219,20 +3975,25 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                             }else if (from.equalsIgnoreCase("fridge_temperature")){
 
                                 fridge_temperature_imageList.add(response.body().getMessage());
-                                Local_fridge_temperature_imageList.add(image_path);
+                                //Local_fridge_temperature_imageList.add(image_path);
                                 Image_fridge_temperature.setImageResource(R.mipmap.camera_selected);
 
                                 image11 = "fridge_temperature";
                             }
 
-
-                            Toast.makeText(PharmacyActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
+                            check = 1;
+                            latch.countDown();
+                            //Toast.makeText(PharmacyActivity.this,"Image upload successfully",Toast.LENGTH_LONG).show();
 
                         }else {
-                            Toast.makeText(PharmacyActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                            check = 0;
+                            latch.countDown();
+                            //Toast.makeText(PharmacyActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
                         }
                     }else {
-                        Toast.makeText(PharmacyActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                        check = 0;
+                        latch.countDown();
+                        //Toast.makeText(PharmacyActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -3241,10 +4002,8 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onFailure(Call<ImageUploadResponse> call, Throwable t) {
                 System.out.println("xxx fail");
-
-                d.cancel();
-
-                Toast.makeText(PharmacyActivity.this,"Image upload failed",Toast.LENGTH_LONG).show();
+                check = 0;
+                latch.countDown();
             }
         });
     }
