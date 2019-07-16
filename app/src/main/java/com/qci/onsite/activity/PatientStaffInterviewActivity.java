@@ -2276,13 +2276,14 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
         try {
             if (from.equalsIgnoreCase("privacy_maintained")){
                 Local_privacy_maintained_list.remove(position);
-                privacy_maintained_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
 
-                if (privacy_maintained_list.size() == 0){
+                if (Local_privacy_maintained_list.size() == 0){
                     Image_privacy_maintained.setImageResource(R.mipmap.camera);
+
+                    Local_image1 = null;
 
                     dialogLogout.dismiss();
                 }

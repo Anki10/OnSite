@@ -1453,7 +1453,6 @@ public class MRDActivity extends BaseActivity implements View.OnClickListener {
     private void DeleteList(int position,String from){
         try {
             if (from.equalsIgnoreCase("fire_extinguisher_present")){
-                staffs_personal_files_maintained_list.remove(position);
                 Local_staffs_personal_files_maintained_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -1461,6 +1460,8 @@ public class MRDActivity extends BaseActivity implements View.OnClickListener {
 
                 if (Local_staffs_personal_files_maintained_list.size() == 0){
                     image_fire_extinguisher_present.setImageResource(R.mipmap.camera);
+
+                    Local_image1 = null;
 
                     dialogLogout.dismiss();
                 }

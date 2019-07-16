@@ -447,7 +447,7 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),3);
         image_recycler_view.setLayoutManager(gridLayoutManager);
 
-        image_adapter = new ImageShowAdapter(ObstetricWardActivity.this,list,from,"obstetric");
+        image_adapter = new ImageShowAdapter(ObstetricWardActivity.this,list,from,from);
         image_recycler_view.setAdapter(image_adapter);
 
         ll_ok.setOnClickListener(new View.OnClickListener() {
@@ -1460,19 +1460,34 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
     private void DeleteList(int position,String from){
         try {
             if (from.equalsIgnoreCase("Obstetric_Ward")){
-                identification_list.remove(position);
                 Local_identification_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
 
-                if (identification_list.size() == 0){
+                if (Local_identification_list.size() == 0) {
                     image_obstetricWard.setImageResource(R.mipmap.camera);
+
+                    Local_image1 = null;
 
                     dialogLogout.dismiss();
                 }
 
+            } else if (from.equalsIgnoreCase("SHCO_Obstetrics_ward")){
+                Local_SHCO_Obstetrics_ward_listt.remove(position);
 
+                image_adapter.notifyItemRemoved(position);
+                image_adapter.notifyDataSetChanged();
+
+                if (Local_SHCO_Obstetrics_ward_listt.size() == 0){
+                    image_SHCO_Obstetrics_ward.setImageResource(R.mipmap.camera);
+
+                    Local_image2 =  null;
+
+                    dialogLogout.dismiss();
+
+
+                }
             }
         }catch (Exception e){
             e.printStackTrace();

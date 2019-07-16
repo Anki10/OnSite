@@ -1195,7 +1195,6 @@ public class BioMedicalEngineeringActivity extends BaseActivity implements View.
     private void DeleteList(int position,String from){
         try {
             if (from.equalsIgnoreCase("BioMedicalEngineering")){
-                DoHigh_imageList.remove(position);
                 Local_DoHigh_imageList.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -1203,6 +1202,8 @@ public class BioMedicalEngineeringActivity extends BaseActivity implements View.
 
                 if (Local_DoHigh_imageList.size() == 0){
                     image_BioMedicalEngineeringPojo.setImageResource(R.mipmap.camera);
+
+                    Local_image3 = null;
 
                     dialogLogout.dismiss();
                 }

@@ -2040,7 +2040,6 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
     private void DeleteList(int position,String from){
         try {
             if (from.equalsIgnoreCase("safety_device_lab")){
-                safety_device_lab_list.remove(position);
                 Local_safety_device_lab_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -2049,11 +2048,12 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
                 if (Local_safety_device_lab_list.size() == 0){
                     image_scope_services_present.setImageResource(R.mipmap.camera);
 
+                    Local_image1 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }else if (from.equalsIgnoreCase("body_parts_staff_patients")){
-                body_parts_staff_patients_list.remove(position);
                 Local_body_parts_staff_patients_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -2062,11 +2062,12 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
                 if (Local_body_parts_staff_patients_list.size() == 0){
                     image_Patients_responsibility_displayed.setImageResource(R.mipmap.camera);
 
+                    Local_image2 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }else if (from.equalsIgnoreCase("staff_member_radiation_area")){
-                staff_member_radiation_area_list.remove(position);
                 Local_staff_member_radiation_area_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -2075,11 +2076,12 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
                 if (Local_staff_member_radiation_area_list.size() == 0){
                     image_fire_exit_signage_present.setImageResource(R.mipmap.camera);
 
+                    Local_image3 = null;
+
                     dialogLogout.dismiss();
                 }
             }
             else if (from.equalsIgnoreCase("standardised_colur_coding")){
-                standardised_colur_coding_list.remove(position);
                 Local_standardised_colur_coding_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -2088,11 +2090,12 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
                 if (Local_standardised_colur_coding_list.size() == 0){
                     image_directional_signages_present.setImageResource(R.mipmap.camera);
 
+                    Local_image4 = null;
+
                     dialogLogout.dismiss();
                 }
             }
             else if (from.equalsIgnoreCase("safe_storage_medical")){
-                safe_storage_medical_list.remove(position);
                 Local_safe_storage_medical_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -2100,6 +2103,8 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
 
                 if (Local_safe_storage_medical_list.size() == 0){
                     image_departmental_signages_present.setImageResource(R.mipmap.camera);
+
+                    Local_image5 = null;
 
                     dialogLogout.dismiss();
                 }

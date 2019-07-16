@@ -1326,7 +1326,6 @@ public class SterilizationAreaActivity extends BaseActivity implements View.OnCl
     private void DeleteList(int position,String from){
         try {
             if (from.equalsIgnoreCase("AreStaff")){
-                AreStaff_imageList.remove(position);
                 Local_AreStaff_imageList.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -1335,12 +1334,13 @@ public class SterilizationAreaActivity extends BaseActivity implements View.OnCl
                 if (Local_AreStaff_imageList.size() == 0){
                     image_monitor_effectiveness_sterilization_process.setImageResource(R.mipmap.camera);
 
+                    Local_image2 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }
             if (from.equalsIgnoreCase("DoHigh")){
-                DoHigh_imageList.remove(position);
                 Local_DoHigh_imageList.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -1349,6 +1349,8 @@ public class SterilizationAreaActivity extends BaseActivity implements View.OnCl
                 if (Local_DoHigh_imageList.size() == 0){
 
                     image_sterilized_drums_trays.setImageResource(R.mipmap.camera);
+
+                    Local_image3 = null;
 
                     dialogLogout.dismiss();
                 }

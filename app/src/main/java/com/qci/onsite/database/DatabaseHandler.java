@@ -41,7 +41,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static DatabaseHandler sInstance;
 
     // Database Version
-    private static final int DATABASE_VERSION = 25;
+    private static final int DATABASE_VERSION = 26;
 
     // Database Name
     private static final String DATABASE_NAME = "OnSite_db";
@@ -680,6 +680,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String Key_document_showing_medical_records = "document_showing_medical_records";
     private static final String Key_document_showing_medical_records_remark = "document_showing_medical_records_remark";
     private static final String Key_document_showing_medical_records_nc = "document_showing_medical_records_nc";
+
+    private static final String Key_signdocscopeofservices_nc = "signdocscopeofservices_nc";
+    private static final String Key_signlistgendutymedoffcr_nc = "signlistgendutymedoffcr_nc";
+    private static final String Key_signlistnurses_nc = "signlistnurses_nc";
+    private static final String Key_signlistparamedstaff_nc = "signlistparamedstaff_nc";
+    private static final String key_signlistadminsupportstaff_nc = "signlistadminsupportstaff_nc";
 
 
     // Scope of Service
@@ -1480,7 +1486,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + Key_document_showing_define_process_nc + " TEXT,"
             + Key_document_showing_medical_records + " TEXT,"
             + Key_document_showing_medical_records_remark + " TEXT,"
-            + Key_document_showing_medical_records_nc + " TEXT" + ")";
+            + Key_document_showing_medical_records_nc + " TEXT,"
+            + Key_signdocscopeofservices_nc + " TEXT,"
+            + Key_signlistgendutymedoffcr_nc + " TEXT,"
+            + Key_signlistnurses_nc + " TEXT,"
+            + Key_signlistparamedstaff_nc + " TEXT,"
+            + key_signlistadminsupportstaff_nc + " TEXT" + ")";
 
     String CREATE_Scope_Service_TABLE = "CREATE TABLE "
             + Table_scope_service + "("
@@ -1624,6 +1635,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Key_document_showing_medical_records,pojo.getDocument_showing_medical_records());
         values.put(Key_document_showing_medical_records_remark,pojo.getDocument_showing_medical_records_remark());
         values.put(Key_document_showing_medical_records_nc,pojo.getDocument_showing_medical_records_nc());
+        values.put(Key_signdocscopeofservices_nc,pojo.getSigndocscopeofservices_nc());
+        values.put(Key_signlistgendutymedoffcr_nc,pojo.getSignlistgendutymedoffcr_nc());
+        values.put(Key_signlistnurses_nc,pojo.getSignlistnurses_nc());
+        values.put(Key_signlistparamedstaff_nc,pojo.getSignlistparamedstaff_nc());
+        values.put(key_signlistadminsupportstaff_nc,pojo.getSignlistadminsupportstaff_nc());
+
+
 
         database.insert(Table_Documentation,null,values);
 
@@ -1704,6 +1722,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Key_document_showing_medical_records,pojo.getDocument_showing_medical_records());
         values.put(Key_document_showing_medical_records_remark,pojo.getDocument_showing_medical_records_remark());
         values.put(Key_document_showing_medical_records_nc,pojo.getDocument_showing_medical_records_nc());
+        values.put(Key_signdocscopeofservices_nc,pojo.getSigndocscopeofservices_nc());
+        values.put(Key_signlistgendutymedoffcr_nc,pojo.getSignlistgendutymedoffcr_nc());
+        values.put(Key_signlistnurses_nc,pojo.getSignlistnurses_nc());
+        values.put(Key_signlistparamedstaff_nc,pojo.getSignlistparamedstaff_nc());
+        values.put(key_signlistadminsupportstaff_nc,pojo.getSignlistadminsupportstaff_nc());
 
         database.update(Table_Documentation,values,KEY_Local_id + "=" + pojo.getLocal_id(),null);
 
@@ -3447,6 +3470,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 pojo.setDocument_showing_medical_records(cursor.getString(cursor.getColumnIndex(Key_document_showing_medical_records)));
                 pojo.setDocument_showing_medical_records_remark(cursor.getString(cursor.getColumnIndex(Key_document_showing_medical_records_remark)));
                 pojo.setDocument_showing_medical_records_nc(cursor.getString(cursor.getColumnIndex(Key_document_showing_medical_records_nc)));
+                pojo.setSigndocscopeofservices_nc(cursor.getString(cursor.getColumnIndex(Key_signdocscopeofservices_nc)));
+                pojo.setSignlistgendutymedoffcr_nc(cursor.getString(cursor.getColumnIndex(Key_signlistgendutymedoffcr_nc)));
+                pojo.setSignlistnurses_nc(cursor.getString(cursor.getColumnIndex(Key_signlistnurses_nc)));
+                pojo.setSignlistparamedstaff_nc(cursor.getString(cursor.getColumnIndex(Key_signlistparamedstaff_nc)));
+                pojo.setSignlistadminsupportstaff_nc(cursor.getString(cursor.getColumnIndex(key_signlistadminsupportstaff_nc)));
 
             }
         }

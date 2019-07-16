@@ -115,11 +115,64 @@ public class DocumentationPojo {
     public String document_showing_medical_records_remark;
     public String document_showing_medical_records_nc;
 
+
+
     private String signdocscopeofservices_image;
+    private String signdocscopeofservices_nc;
+
     private String signlistgendutymedoffcr_image;
+    private String signlistgendutymedoffcr_nc;
+
     private String signlistnurses_image;
+    private String signlistnurses_nc;
+
     private String signlistparamedstaff_image;
+    private String signlistparamedstaff_nc;
+
     private String signlistadminsupportstaff_image;
+    private String signlistadminsupportstaff_nc;
+
+    public String getSigndocscopeofservices_nc() {
+        return signdocscopeofservices_nc;
+    }
+
+    public void setSigndocscopeofservices_nc(String signdocscopeofservices_nc) {
+        this.signdocscopeofservices_nc = signdocscopeofservices_nc;
+    }
+
+    public String getSignlistgendutymedoffcr_nc() {
+        return signlistgendutymedoffcr_nc;
+    }
+
+    public void setSignlistgendutymedoffcr_nc(String signlistgendutymedoffcr_nc) {
+        this.signlistgendutymedoffcr_nc = signlistgendutymedoffcr_nc;
+    }
+
+    public String getSignlistnurses_nc() {
+        return signlistnurses_nc;
+    }
+
+    public void setSignlistnurses_nc(String signlistnurses_nc) {
+        this.signlistnurses_nc = signlistnurses_nc;
+    }
+
+    public String getSignlistparamedstaff_nc() {
+        return signlistparamedstaff_nc;
+    }
+
+    public void setSignlistparamedstaff_nc(String signlistparamedstaff_nc) {
+        this.signlistparamedstaff_nc = signlistparamedstaff_nc;
+    }
+
+    public String getSignlistadminsupportstaff_nc() {
+        return signlistadminsupportstaff_nc;
+    }
+
+    public void setSignlistadminsupportstaff_nc(String signlistadminsupportstaff_nc) {
+        this.signlistadminsupportstaff_nc = signlistadminsupportstaff_nc;
+    }
+
+
 
 
     public String getSigndocscopeofservices_image() {

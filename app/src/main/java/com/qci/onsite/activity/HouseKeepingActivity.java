@@ -204,7 +204,6 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
         Local_procedure_cleaning_blood_spill_list = new ArrayList<>();
 
 
-
         pojo_dataSync = new DataSyncRequest();
 
         pojo = new HousekeepingPojo();
@@ -339,7 +338,7 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
             }
 
             if (pojo.getLocal_procedure_cleaning_blood_spill_video() != null){
-
+                image_procedure_cleaning_blood_spill.setImageResource(R.mipmap.camera_selected);
                 Local_image2 = pojo.getLocal_procedure_cleaning_blood_spill_video();
 
                 JSONObject json = null;
@@ -501,7 +500,7 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
 
             case R.id.btnSync:
                 if (infected_patient_room.length() > 0 && procedure_cleaning_room.length() > 0 && procedure_cleaning_blood_spill.length() > 0 && Biomedical_Waste_regulations.length() > 0 && cleaning_washing_blood_stained.length() > 0){
-                    if (Local_image1 != null){
+                    if (Local_image1 != null && Local_image2 != null){
                         SavePharmacyData("sync");
                     }else {
                         Toast.makeText(HouseKeepingActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
@@ -1744,7 +1743,6 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
     private void DeleteList(int position,String from){
         try {
             if (from.equalsIgnoreCase("radiology_defined_turnaround")){
-                staffs_personal_files_maintained_list.remove(position);
                 Local_staffs_personal_files_maintained_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -1753,11 +1751,12 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
                 if (Local_staffs_personal_files_maintained_list.size() == 0){
                     image_Biomedical_Waste_regulations.setImageResource(R.mipmap.camera);
 
+                    Local_image1 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }else if (from.equalsIgnoreCase("procedure_cleaning_blood_spill_list")){
-                procedure_cleaning_blood_spill_list.remove(position);
                 Local_procedure_cleaning_blood_spill_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -1765,6 +1764,8 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
 
                 if (Local_procedure_cleaning_blood_spill_list.size() == 0){
                     image_procedure_cleaning_blood_spill.setImageResource(R.mipmap.camera);
+
+                    Local_image2 = null;
 
                     dialogLogout.dismiss();
                 }

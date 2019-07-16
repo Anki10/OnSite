@@ -72,7 +72,7 @@ public class MainHospitalListAdapter extends RecyclerView.Adapter<MainHospitalLi
 
         holder.tv_State.setText(pojo.getHospitalstate());
 
-        holder.tv_city.setText(pojo.getHospitalcity());
+        holder.tv_city.setText(pojo.getHospitaldistrict());
 
         holder.tv_Assessment_Date.setText(getDate(pojo.getAssessmentdate(),"MM/dd/yyyy"));
 

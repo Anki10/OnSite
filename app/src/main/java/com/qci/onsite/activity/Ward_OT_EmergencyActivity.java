@@ -1701,7 +1701,6 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
     private void DeleteList(int position,String from){
         try {
             if (from.equalsIgnoreCase("admissions_discharge_home")){
-                admissions_discharge_home_list.remove(position);
                 Local_admissions_discharge_home_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -1709,6 +1708,8 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
 
                 if (Local_admissions_discharge_home_list.size() == 0){
                     Video_admissions_discharge_home.setImageResource(R.mipmap.camera);
+
+                    Local_image1 = null;
 
                     dialogLogout.dismiss();
                 }

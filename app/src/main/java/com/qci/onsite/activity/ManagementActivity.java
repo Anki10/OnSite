@@ -2636,7 +2636,6 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
         try {
             if (from.equalsIgnoreCase("hospital_mission_present")){
                 Local_hospital_mission_present_list.remove(position);
-                hospital_mission_present_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
@@ -2644,12 +2643,13 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                 if (Local_hospital_mission_present_list.size() == 0){
                     image_hospital_mission_present.setImageResource(R.mipmap.camera);
 
+                    Local_image3 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }else if (from.equalsIgnoreCase("patient_maintained_OPD")){
                 Local_patient_maintained_OPD_list.remove(position);
-                patient_maintained_OPD_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
@@ -2657,13 +2657,14 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                 if (Local_patient_maintained_OPD_list.size() == 0){
                     Image_patient_maintained_OPD.setImageResource(R.mipmap.camera);
 
+                    Local_image4 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }
             else if (from.equalsIgnoreCase("patient_maintained_IPD")){
                 Local_patient_maintained_IPD_list.remove(position);
-                patient_maintained_IPD_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
@@ -2671,13 +2672,14 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                 if (Local_patient_maintained_IPD_list.size() == 0){
                     Image_patient_maintained_IPD.setImageResource(R.mipmap.camera);
 
+                    Local_image5 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }
             else if (from.equalsIgnoreCase("patient_maintained_Emergency")){
                 Local_patient_maintained_Emergency_list.remove(position);
-                patient_maintained_Emergency_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
@@ -2685,19 +2687,22 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                 if (Local_patient_maintained_Emergency_list.size() == 0){
                     Image_patient_maintained_Emergency.setImageResource(R.mipmap.camera);
 
+                    Local_image6 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }
             else if (from.equalsIgnoreCase("basic_Tariff_List")){
                 Local_basic_Tariff_List_list.remove(position);
-                basic_Tariff_List_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
 
                 if (Local_basic_Tariff_List_list.size() == 0){
                     Image_basic_Tariff_List.setImageResource(R.mipmap.camera);
+
+                    Local_image7 = null;
 
                     dialogLogout.dismiss();
                 }

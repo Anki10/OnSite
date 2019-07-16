@@ -427,7 +427,7 @@ public class HighDependencyActivity extends BaseActivity implements View.OnClick
 
             case R.id.btnSync:
 
-                if (high_Are_staff.length() > 0 && high_do_high.length() > 0){
+                if (high_patient_care.length() > 0 && high_Are_staff.length() > 0 && high_do_high.length() > 0){
                     if (Local_image2 != null && Local_image3 != null){
                         SaveLaboratoryData("sync");
                     }else {
@@ -1507,27 +1507,29 @@ public class HighDependencyActivity extends BaseActivity implements View.OnClick
     private void DeleteList(int position,String from){
         try {
             if (from.equalsIgnoreCase("Are_staff")){
-                AreStaff_imageList.remove(position);
                 Local_AreStaff_imageList.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
 
-                if (AreStaff_imageList.size() == 0){
+                if (Local_AreStaff_imageList.size() == 0){
                     image_Are_staff.setImageResource(R.mipmap.camera);
+
+                    Local_image2 = null;
 
                     dialogLogout.dismiss();
                 }
 
             }else if (from.equalsIgnoreCase("do_high")){
-                DoHigh_imageList.remove(position);
                 Local_DoHigh_imageList.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
 
-                if (DoHigh_imageList.size() == 0){
+                if (Local_DoHigh_imageList.size() == 0){
                     image_do_high.setImageResource(R.mipmap.camera);
+
+                    Local_image3 = null;
 
                     dialogLogout.dismiss();
                 }

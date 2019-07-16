@@ -2672,7 +2672,6 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
         try {
             if (from.equalsIgnoreCase("hospital_mission_present")){
                 Local_hospital_mission_present_list.remove(position);
-                hospital_mission_present_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
@@ -2680,12 +2679,13 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 if (Local_hospital_mission_present_list.size() == 0){
                     image_total_number_ambulance_available.setImageResource(R.mipmap.camera);
 
+                    Local_image3 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }else if (from.equalsIgnoreCase("patient_maintained_OPD")){
                 Local_patient_maintained_OPD_list.remove(position);
-                patient_maintained_OPD_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
@@ -2693,13 +2693,14 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 if (Local_patient_maintained_OPD_list.size() == 0){
                     image_ambulance_appropriately_equiped.setImageResource(R.mipmap.camera);
 
+                    Local_image4 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }
             else if (from.equalsIgnoreCase("patient_maintained_IPD")){
                 Local_patient_maintained_IPD_list.remove(position);
-                patient_maintained_IPD_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
@@ -2707,13 +2708,14 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 if (Local_patient_maintained_IPD_list.size() == 0){
                     image_drivers_ambulances_available.setImageResource(R.mipmap.camera);
 
+                    Local_image5 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }
             else if (from.equalsIgnoreCase("patient_maintained_Emergency")){
                 Local_patient_maintained_Emergency_list.remove(position);
-                patient_maintained_Emergency_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
@@ -2721,12 +2723,13 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 if (Local_patient_maintained_Emergency_list.size() == 0){
                     image_doctors_available_ambulances.setImageResource(R.mipmap.camera);
 
+                    Local_image6 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }
             else if (from.equalsIgnoreCase("nurses_available_ambulances")){
-                nurses_available_ambulances_list.remove(position);
                 Local_nurses_available_ambulances_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -2734,6 +2737,8 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
 
                 if (Local_nurses_available_ambulances_list.size() == 0){
                     image_nurses_available_ambulances.setImageResource(R.mipmap.camera);
+
+                    Local_image8 = null;
 
                     dialogLogout.dismiss();
                 }

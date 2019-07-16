@@ -1571,13 +1571,32 @@
                     android:layout_marginBottom="10dp"
                     android:background="@color/colorPrimaryTransparent"></View>
 
-                <ImageView android:id="@+id/image_signed_document"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
                     android:layout_gravity="center"
-                    android:src="@mipmap/camera" />
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
 
+                    <ImageView android:id="@+id/image_signed_document"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/camera" />
+
+
+                    <ImageView android:id="@+id/nc_signed_document"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                </LinearLayout>
 
 
                 <View
@@ -1622,13 +1641,31 @@
                     android:layout_marginBottom="10dp"
                     android:background="@color/colorPrimaryTransparent"></View>
 
-                <ImageView android:id="@+id/image_signed_general_duty"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
                     android:layout_gravity="center"
-                    android:src="@mipmap/camera" />
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
 
+                    <ImageView android:id="@+id/image_signed_general_duty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/camera" />
+
+                    <ImageView android:id="@+id/nc_signed_general_duty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                </LinearLayout>
 
 
                 <View
@@ -1673,12 +1710,33 @@
                     android:layout_marginBottom="10dp"
                     android:background="@color/colorPrimaryTransparent"></View>
 
-                <ImageView android:id="@+id/image_signed_nursesl"
-                    android:layout_width="wrap_content"
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
                     android:layout_gravity="center"
-                    android:src="@mipmap/camera" />
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+                    <ImageView android:id="@+id/image_signed_nursesl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/camera" />
+
+                    <ImageView android:id="@+id/nc_signed_nursesl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                </LinearLayout>
 
 
 
@@ -1724,13 +1782,33 @@
                     android:layout_marginBottom="10dp"
                     android:background="@color/colorPrimaryTransparent"></View>
 
-                <ImageView android:id="@+id/image_signed_paramedical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:layout_gravity="center"
-                    android:src="@mipmap/camera" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+                    <ImageView android:id="@+id/image_signed_paramedical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/camera" />
+
+
+                    <ImageView android:id="@+id/nc_signed_paramedical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                </LinearLayout>
 
 
                 <View
@@ -1775,12 +1853,34 @@
                     android:layout_marginBottom="10dp"
                     android:background="@color/colorPrimaryTransparent"></View>
 
-                <ImageView android:id="@+id/image_signed_administrativ"
-                    android:layout_width="wrap_content"
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
                     android:layout_gravity="center"
-                    android:src="@mipmap/camera" />
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+                    <ImageView android:id="@+id/image_signed_administrativ"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/camera" />
+
+
+
+                    <ImageView android:id="@+id/nc_signed_administrativ"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                </LinearLayout>
 
 
 

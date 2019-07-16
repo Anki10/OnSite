@@ -683,18 +683,35 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
 
             case R.id.btnSync:
 
-                if (safety_device_lab.length() > 0 && body_parts_staff_patients.length() > 0 && staff_member_radiation_area.length() > 0 && standardised_colur_coding.length() > 0
-                        && safe_storage_medical.length() > 0){
-                    if (Local_image3 != null && Local_image4 != null && Local_image5 != null){
-                        SaveLaboratoryData("sync");
+                if (Bed_no < 51){
+                    if (safety_device_lab.length() > 0 && body_parts_staff_patients.length() > 0 && staff_member_radiation_area.length() > 0 && standardised_colur_coding.length() > 0
+                            && safe_storage_medical.length() > 0){
+                        if (Local_image1 != null && Local_image2 != null && Local_image3 != null && Local_image4 != null && Local_image5 != null){
+                            SaveLaboratoryData("sync");
+                        }else {
+                            Toast.makeText(SafetyManagementActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+
+                        }
                     }else {
-                        Toast.makeText(SafetyManagementActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
+                        Toast.makeText(SafetyManagementActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
 
                     }
                 }else {
-                    Toast.makeText(SafetyManagementActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+                    if (safety_device_lab.length() > 0 && body_parts_staff_patients.length() > 0 && staff_member_radiation_area.length() > 0 && standardised_colur_coding.length() > 0
+                            && safe_storage_medical.length() > 0){
+                        if (Local_image3 != null && Local_image4 != null && Local_image5 != null){
+                            SaveLaboratoryData("sync");
+                        }else {
+                            Toast.makeText(SafetyManagementActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
 
+                        }
+                    }else {
+                        Toast.makeText(SafetyManagementActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
+
+                    }
                 }
+
+
 
                 break;
 
@@ -2058,7 +2075,6 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
     private void DeleteList(int position,String from){
         try {
             if (from.equalsIgnoreCase("safety_device_lab")){
-                safety_device_lab_list.remove(position);
                 Local_safety_device_lab_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -2067,11 +2083,12 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                 if (Local_safety_device_lab_list.size() == 0){
                     image_safety_device_lab.setImageResource(R.mipmap.camera);
 
+                    Local_image1 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }else if (from.equalsIgnoreCase("body_parts_staff_patients")){
-                body_parts_staff_patients_list.remove(position);
                 Local_body_parts_staff_patients_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -2080,11 +2097,12 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                 if (Local_body_parts_staff_patients_list.size() == 0){
                     image_body_parts_staff_patients.setImageResource(R.mipmap.camera);
 
+                    Local_image2 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }else if (from.equalsIgnoreCase("staff_member_radiation_area")){
-                staff_member_radiation_area_list.remove(position);
                 Local_staff_member_radiation_area_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -2093,11 +2111,12 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                 if (Local_staff_member_radiation_area_list.size() == 0){
                     image_staff_member_radiation_area.setImageResource(R.mipmap.camera);
 
+                    Local_image3 = null;
+
                     dialogLogout.dismiss();
                 }
             }
             else if (from.equalsIgnoreCase("standardised_colur_coding")){
-                standardised_colur_coding_list.remove(position);
                 Local_standardised_colur_coding_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -2106,11 +2125,12 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                 if (Local_standardised_colur_coding_list.size() == 0){
                     image_standardised_colur_coding.setImageResource(R.mipmap.camera);
 
+                    Local_image4 = null;
+
                     dialogLogout.dismiss();
                 }
             }
             else if (from.equalsIgnoreCase("safe_storage_medical")){
-                safe_storage_medical_list.remove(position);
                 Local_safe_storage_medical_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -2118,6 +2138,8 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
 
                 if (Local_safe_storage_medical_list.size() == 0){
                     image_safe_storage_medical.setImageResource(R.mipmap.camera);
+
+                    Local_image5 = null;
 
                     dialogLogout.dismiss();
                 }

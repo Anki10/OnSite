@@ -1755,7 +1755,6 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
     private void DeleteList(int position,String from){
         try {
             if (from.equalsIgnoreCase("medical_gas_cylinders")){
-                medical_gas_cylinders_list.remove(position);
                 Local_medical_gas_cylinders_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -1764,11 +1763,12 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
                 if (Local_medical_gas_cylinders_list.size() == 0){
                     image_medical_gas_cylinders.setImageResource(R.mipmap.camera);
 
+                    Local_image1 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }else if (from.equalsIgnoreCase("smoke_detectors_installed")){
-                smoke_detectors_installed_list.remove(position);
                 Local_smoke_detectors_installed_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -1777,11 +1777,12 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
                 if (Local_smoke_detectors_installed_list.size() == 0){
                     image_smoke_detectors_installed.setImageResource(R.mipmap.camera);
 
+                    Local_image2 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }else if (from.equalsIgnoreCase("extinguisher_present_patient")){
-                extinguisher_present_patient_list.remove(position);
                 Local_extinguisher_present_patient_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -1789,6 +1790,8 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
 
                 if (Local_extinguisher_present_patient_list.size() == 0){
                     image_extinguisher_present_patient.setImageResource(R.mipmap.camera);
+
+                    Local_image3 = null;
 
                     dialogLogout.dismiss();
                 }

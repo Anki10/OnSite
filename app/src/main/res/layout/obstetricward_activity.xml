@@ -31,114 +31,23 @@
             android:textSize="@dimen/assessor_value"/>
     </LinearLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical"
-        android:padding="5dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:labelFor="@+id/gen_edit1"
-            android:text="Does the hospital have measures to prevent child/ neonate abduction and abuse ?"
-            android:textColor="@color/textHeadColor"
-            android:textSize="@dimen/font_large"
-            android:textStyle="bold" />
-
-        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <RadioButton android:id="@+id/neonate_abduction_yes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/neonate_abduction_no"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="No"
-                android:onClick="onRadioButtonClicked"/>
-        </RadioGroup>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:text="Note: Check if the hospital has measures like security personnel/closed circuit TV monitors/ wrist/ankle tags for the babies/ evidence of constant manual/ electronic surveillance."/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:text="Upload: 1. Photo of mother and baby identification tags
-\n 2. Photo of manual/electronic surveillance in this area."/>
-
-
-
+        android:layout_weight="1">
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:padding="5dp">
-
-            <ImageView
-                android:id="@+id/remark_obstetricWard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginLeft="5dp"
-                android:src="@mipmap/remark" />
-
-            <ImageView android:id="@+id/nc_obstetricWard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginLeft="5dp"
-                android:background="@mipmap/nc"
-                android:textColor="@android:color/transparent" />
-
-
-            <ImageView android:id="@+id/image_obstetricWard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:src="@mipmap/camera" />
-
-
-        </LinearLayout>
-
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/colorPrimaryTransparent"></View>
-
-        <LinearLayout android:id="@+id/ll_SHCO_Obstetrics_ward"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_marginTop="10dp"
             android:orientation="vertical"
-
             android:padding="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:labelFor="@+id/gen_edit1"
-                android:text="Is NICU present in the Obstetrics ward ?"
+                android:text="Does the hospital have measures to prevent child/ neonate abduction and abuse ?"
                 android:textColor="@color/textHeadColor"
                 android:textSize="@dimen/font_large"
                 android:textStyle="bold" />
@@ -147,12 +56,12 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <RadioButton android:id="@+id/SHCO_Obstetrics_ward_yes"
+                <RadioButton android:id="@+id/neonate_abduction_yes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Yes"
                     android:onClick="onRadioButtonClicked"/>
-                <RadioButton android:id="@+id/SHCO_Obstetrics_ward__no"
+                <RadioButton android:id="@+id/neonate_abduction_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="No"
@@ -165,7 +74,16 @@
                 android:padding="5dp"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:text="Upload: Photo Of NICU"/>
+                android:text="Note: Check if the hospital has measures like security personnel/closed circuit TV monitors/ wrist/ankle tags for the babies/ evidence of constant manual/ electronic surveillance."/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="Upload: 1. Photo of mother and baby identification tags
+\n 2. Photo of manual/electronic surveillance in this area."/>
 
 
 
@@ -178,14 +96,14 @@
                 android:padding="5dp">
 
                 <ImageView
-                    android:id="@+id/remark_SHCO_Obstetrics_ward"
+                    android:id="@+id/remark_obstetricWard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:layout_marginLeft="5dp"
                     android:src="@mipmap/remark" />
 
-                <ImageView android:id="@+id/nc_SHCO_Obstetrics_ward"
+                <ImageView android:id="@+id/nc_obstetricWard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
@@ -194,7 +112,7 @@
                     android:textColor="@android:color/transparent" />
 
 
-                <ImageView android:id="@+id/image_SHCO_Obstetrics_ward"
+                <ImageView android:id="@+id/image_obstetricWard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
@@ -211,9 +129,97 @@
                 android:layout_marginBottom="10dp"
                 android:background="@color/colorPrimaryTransparent"></View>
 
+            <LinearLayout android:id="@+id/ll_SHCO_Obstetrics_ward"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@+id/gen_edit1"
+                    android:text="Is NICU present in the Obstetrics ward ?"
+                    android:textColor="@color/textHeadColor"
+                    android:textSize="@dimen/font_large"
+                    android:textStyle="bold" />
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton android:id="@+id/SHCO_Obstetrics_ward_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:onClick="onRadioButtonClicked"/>
+                    <RadioButton android:id="@+id/SHCO_Obstetrics_ward__no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:onClick="onRadioButtonClicked"/>
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Upload: Photo Of NICU"/>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/remark_SHCO_Obstetrics_ward"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/remark" />
+
+                    <ImageView android:id="@+id/nc_SHCO_Obstetrics_ward"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@mipmap/nc"
+                        android:textColor="@android:color/transparent" />
+
+
+                    <ImageView android:id="@+id/image_SHCO_Obstetrics_ward"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:src="@mipmap/camera" />
+
+
+                </LinearLayout>
+
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorPrimaryTransparent"></View>
+
+            </LinearLayout>
+
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
 
 

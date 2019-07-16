@@ -734,11 +734,11 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
             if (pojo.getLocal_image_infection_control() != null){
                 image_infection_control.setImageResource(R.mipmap.camera_selected);
 
-                Local_image9 = pojo.getLocal_image_infection_control();
+                Local_image8 = pojo.getLocal_image_infection_control();
 
                 JSONObject json = null;
                 try {
-                    json = new JSONObject(Local_image9);
+                    json = new JSONObject(Local_image8);
                     JSONArray jArray = json.optJSONArray("uniqueArrays");
                     if (jArray != null){
                         for (int i=0;i<jArray.length();i++){
@@ -808,7 +808,7 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
             }
 
             if (pojo.getLocal_image_narcotic_drugs() != null){
-                image_infection_control.setImageResource(R.mipmap.camera_selected);
+                image_narcotic_drugs.setImageResource(R.mipmap.camera_selected);
 
                 Local_image9 = pojo.getLocal_image_narcotic_drugs();
 
@@ -846,7 +846,7 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
             }
 
             if (pojo.getLocal_image_administration_disposal() != null){
-                image_infection_control.setImageResource(R.mipmap.camera_selected);
+                image_administration_disposal.setImageResource(R.mipmap.camera_selected);
 
                 Local_image10 = pojo.getLocal_image_administration_disposal();
 
@@ -1036,7 +1036,7 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                             WHO_Patient_Safety_status.length() > 0 && OT_Zoning_status.length() > 0 && infection_control_status.length() > 0 && narcotic_drugs_status.length() > 0 && administration_disposal_status.length() > 0
                             && hand_wash_facility_status.length() > 0){
 
-                        if (Local_image6 != null && Local_image8 != null && Local_image9 != null  && Local_image10 != null && Local_image11 != null){
+                        if (Local_image6 != null && Local_image7 != null && Local_image8 != null && Local_image9 != null  && Local_image10 != null && Local_image11 != null){
                             SaveLaboratoryData("sync","hco");
                         }else {
                             Toast.makeText(OTActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
@@ -3597,34 +3597,35 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
     private void DeleteList(int position,String from){
         try {
             if (from.equalsIgnoreCase("infection_control")){
-                infection_control_List.remove(position);
                 Local_infection_control_List.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
 
-                if (infection_control_List.size() == 0){
+                if (Local_infection_control_List.size() == 0){
                     image_infection_control.setImageResource(R.mipmap.camera);
+
+                    Local_image8 = null;
 
                     dialogLogout.dismiss();
                 }
 
             }else if (from.equalsIgnoreCase("narcotic_drugs")){
-                narcotic_drugs_list.remove(position);
                 Local_narcotic_drugs_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
 
-                if (narcotic_drugs_list.size() == 0){
+                if (Local_narcotic_drugs_list.size() == 0){
                     image_narcotic_drugs.setImageResource(R.mipmap.camera);
+
+                    Local_image9 = null;
 
                     dialogLogout.dismiss();
                 }
 
             }
             else if (from.equalsIgnoreCase("administration_disposal")){
-                administration_disposal_list.remove(position);
                 Local_administration_disposal_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -3633,12 +3634,13 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 if (Local_administration_disposal_list.size() == 0){
                     image_administration_disposal.setImageResource(R.mipmap.camera);
 
+                    Local_image10 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }
             else if (from.equalsIgnoreCase("hand_wash_facility")){
-                hand_wash_facility_list.remove(position);
                 Local_hand_wash_facility_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -3647,12 +3649,13 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 if (Local_hand_wash_facility_list.size() == 0){
                     image_hand_wash_facility.setImageResource(R.mipmap.camera);
 
+                    Local_image11 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }
             else if (from.equalsIgnoreCase("WHO_Patient_Safety")){
-                WHO_Patient_Safety_List.remove(position);
                 Local_WHO_Patient_Safety_List.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -3661,11 +3664,12 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 if (Local_WHO_Patient_Safety_List.size() == 0){
                     Image_WHO_Patient_Safety.setImageResource(R.mipmap.camera);
 
+                    Local_image6 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }else if (from.equalsIgnoreCase("OT_Zoning")){
-                OT_Zoning_List.remove(position);
                 Local_OT_Zoning_List.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
@@ -3673,6 +3677,8 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
 
                 if (Local_OT_Zoning_List.size() == 0){
                     video_OT_Zoning.setImageResource(R.mipmap.camera);
+
+                    Local_image7 = null;
 
                     dialogLogout.dismiss();
                 }

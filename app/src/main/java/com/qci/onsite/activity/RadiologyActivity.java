@@ -776,11 +776,9 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
                         SaveRadioLogyData("sync");
                     }else {
                         Toast.makeText(RadiologyActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
-
                     }
                 }else {
                     Toast.makeText(RadiologyActivity.this,AppConstant.Question_Missing,Toast.LENGTH_LONG).show();
-
                 }
 
                 break;
@@ -1048,26 +1046,29 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
         try {
             if (from.equalsIgnoreCase("radiology")){
                 Local_radiology_list.remove(position);
-                radiology_list.remove(position);
+
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
 
-                if (radiology_list.size() == 0){
+                if (Local_radiology_list.size() == 0){
                     image_radiology.setImageResource(R.mipmap.camera);
+
+                    Local_image1 = null;
 
                     dialogLogout.dismiss();
                 }
 
             }else if (from.equalsIgnoreCase("radiology_defined_turnaround")){
                 Local_radiology_defined_turnaround_list.remove(position);
-                radiology_defined_turnaround_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
 
-                if (radiology_defined_turnaround_list.size() == 0){
+                if (Local_radiology_defined_turnaround_list.size() == 0){
                     image_radiology_defined_turnaround.setImageResource(R.mipmap.camera);
+
+                    Local_image2 = null;
 
                     dialogLogout.dismiss();
                 }

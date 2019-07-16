@@ -879,7 +879,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
             }
 
             if (pojo.getLocal_medication_order_checked_image() != null){
-
+                Image_medication_order_checked.setImageResource(R.mipmap.camera_selected);
 
                 Local_image9 = pojo.getLocal_medication_order_checked_image();
 
@@ -4028,7 +4028,6 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
         try {
             if (from.equalsIgnoreCase("patientCareArea")){
                 Local_patientCareArea_imageList.remove(position);
-                patientCareArea_imageList.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
@@ -4036,12 +4035,13 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 if (Local_patientCareArea_imageList.size() == 0){
                     Image_patient_care_area.setImageResource(R.mipmap.camera);
 
+                    Local_image1 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }else if (from.equalsIgnoreCase("pharmacyStores_present")){
                 Local_pharmacyStores_present_imageList.remove(position);
-                pharmacyStores_present_imageList.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
@@ -4049,13 +4049,14 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 if (Local_pharmacyStores_present_imageList.size() == 0){
                     Image_pharmacyStores_present.setImageResource(R.mipmap.camera);
 
+                    Local_image2 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }
             else if (from.equalsIgnoreCase("drugs_pharmacy")){
                 Local_drugs_pharmacy_imageList.remove(position);
-                drugs_pharmacy_imageList.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
@@ -4063,13 +4064,14 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 if (Local_drugs_pharmacy_imageList.size() == 0){
                     image_drugs_pharmacy.setImageResource(R.mipmap.camera);
 
+                    Local_image3 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }
             else if (from.equalsIgnoreCase("emergency_medications")){
                 Local_emergency_medications_imageList.remove(position);
-                emergency_medications_imageList.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
@@ -4077,13 +4079,14 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 if (Local_emergency_medications_imageList.size() == 0){
                     Image_emergency_medications.setImageResource(R.mipmap.camera);
 
+                    Local_image5 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }
             else if (from.equalsIgnoreCase("high_risk_medications")){
                 Local_high_risk_medications_imageList.remove(position);
-                high_risk_medications_imageList.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
@@ -4091,19 +4094,22 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 if (Local_high_risk_medications_imageList.size() == 0){
                     Image_high_risk_medications.setImageResource(R.mipmap.camera);
 
+                    Local_image6 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }
             else if (from.equalsIgnoreCase("labelling_of_drug")){
                 Local_labelling_of_drug_imageList.remove(position);
-                labelling_of_drug_imageList.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
 
                 if (Local_labelling_of_drug_imageList.size() == 0){
                     Image_labelling_of_drug.setImageResource(R.mipmap.camera);
+
+                    Local_image8 = null;
 
                     dialogLogout.dismiss();
                 }
@@ -4112,7 +4118,6 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
 
             else if (from.equalsIgnoreCase("medication_administration")){
                 Local_medication_administration_imageList.remove(position);
-                medication_administration_imageList.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
@@ -4120,18 +4125,21 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 if (Local_medication_administration_imageList.size() == 0){
                     Image_medication_administration.setImageResource(R.mipmap.camera);
 
+                    Local_image9 = null;
+
                     dialogLogout.dismiss();
                 }
 
             }else if (from.equalsIgnoreCase("medication_order_checked")){
                 Local_medication_order_checkedt_imagelist.remove(position);
-                medication_order_checked_imagelist.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
 
                 if (Local_medication_order_checkedt_imagelist.size() == 0){
                     Image_medication_order_checked.setImageResource(R.mipmap.camera);
+
+                    Local_image10 = null;
 
                     dialogLogout.dismiss();
                 }
@@ -4140,13 +4148,14 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
             }
             else if (from.equalsIgnoreCase("fridge_temperature")){
                 Local_fridge_temperature_imageList.remove(position);
-                fridge_temperature_imageList.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
 
                 if (Local_fridge_temperature_imageList.size() == 0){
                     Image_fridge_temperature.setImageResource(R.mipmap.camera);
+
+                    Local_image11 =  null;
 
                     dialogLogout.dismiss();
                 }

@@ -414,6 +414,23 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
     @BindView(R.id.image_signed_administrativ)
     ImageView image_signed_administrativ;
 
+    @BindView(R.id.nc_signed_document)
+    ImageView nc_signed_document;
+
+    @BindView(R.id.nc_signed_general_duty)
+    ImageView nc_signed_general_duty;
+
+    @BindView(R.id.nc_signed_nursesl)
+    ImageView nc_signed_nursesl;
+
+    @BindView(R.id.nc_signed_paramedical)
+    ImageView nc_signed_paramedical;
+
+    @BindView(R.id.nc_signed_administrativ)
+    ImageView nc_signed_administrativ;
+
+
+
     private static final String CAMERA_DIR = "/dcim/";
     private Uri picUri;
     private File imageF;
@@ -440,10 +457,11 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
 
 
 
-    private String nc1, nc2, nc3,nc4,nc5,nc6,nc7,nc8,nc9,nc10,nc11,nc12,nc13,nc14,nc15,nc16,nc17,nc18,nc19,nc20,nc21,nc22;
+    private String nc1, nc2, nc3,nc4,nc5,nc6,nc7,nc8,nc9,nc10,nc11,nc12,nc13,nc14,nc15,nc16,nc17,nc18,nc19,nc20,nc21,nc22,nc23,nc24,nc25,nc26,nc27;
     private String radio_status1, radio_status2, radio_status3,radio_status4,radio_status5,radio_status6,radio_status7,
             radio_status8,radio_status9,radio_status10,radio_status11,radio_status12,radio_status13,radio_status14,radio_status15,
-            radio_status16,radio_status17,radio_status18,radio_status19,radio_status20,radio_status21,radio_status22;
+            radio_status16,radio_status17,radio_status18,radio_status19,radio_status20,radio_status21,radio_status22,
+            radio_status23,radio_status24,radio_status25,radio_status26,radio_status27;
 
     private DatabaseHandler databaseHandler;
 
@@ -1112,6 +1130,58 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
                     nc_document_showing_medical_records.setImageResource(R.mipmap.nc_selected);
                 }
             }
+
+            if (pojo.getSigndocscopeofservices_nc() != null){
+                nc23 = pojo.getSigndocscopeofservices_nc();
+
+                if (nc23.equalsIgnoreCase("close")){
+                    nc_signed_document.setImageResource(R.mipmap.nc);
+                }else {
+                    nc_signed_document.setImageResource(R.mipmap.nc_selected);
+                }
+            }
+
+            if (pojo.getSignlistgendutymedoffcr_nc() != null){
+                nc24 = pojo.getSignlistgendutymedoffcr_nc();
+
+                if (nc24.equalsIgnoreCase("close")){
+                    nc_signed_general_duty.setImageResource(R.mipmap.nc);
+                }else {
+                    nc_signed_general_duty.setImageResource(R.mipmap.nc_selected);
+                }
+            }
+
+            if (pojo.getSignlistnurses_nc() != null){
+                nc25 = pojo.getSignlistnurses_nc();
+
+                if (nc25.equalsIgnoreCase("close")){
+                    nc_signed_nursesl.setImageResource(R.mipmap.nc);
+                }else {
+                    nc_signed_nursesl.setImageResource(R.mipmap.nc_selected);
+                }
+            }
+
+            if (pojo.getSignlistparamedstaff_nc() != null){
+                nc26 = pojo.getSignlistparamedstaff_nc();
+
+                if (nc26.equalsIgnoreCase("close")){
+                    nc_signed_paramedical.setImageResource(R.mipmap.nc);
+                }else {
+                    nc_signed_paramedical.setImageResource(R.mipmap.nc_selected);
+                }
+            }
+
+            if (pojo.getSignlistadminsupportstaff_nc() != null){
+                nc27 = pojo.getSignlistadminsupportstaff_nc();
+
+                if (nc27.equalsIgnoreCase("close")){
+                    nc_signed_administrativ.setImageResource(R.mipmap.nc);
+                }else {
+                    nc_signed_administrativ.setImageResource(R.mipmap.nc_selected);
+                }
+            }
+
+
             if(getFromPrefs(AppConstant.scopeofservices).length() > 0){
                 image1 = getFromPrefs(AppConstant.scopeofservices);
 
@@ -1317,7 +1387,8 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
             R.id.remark_document_showing_policies_procedures,R.id.nc_document_showing_policies_procedures,R.id.remark_mdocument_showing_retention_time,R.id.nc_document_showing_retention_time,R.id.remark_document_showing_define_process,R.id.nc_document_showing_define_process,
             R.id.remark_document_showing_medical_records,R.id.nc_document_showing_medical_records,R.id.btnSave,R.id.btnSync,
     R.id.image_signed_document,R.id.image_signed_general_duty,R.id.image_signed_nursesl,R.id.image_signed_paramedical,
-    R.id.image_signed_administrativ})
+    R.id.image_signed_administrativ,R.id.nc_signed_document,R.id.nc_signed_general_duty,R.id.nc_signed_nursesl,R.id.nc_signed_paramedical,
+    R.id.nc_signed_administrativ})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.remark_document_related_procedure:
@@ -1543,6 +1614,28 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
 
                 break;
 
+            case R.id.nc_signed_document:
+                displayNCDialog("NC", 23);
+                break;
+
+
+            case R.id.nc_signed_general_duty:
+                displayNCDialog("NC", 24);
+                break;
+
+
+            case R.id.nc_signed_nursesl:
+                displayNCDialog("NC", 25);
+                break;
+
+            case R.id.nc_signed_paramedical:
+
+                displayNCDialog("NC", 26);
+                break;
+
+            case R.id.nc_signed_administrativ:
+                displayNCDialog("NC", 27);
+                break;
 
 
             case R.id.btnSave:
@@ -1867,6 +1960,22 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
                     if (position == 22) {
                         radio_status22 = "Yes";
                     }
+                    if (position == 23) {
+                        radio_status23 = "Yes";
+                    }
+                    if (position == 24) {
+                        radio_status24 = "Yes";
+                    }
+                    if (position == 25) {
+                        radio_status25 = "Yes";
+                    }
+                    if (position == 26) {
+                        radio_status26 = "Yes";
+                    }
+                    if (position == 27) {
+                        radio_status27 = "Yes";
+                    }
+
 
 
 
@@ -1985,6 +2094,32 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
 
                         edit_text.setText("");
                     }
+                    if (position == 23) {
+                        radio_status23 = "close";
+
+                        edit_text.setText("");
+                    }
+                    if (position == 24) {
+                        radio_status24 = "close";
+
+                        edit_text.setText("");
+                    }
+                    if (position == 25) {
+                        radio_status25 = "close";
+
+                        edit_text.setText("");
+                    }
+                    if (position == 26) {
+                        radio_status26 = "close";
+
+                        edit_text.setText("");
+                    }
+                    if (position == 27) {
+                        radio_status27 = "close";
+
+                        edit_text.setText("");
+                    }
+
 
                 }
             });
@@ -2402,6 +2537,99 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
                         String[] separated = nc_total.split(",", 2);
                         String radio = separated[0];
                         radio_status22 = radio;
+                        if (radio.equalsIgnoreCase("Yes"))
+                            rd_major.setChecked(true);
+                        else if (radio.equalsIgnoreCase("close"))
+                            rd_miner.setChecked(true);
+                        String nc = separated[1];
+                        edit_text.setText(nc);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            if (position == 23) {
+                if (nc23 != null) {
+                    try {
+                        String nc_total = nc23;
+                        String[] separated = nc_total.split(",", 2);
+                        String radio = separated[0];
+                        radio_status23 = radio;
+                        if (radio.equalsIgnoreCase("Yes"))
+                            rd_major.setChecked(true);
+                        else if (radio.equalsIgnoreCase("close"))
+                            rd_miner.setChecked(true);
+                        String nc = separated[1];
+                        edit_text.setText(nc);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            if (position == 24) {
+                if (nc24 != null) {
+                    try {
+                        String nc_total = nc24;
+                        String[] separated = nc_total.split(",", 2);
+                        String radio = separated[0];
+                        radio_status24 = radio;
+                        if (radio.equalsIgnoreCase("Yes"))
+                            rd_major.setChecked(true);
+                        else if (radio.equalsIgnoreCase("close"))
+                            rd_miner.setChecked(true);
+                        String nc = separated[1];
+                        edit_text.setText(nc);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            if (position == 25) {
+                if (nc25 != null) {
+                    try {
+                        String nc_total = nc25;
+                        String[] separated = nc_total.split(",", 2);
+                        String radio = separated[0];
+                        radio_status25 = radio;
+                        if (radio.equalsIgnoreCase("Yes"))
+                            rd_major.setChecked(true);
+                        else if (radio.equalsIgnoreCase("close"))
+                            rd_miner.setChecked(true);
+                        String nc = separated[1];
+                        edit_text.setText(nc);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            if (position == 26) {
+                if (nc26 != null) {
+                    try {
+                        String nc_total = nc26;
+                        String[] separated = nc_total.split(",", 2);
+                        String radio = separated[0];
+                        radio_status26 = radio;
+                        if (radio.equalsIgnoreCase("Yes"))
+                            rd_major.setChecked(true);
+                        else if (radio.equalsIgnoreCase("close"))
+                            rd_miner.setChecked(true);
+                        String nc = separated[1];
+                        edit_text.setText(nc);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            if (position == 27) {
+                if (nc27 != null) {
+                    try {
+                        String nc_total = nc27;
+                        String[] separated = nc_total.split(",", 2);
+                        String radio = separated[0];
+                        radio_status27 = radio;
                         if (radio.equalsIgnoreCase("Yes"))
                             rd_major.setChecked(true);
                         else if (radio.equalsIgnoreCase("close"))
@@ -3147,6 +3375,176 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
 
                         }
                     }
+
+                    else if (position == 23) {
+                        if (radio_status23 != null) {
+
+                            if (radio_status23.equalsIgnoreCase("close")) {
+
+                                nc_signed_document.setImageResource(R.mipmap.nc);
+
+                                nc23 = radio_status23;
+
+                                DialogLogOut.dismiss();
+
+                                getWindow().setSoftInputMode(
+                                        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                            } else {
+                                if (radio_status23.equalsIgnoreCase("Yes") & edit_text.getText().toString().length() > 0) {
+
+                                    nc_signed_document.setImageResource(R.mipmap.nc_selected);
+
+                                    nc23 = radio_status23 + "," + edit_text.getText().toString();
+
+                                    radio_status23 = "";
+
+                                    DialogLogOut.dismiss();
+
+                                    getWindow().setSoftInputMode(
+                                            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                                } else {
+                                    Toast.makeText(DocumentationActivity.this, "Please capture NC details", Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                        }
+                    }
+
+                    else if (position == 24) {
+                        if (radio_status24 != null) {
+
+                            if (radio_status24.equalsIgnoreCase("close")) {
+
+                                nc_signed_general_duty.setImageResource(R.mipmap.nc);
+
+                                nc24 = radio_status24;
+
+                                DialogLogOut.dismiss();
+
+                                getWindow().setSoftInputMode(
+                                        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                            } else {
+                                if (radio_status24.equalsIgnoreCase("Yes") & edit_text.getText().toString().length() > 0) {
+
+                                    nc_signed_general_duty.setImageResource(R.mipmap.nc_selected);
+
+                                    nc24 = radio_status24 + "," + edit_text.getText().toString();
+
+                                    radio_status24 = "";
+
+                                    DialogLogOut.dismiss();
+
+                                    getWindow().setSoftInputMode(
+                                            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                                } else {
+                                    Toast.makeText(DocumentationActivity.this, "Please capture NC details", Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                        }
+                    }
+
+                    else if (position == 25) {
+                        if (radio_status25 != null) {
+
+                            if (radio_status25.equalsIgnoreCase("close")) {
+
+                                nc_signed_nursesl.setImageResource(R.mipmap.nc);
+
+                                nc25 = radio_status25;
+
+                                DialogLogOut.dismiss();
+
+                                getWindow().setSoftInputMode(
+                                        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                            } else {
+                                if (radio_status25.equalsIgnoreCase("Yes") & edit_text.getText().toString().length() > 0) {
+
+                                    nc_signed_nursesl.setImageResource(R.mipmap.nc_selected);
+
+                                    nc25 = radio_status25 + "," + edit_text.getText().toString();
+
+                                    radio_status25 = "";
+
+                                    DialogLogOut.dismiss();
+
+                                    getWindow().setSoftInputMode(
+                                            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                                } else {
+                                    Toast.makeText(DocumentationActivity.this, "Please capture NC details", Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                        }
+                    }
+
+                    else if (position == 26) {
+                        if (radio_status26 != null) {
+
+                            if (radio_status26.equalsIgnoreCase("close")) {
+
+                                nc_signed_paramedical.setImageResource(R.mipmap.nc);
+
+                                nc26 = radio_status26;
+
+                                DialogLogOut.dismiss();
+
+                                getWindow().setSoftInputMode(
+                                        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                            } else {
+                                if (radio_status26.equalsIgnoreCase("Yes") & edit_text.getText().toString().length() > 0) {
+
+                                    nc_signed_paramedical.setImageResource(R.mipmap.nc_selected);
+
+                                    nc26 = radio_status26 + "," + edit_text.getText().toString();
+
+                                    radio_status26 = "";
+
+                                    DialogLogOut.dismiss();
+
+                                    getWindow().setSoftInputMode(
+                                            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                                } else {
+                                    Toast.makeText(DocumentationActivity.this, "Please capture NC details", Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                        }
+                    }
+
+                    else if (position == 27) {
+                        if (radio_status27 != null) {
+
+                            if (radio_status27.equalsIgnoreCase("close")) {
+
+                                nc_signed_administrativ.setImageResource(R.mipmap.nc);
+
+                                nc27 = radio_status27;
+
+                                DialogLogOut.dismiss();
+
+                                getWindow().setSoftInputMode(
+                                        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                            } else {
+                                if (radio_status27.equalsIgnoreCase("Yes") & edit_text.getText().toString().length() > 0) {
+
+                                    nc_signed_administrativ.setImageResource(R.mipmap.nc_selected);
+
+                                    nc27 = radio_status27 + "," + edit_text.getText().toString();
+
+                                    radio_status27 = "";
+
+                                    DialogLogOut.dismiss();
+
+                                    getWindow().setSoftInputMode(
+                                            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                                } else {
+                                    Toast.makeText(DocumentationActivity.this, "Please capture NC details", Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                        }
+                    }
                 }
             });
             DialogLogOut.show();
@@ -3741,6 +4139,13 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
 
         pojo.setDocument_showing_medical_records_remark(remark22);
         pojo.setDocument_showing_medical_records_nc(nc22);
+
+        pojo.setSigndocscopeofservices_nc(nc23);
+        pojo.setSignlistgendutymedoffcr_nc(nc24);
+        pojo.setSignlistnurses_nc(nc25);
+        pojo.setSignlistparamedstaff_nc(nc26);
+        pojo.setSignlistadminsupportstaff_nc(nc27);
+
 
         JSONObject json = new JSONObject();
 
@@ -4915,7 +5320,6 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
         try {
             if (from.equalsIgnoreCase("signed_document")){
                 img_signed_document_list.remove(position);
-                img_signed_document_url_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
@@ -4928,7 +5332,6 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
 
             }else if (from.equalsIgnoreCase("signed_general_duty")){
                 img_signed_general_duty_list.remove(position);
-                img_signed_general_duty_url_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
@@ -4942,7 +5345,6 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
             }
             else if (from.equalsIgnoreCase("signed_nursesl")){
                 img_signed_nursesl_list.remove(position);
-                img_signed_nursesl_url_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
@@ -4956,7 +5358,6 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
             }
             else if (from.equalsIgnoreCase("signed_paramedicall")){
                 img_signed_paramedicall_list.remove(position);
-                img_signed_paramedical_url_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
@@ -4970,7 +5371,6 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
             }
             else if (from.equalsIgnoreCase("nurses_available_ambulances")){
                 img_signed_administrativ_list.remove(position);
-                img_signed_administrativ_url_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();

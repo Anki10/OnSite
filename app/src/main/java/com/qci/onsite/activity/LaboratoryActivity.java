@@ -758,10 +758,10 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                     }
 
                 }else {
-                    if (identified_status.length() > 0 && transported_status.length() > 0 && specimen_status.length() > 0
+                    if (properly_status.length() > 0 && identified_status.length() > 0 && transported_status.length() > 0 && specimen_status.length() > 0
                             && appropriate_status.length() > 0 && laboratory_defined_turnaround.length() >0){
 
-                        if (Local_image3 != null && Local_image4 != null && Local_image5 != null && Local_image6 != null){
+                        if (Local_image2 != null && Local_image3 != null && Local_image4 != null && Local_image5 != null && Local_image6 != null){
                             SaveLaboratoryData("sync","hco");
                         }else {
                             Toast.makeText(LaboratoryActivity.this,AppConstant.Image_Missing,Toast.LENGTH_LONG).show();
@@ -2682,39 +2682,42 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
         try {
             if (from.equalsIgnoreCase("Identified")){
                 Local_Identified_List.remove(position);
-                Identified_List.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
 
-                if (Identified_List.size() == 0){
+                if (Local_Identified_List.size() == 0){
                     image_Identified.setImageResource(R.mipmap.camera);
+
+                    Local_image2 = null;
 
                     dialogLogout.dismiss();
                 }
 
             }else if (from.equalsIgnoreCase("transported")){
                 Local_transported_list.remove(position);
-                transported_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
 
-                if (transported_list.size() == 0){
+                if (Local_transported_list.size() == 0){
                     image_transported.setImageResource(R.mipmap.camera);
+
+                    Local_image3 = null;
 
                     dialogLogout.dismiss();
                 }
 
             }else if (from.equalsIgnoreCase("specimen")){
                 Local_specimen_list.remove(position);
-                specimen_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
 
-                if (specimen_list.size() == 0){
+                if (Local_specimen_list.size() == 0){
                     image_specimen.setImageResource(R.mipmap.camera);
+
+                    Local_image4 = null;
 
                     dialogLogout.dismiss();
                 }
@@ -2722,26 +2725,28 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
 
             }else if (from.equalsIgnoreCase("equipment")){
                 Local_equipment_list.remove(position);
-                equipment_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
 
-                if (equipment_list.size() == 0){
+                if (Local_equipment_list.size() == 0){
                     image_equipment.setImageResource(R.mipmap.camera);
+
+                    Local_image5 = null;
 
                     dialogLogout.dismiss();
                 }
 
             }else if (from.equalsIgnoreCase("laboratory_defined_turnaround")){
                 Local_laboratory_defined_turnaround_list.remove(position);
-                laboratory_defined_turnaround_list.remove(position);
 
                 image_adapter.notifyItemRemoved(position);
                 image_adapter.notifyDataSetChanged();
 
-                if (laboratory_defined_turnaround_list.size() == 0){
+                if (Local_laboratory_defined_turnaround_list.size() == 0){
                     image_laboratory_defined_turnaround.setImageResource(R.mipmap.camera);
+
+                    Local_image6 = null;
 
                     dialogLogout.dismiss();
                 }
