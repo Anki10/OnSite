@@ -870,6 +870,7 @@ public class GeneralDetailsActivity extends BaseActivity {
                     pojo_dataSync.setAssessment_id(0);
                 }
 
+                pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
                 pojo.setLocation_lat(getFromPrefs(AppConstant.Latitude));
                 pojo.setLocation_long(getFromPrefs(AppConstant.Longitude));
                 pojo.setAssessor_name(ed_name.getText().toString());

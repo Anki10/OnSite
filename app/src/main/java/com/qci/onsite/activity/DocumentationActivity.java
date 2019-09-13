@@ -4149,9 +4149,6 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
 
         JSONObject json = new JSONObject();
 
-
-
-
         if (img_signed_document_url_list.size() > 0){
             try {
                 json.put("uniqueArrays", new JSONArray(img_signed_document_url_list));
@@ -4552,7 +4549,7 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
             }else {
                 pojo_dataSync.setAssessment_id(0);
             }
-
+             pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
 
             for (int i=0;i<img_signed_document_url_list.size();i++){
@@ -4862,9 +4859,7 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
             }else {
                 pojo_dataSync.setAssessment_id(0);
             }
-
-
-
+            pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
             for (int i=0;i<img_signed_document_url_list.size();i++){
                 String value_signed_do = img_signed_document_url_list.get(i);

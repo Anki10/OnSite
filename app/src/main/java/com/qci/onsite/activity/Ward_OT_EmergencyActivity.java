@@ -1171,7 +1171,6 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
         pojo.setStaff_present_in_ICU(staff_present_in_ICU);
 
 
-
         pojo.setHospital_maintain_cleanliness_remark(remark1);
         pojo.setHospital_maintain_cleanliness_nc(nc1);
 
@@ -1371,6 +1370,8 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
                     pojo_dataSync.setAssessment_id(0);
                 }
 
+                pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
+
                 String admissions_discharge_home_view = "";
 
                 for (int i=0;i<admissions_discharge_home_list.size();i++){
@@ -1516,6 +1517,8 @@ public class Ward_OT_EmergencyActivity extends BaseActivity implements View.OnCl
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
+
+                pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
                 String admissions_discharge_home_view = "";
 

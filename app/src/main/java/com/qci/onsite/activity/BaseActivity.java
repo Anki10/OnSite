@@ -279,6 +279,13 @@ public class BaseActivity extends AppCompatActivity {
         return prefs.getString(key, AppConstant.DEFAULT_VALUE);
     }
 
+    public void clearPrefers(){
+        SharedPreferences preferences = getSharedPreferences(AppConstant.PREF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove(AppConstant.ASSESSSMENT_STATUS);
+        editor.commit();
+    }
+
     public void SAVEINTPrefs(String Key,int value){
         SharedPreferences settings = getSharedPreferences(AppConstant.PREF_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
@@ -292,15 +299,24 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void progreesDialog(){
-        d = AppDialog.showLoading(BaseActivity.this);
-        d.setCanceledOnTouchOutside(false);
+        runOnUiThread(new Runnable() {
+            public void run() {
+                d = AppDialog.showLoading(BaseActivity.this);
+                d.setCanceledOnTouchOutside(false);
+            }
+        });
+
     }
 
     public void CloseProgreesDialog(){
-        if (d.isShowing() || d != null){
-            d.dismiss();
-        }
-    }
+        runOnUiThread(new Runnable() {
+            public void run() {
+                if (d.isShowing() || d != null){
+                    d.dismiss();
+                }
+            }
+        });
 
+    }
 
 }

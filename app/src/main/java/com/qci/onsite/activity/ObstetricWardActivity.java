@@ -1043,7 +1043,7 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
-
+                pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
                 for (int i=0;i<identification_list.size();i++){
                     String value_rail = identification_list.get(i);
@@ -1240,7 +1240,7 @@ public class ObstetricWardActivity extends BaseActivity implements View.OnClickL
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
-
+                pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
                 for (int i=0;i<identification_list.size();i++){
                     String value_rail = identification_list.get(i);

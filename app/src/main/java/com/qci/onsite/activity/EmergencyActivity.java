@@ -650,6 +650,7 @@ public class EmergencyActivity extends BaseActivity {
             }else {
                 pojo_dataSync.setAssessment_id(0);
             }
+             pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
             pojo_dataSync.setEmergency(pojo);
 

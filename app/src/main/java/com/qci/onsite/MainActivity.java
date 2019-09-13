@@ -93,7 +93,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         System.out.println("xxx"+Ass_id + token);
 
-        mAPIService.getHospitalList("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),ApiUtils.BASE_URL + "assessors/"+getFromPrefs(AppConstant.ASSESSOR_ID)+"/hospital").enqueue(new Callback<AllocatedHospitalResponse>() {
+        mAPIService.getHospitalList("application/json", "Bearer " + getFromPrefs(AppConstant.ACCESS_Token),ApiUtils.BASE_URL + "assessors_app/getAllocatedHcosForAssessor_app/"+getFromPrefs(AppConstant.ASSESSOR_ID)).enqueue(new Callback<AllocatedHospitalResponse>() {
             @Override
             public void onResponse(Call<AllocatedHospitalResponse> call, Response<AllocatedHospitalResponse> response) {
 
@@ -139,6 +139,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                 SAVEINTPrefs("Hospital_bed",hospital_bedNo);
 
+                saveIntoPrefs("assessor_status",list_hospital.get(position).getLoggedin_asrtype());
+
                 String date = new SimpleDateFormat("M/dd/yyyy", Locale.getDefault()).format(new Date());
 
                 String Server_date =  getDate(list_hospital.get(position).getAssessmentdate(),"MM/dd/yyyy");
@@ -163,7 +165,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                     saveIntoPrefs(AppConstant.Hospital_ID, String.valueOf(list_hospital.get(position).getHospitalid()));
 
-                    if (!list_hospital.get(position).getHospitalstage().equalsIgnoreCase("Onsite Assessor Allocated")){
+
+                    if (list_hospital.get(position).getHospitalstage().equalsIgnoreCase("Assessment accepted") || list_hospital.get(position).getHospitalstage().equalsIgnoreCase("Assessment in progress") ){
                         if (date1.before(date2)){
                             if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS).length() > 0){
                                 if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS).equalsIgnoreCase(hospital_id)){
@@ -171,8 +174,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                     startActivity(intent);
 
                                     saveIntoPrefs("asmtId" + hospital_id, String.valueOf(list_hospital.get(position).getAssessment_id()));
-
-
 
 
                                 }else {

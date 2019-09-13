@@ -1270,7 +1270,7 @@ public class MRDActivity extends BaseActivity implements View.OnClickListener {
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
-
+                pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
 
                 for (int i=0;i<staffs_personal_files_maintained_list.size();i++){

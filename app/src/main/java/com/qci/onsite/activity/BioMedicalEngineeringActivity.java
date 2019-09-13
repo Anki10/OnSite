@@ -1000,7 +1000,7 @@ public class BioMedicalEngineeringActivity extends BaseActivity implements View.
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
-
+                 pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
                 for (int i=0;i<DoHigh_imageList.size();i++){
                     String value = DoHigh_imageList.get(i);

@@ -2157,7 +2157,14 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
             }
             if(check==0)
             {
-                Toast.makeText(this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(LaboratoryActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
                 break;
             }
         }
@@ -2289,6 +2296,7 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
+                pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
 
                 for (int i=0;i<Identified_List.size();i++){
@@ -2573,7 +2581,7 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
-
+                pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
 
                 for (int i=0;i<specimen_list.size();i++){
@@ -2768,8 +2776,5 @@ public class LaboratoryActivity extends BaseActivity implements View.OnClickList
             startActivity(intent);
             finish();
         }
-
-
-
     }
 }

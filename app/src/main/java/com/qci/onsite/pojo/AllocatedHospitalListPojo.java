@@ -45,6 +45,54 @@ public class AllocatedHospitalListPojo {
     private String allocationdate_ddMMMyyyy;
     private String assessmentdate_ddMMMyyyy;
     private String statuschangedon_ddMMMyyyy;
+    private String rejectremarks;
+    private String asr1type;
+    private int assessor2id;
+    private String asr2type;
+
+    public String getLoggedin_asrtype() {
+        return loggedin_asrtype;
+    }
+
+    public void setLoggedin_asrtype(String loggedin_asrtype) {
+        this.loggedin_asrtype = loggedin_asrtype;
+    }
+
+    private String loggedin_asrtype;
+
+    public String getRejectremarks() {
+        return rejectremarks;
+    }
+
+    public void setRejectremarks(String rejectremarks) {
+        this.rejectremarks = rejectremarks;
+    }
+
+    public String getAsr1type() {
+        return asr1type;
+    }
+
+    public void setAsr1type(String asr1type) {
+        this.asr1type = asr1type;
+    }
+
+    public int getAssessor2id() {
+        return assessor2id;
+    }
+
+    public void setAssessor2id(int assessor2id) {
+        this.assessor2id = assessor2id;
+    }
+
+    public String getAsr2type() {
+        return asr2type;
+    }
+
+    public void setAsr2type(String asr2type) {
+        this.asr2type = asr2type;
+    }
+
+
 
     public int getAssessment_id() {
         return assessment_id;

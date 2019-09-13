@@ -67,6 +67,36 @@ public class MainHospitalListAdapter extends RecyclerView.Adapter<MainHospitalLi
                         holder.iv_hospital_accept.setImageResource(R.mipmap.progress);
                     }
                 }
+            }else if (pojo.getHospitalstage().equalsIgnoreCase("Assessment accepted by Assessor")){
+                holder.iv_hospital_accept.setVisibility(View.GONE);
+                holder.iv_hospital_reject.setVisibility(View.GONE);
+
+                if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS) != null){
+                    if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS).equalsIgnoreCase(String.valueOf(pojo.getHospitalid()))){
+                        holder.iv_hospital_accept.setVisibility(View.VISIBLE);
+                        holder.iv_hospital_accept.setImageResource(R.mipmap.progress);
+                    }
+                }
+            }
+            else if (pojo.getHospitalstage().equalsIgnoreCase("Assessment in progress")){
+                holder.iv_hospital_accept.setVisibility(View.GONE);
+                holder.iv_hospital_reject.setVisibility(View.GONE);
+
+                if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS) != null){
+                    if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS).equalsIgnoreCase(String.valueOf(pojo.getHospitalid()))){
+                        holder.iv_hospital_accept.setVisibility(View.VISIBLE);
+                        holder.iv_hospital_accept.setImageResource(R.mipmap.progress);
+                    }
+                }
+            }else {
+                if (pojo.getLoggedin_asrtype() != null){
+                    if (pojo.getLoggedin_asrtype().length() > 0){
+                        if (pojo.getLoggedin_asrtype().equalsIgnoreCase("j")){
+                            holder.iv_hospital_accept.setVisibility(View.GONE);
+                            holder.iv_hospital_reject.setVisibility(View.GONE);
+                        }
+                    }
+                }
             }
         }
 

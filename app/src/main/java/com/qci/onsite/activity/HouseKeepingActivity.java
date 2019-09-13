@@ -1496,7 +1496,7 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
              }else {
                  pojo_dataSync.setAssessment_id(0);
              }
-
+             pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
 
              for (int i=0;i<staffs_personal_files_maintained_list.size();i++){
@@ -1645,6 +1645,8 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
             Local_procedure_cleaning_blood_spill_list.add(image_path);
 
             image_procedure_cleaning_blood_spill.setImageResource(R.mipmap.camera_selected);
+
+            Local_image2 = "procedure_cleaning_blood_spill_list";
 
         }
 

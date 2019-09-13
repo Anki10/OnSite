@@ -2370,6 +2370,7 @@ public class ManagementActivity extends BaseActivity implements View.OnClickList
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
+                pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
                 for (int i=0;i<hospital_mission_present_list.size();i++){
                     String value = hospital_mission_present_list.get(i);

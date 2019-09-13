@@ -1153,6 +1153,7 @@ public class RadiologyActivity extends BaseActivity implements View.OnClickListe
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
+                pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
 
                 for (int i=0;i<radiology_list.size();i++){

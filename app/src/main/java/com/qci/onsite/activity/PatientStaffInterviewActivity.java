@@ -1963,6 +1963,8 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
                     pojo_dataSync.setAssessment_id(0);
                 }
 
+                pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
+
                 for (int i=0;i<privacy_maintained_list.size();i++){
                     String value = privacy_maintained_list.get(i);
 
@@ -2089,6 +2091,8 @@ public class PatientStaffInterviewActivity extends BaseActivity implements View.
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
+
+                pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
                 for (int i=0;i<privacy_maintained_list.size();i++){
                     String value = privacy_maintained_list.get(i);

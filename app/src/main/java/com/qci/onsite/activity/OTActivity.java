@@ -3110,6 +3110,7 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
+                pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
                 for (int i=0;i<WHO_Patient_Safety_List.size();i++){
                     String value_WHO_Patient_Safety= WHO_Patient_Safety_List.get(i);
@@ -3457,6 +3458,7 @@ public class OTActivity extends BaseActivity implements View.OnClickListener {
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
+                  pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
                 for (int i=0;i<WHO_Patient_Safety_List.size();i++){
                     String value_WHO_Patient_Safety= WHO_Patient_Safety_List.get(i);

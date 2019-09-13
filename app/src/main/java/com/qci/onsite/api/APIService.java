@@ -33,14 +33,14 @@ public interface APIService {
     @GET
     Call<AllocatedHospitalResponse> getHospitalList(@Header("Content-Type") String Content_Type, @Header("Authorization") String Authorization, @Url String url);
 
-    @POST("assessors")
+    @POST("assessors_app")
     Call<AssesorAccept_RejectResponse>PostAssessorResponse(@Header("Content-Type") String Content_Type, @Header("Authorization") String Authorization, @Body AllocatedHospitalListPojo pojo);
 
     @Multipart
     @POST("upload/s3")
     Call<ImageUploadResponse>ImageUploadRequest(@Header("Authorization") String Authorization, @Part MultipartBody.Part file);
 
-    @POST("assessments/assessmentresults")
+    @POST("assessments_app/assessmentresults")
     Call<DataSyncResponse>DataSync(@Header("Content-Type") String Content_Type, @Header("Authorization") String Authorization, @Body DataSyncRequest pojo);
 
 }

@@ -3190,6 +3190,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
            }else {
                pojo_dataSync.setAssessment_id(0);
            }
+           pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
            for (int i=0;i< patientCareArea_imageList.size();i++){
                String value_patientCareArea = patientCareArea_imageList.get(i);
@@ -3652,6 +3653,7 @@ public class PharmacyActivity extends BaseActivity implements View.OnClickListen
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
+                pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
                 for (int i=0;i< patientCareArea_imageList.size();i++){
                     String value_patientCareArea = patientCareArea_imageList.get(i);

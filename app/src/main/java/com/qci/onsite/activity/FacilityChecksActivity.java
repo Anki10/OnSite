@@ -476,7 +476,6 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
     }
 
 
-
     @OnClick({R.id.remark_medical_gas_cylinders,R.id.nc_medical_gas_cylinders,R.id.image_medical_gas_cylinders,R.id.remark_smoke_detectors_installed,R.id.nc_smoke_detectors_installed,
             R.id.image_smoke_detectors_installed,R.id.remark_extinguisher_present_patient,R.id.nc_extinguisher_present_patient,R.id.image_extinguisher_present_patient,R.id.remark_fire_fighting_equipment,
             R.id.nc_fire_fighting_equipment,R.id.remark_safe_exit_plan,R.id.nc_safe_exit_plan,R.id.btnSave,R.id.btnSync})
@@ -1637,6 +1636,7 @@ public class FacilityChecksActivity extends BaseActivity implements View.OnClick
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
+                pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
 
                 for (int i=0;i<medical_gas_cylinders_list.size();i++){

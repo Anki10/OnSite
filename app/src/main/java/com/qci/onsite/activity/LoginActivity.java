@@ -73,8 +73,6 @@ public class LoginActivity extends BaseActivity implements ActivityCompat.OnRequ
 
         mAPIService = ApiUtils.getAPIService();
 
-
-
         permissionUtils=new PermissionUtils(LoginActivity.this);
 
         permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -107,9 +105,12 @@ public class LoginActivity extends BaseActivity implements ActivityCompat.OnRequ
       /*  login_userName.setText("Kamalakar.dr@gmail.com");
         login_password.setText("Password1");*/ // Kamalakar.dr@gmail.com Password1
 
-       /* login_userName.setText("gkrishnajyoti@gmail.com");
-        login_password.setText("Gnamrata12##K");*/
+     /*   login_userName.setText("ankitmiglani10+5@gmail.com");
+        login_password.setText("Password1");*/
+
+        // assessordemo@gmail.com
     }
+
 
     @OnClick(R.id.btn_login)
     public void onViewClicked(){

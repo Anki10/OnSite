@@ -1121,6 +1121,7 @@ public class SterilizationAreaActivity extends BaseActivity implements View.OnCl
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
+                pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
                 String AreStaff_view = "",DoHigh_view="";
 

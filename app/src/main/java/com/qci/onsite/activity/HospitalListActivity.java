@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -131,6 +132,8 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
 
     int Bed_no = 0;
 
+    String assessor_type = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,15 +158,14 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
 
         Bed_no = getINTFromPrefs("Hospital_bed");
 
-
         mRequestingLocationUpdates = false;
-
 
         updateValuesFromBundle(savedInstanceState);
         buildGoogleApiClient();
 
-
         Hospital_id = getFromPrefs(AppConstant.Hospital_ID);
+
+        assessor_type = getFromPrefs("assessor_status");
 
         saveIntoPrefs(AppConstant.ASSESSSMENT_STATUS,Hospital_id);
 
@@ -180,49 +182,98 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
 
         //        exportDB();
 
-                if (Bed_no < 51){
-                    if (assessement_list.get(0).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(1).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(2).getAssessement_status().equalsIgnoreCase("Start") && assessement_list.get(3).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(4).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(5).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(6).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(7).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(8).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(9).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(10).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(11).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(12).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(13).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(14).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(15).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(16).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(17).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(18).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(19).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(20).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(21).getAssessement_status().equalsIgnoreCase("Done")) {
-                        System.out.println("xx sucess");
+                if (assessor_type.length() > 0){
+                    if (assessor_type.equalsIgnoreCase("j")){
+                        if (Bed_no < 51){
+                            if (assessement_list.get(0).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(1).getAssessement_status().equalsIgnoreCase("Done") &&
+                                    assessement_list.get(2).getAssessement_status().equalsIgnoreCase("Start") && assessement_list.get(3).getAssessement_status().equalsIgnoreCase("Done") &&
+                                    assessement_list.get(4).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(5).getAssessement_status().equalsIgnoreCase("Done") &&
+                                    assessement_list.get(6).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(7).getAssessement_status().equalsIgnoreCase("Done") &&
+                                    assessement_list.get(8).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(9).getAssessement_status().equalsIgnoreCase("Done") &&
+                                    assessement_list.get(10).getAssessement_status().equalsIgnoreCase("Done")) {
+                                System.out.println("xx sucess");
 
-                        PostAssessmentData();
+                                PostAssessmentData();
+                            }else {
+                                System.out.println("xx faill");
+
+                                Toast.makeText(HospitalListActivity.this,"Please fill and sync all the above sections before marking the assessment as complete",Toast.LENGTH_LONG).show();
+                            }
+                        }else {
+                            if (assessement_list.get(0).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(1).getAssessement_status().equalsIgnoreCase("Done") &&
+                                    assessement_list.get(2).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(3).getAssessement_status().equalsIgnoreCase("Done") &&
+                                    assessement_list.get(4).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(5).getAssessement_status().equalsIgnoreCase("Done") &&
+                                    assessement_list.get(6).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(7).getAssessement_status().equalsIgnoreCase("Done") &&
+                                    assessement_list.get(8).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(9).getAssessement_status().equalsIgnoreCase("Done") &&
+                                    assessement_list.get(10).getAssessement_status().equalsIgnoreCase("Done")) {
+                                System.out.println("xx sucess");
+
+                                PostAssessmentData();
+                            }else {
+                                System.out.println("xx faill");
+
+                                Toast.makeText(HospitalListActivity.this,"Please fill and sync all the above sections before marking the assessment as complete",Toast.LENGTH_LONG).show();
+                            }
+                        }
                     }else {
-                        System.out.println("xx faill");
+                        if (assessement_list.get(11).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(12).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(13).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(14).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(15).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(16).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(17).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(18).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(19).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(20).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(21).getAssessement_status().equalsIgnoreCase("Done")) {
+                            System.out.println("xx sucess");
 
-                        Toast.makeText(HospitalListActivity.this,"Please fill and sync all the above sections before marking the assessment as complete",Toast.LENGTH_LONG).show();
+                            PostAssessmentData();
+                        }else {
+                            System.out.println("xx faill");
+
+                            Toast.makeText(HospitalListActivity.this,"Please fill and sync all the above sections before marking the assessment as complete",Toast.LENGTH_LONG).show();
+                        }
                     }
                 }else {
-                    if (assessement_list.get(0).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(1).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(2).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(3).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(4).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(5).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(6).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(7).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(8).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(9).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(10).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(11).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(12).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(13).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(14).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(15).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(16).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(17).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(18).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(19).getAssessement_status().equalsIgnoreCase("Done") &&
-                            assessement_list.get(20).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(21).getAssessement_status().equalsIgnoreCase("Done")) {
-                        System.out.println("xx sucess");
+                    if (Bed_no < 51){
+                        if (assessement_list.get(0).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(1).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(2).getAssessement_status().equalsIgnoreCase("Start") && assessement_list.get(3).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(4).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(5).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(6).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(7).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(8).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(9).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(10).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(11).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(12).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(13).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(14).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(15).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(16).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(17).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(18).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(19).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(20).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(21).getAssessement_status().equalsIgnoreCase("Done")) {
+                            System.out.println("xx sucess");
 
-                        PostAssessmentData();
+                            PostAssessmentData();
+                        }else {
+                            System.out.println("xx faill");
+
+                            Toast.makeText(HospitalListActivity.this,"Please fill and sync all the above sections before marking the assessment as complete",Toast.LENGTH_LONG).show();
+                        }
                     }else {
-                        System.out.println("xx faill");
+                        if (assessement_list.get(0).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(1).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(2).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(3).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(4).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(5).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(6).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(7).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(8).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(9).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(10).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(11).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(12).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(13).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(14).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(15).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(16).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(17).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(18).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(19).getAssessement_status().equalsIgnoreCase("Done") &&
+                                assessement_list.get(20).getAssessement_status().equalsIgnoreCase("Done") && assessement_list.get(21).getAssessement_status().equalsIgnoreCase("Done")) {
+                            System.out.println("xx sucess");
 
-                        Toast.makeText(HospitalListActivity.this,"Please fill and sync all the above sections before marking the assessment as complete",Toast.LENGTH_LONG).show();
+                            PostAssessmentData();
+                        }else {
+                            System.out.println("xx faill");
+
+                            Toast.makeText(HospitalListActivity.this,"Please fill and sync all the above sections before marking the assessment as complete",Toast.LENGTH_LONG).show();
+                        }
                     }
+
                 }
-
-
 
               /*  for (int i= 0;i<assessement_list.size();i++){
                     if (assessement_list.get(i).getAssessement_status().equalsIgnoreCase("Done")){
@@ -248,6 +299,7 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void exportDB() {
         File sd = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "OnSiteDB");
         ;
@@ -297,8 +349,6 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-
-
     private void getDBSET() {
 
         String[] Assessement_Service = null;
@@ -308,7 +358,6 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
         }else {
             Assessement_Service = getResources().getStringArray(R.array.assessement_service);
         }
-
 
 
         list = new ArrayList<>(Arrays.asList(Assessement_Service));
@@ -339,9 +388,7 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
             System.out.println("xxx" + status);
         }
 
-
-
-        adapter = new HospitalAdapter(HospitalListActivity.this,assessement_list);
+        adapter = new HospitalAdapter(HospitalListActivity.this,assessement_list,assessor_type);
         hospital_recycler_view.setAdapter(adapter);
     }
 
@@ -361,8 +408,7 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
                         Intent intent = new Intent(HospitalListActivity.this, GeneralDetailsActivity.class);
                         startActivity(intent);
                         finish();
-
-                    }else if (hospital_name.equalsIgnoreCase("Laboratory")){
+                       }else if (hospital_name.equalsIgnoreCase("Laboratory")){
                                 Intent intent = new Intent(HospitalListActivity.this,LaboratoryActivity.class);
                                 intent.putExtra("Hospital_id",Hospital_id);
                                 startActivity(intent);
@@ -454,9 +500,9 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
                                 startActivity(intent);
                                 finish();
                             }else if (hospital_name.equalsIgnoreCase("Scope of Services")){
-                            Intent intent = new Intent(HospitalListActivity.this,ScopeOfServiceActivity.class);
-                            startActivity(intent);
-                            finish();
+                               Intent intent = new Intent(HospitalListActivity.this,ScopeOfServiceActivity.class);
+                               startActivity(intent);
+                               finish();
                         }
 
                 break;
@@ -473,6 +519,7 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
             }else {
                 pojo_dataSync.setAssessment_id(0);
             }
+            pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
 
             final ProgressDialog d = AppDialog.showLoading(HospitalListActivity.this);
@@ -494,13 +541,43 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
                     }else {
                         if (response.body() != null){
                             if (response.body().getSuccess()){
-                                Intent intent = new Intent(HospitalListActivity.this,MainActivity.class);
-                                startActivity(intent);
-                                finish();
 
-                                saveIntoPrefs(AppConstant.ASSESSSMENT_STATUS,"");
+                                if (getFromPrefs("assessor_status").length() > 0){
+                                    if (getFromPrefs("assessor_status").equalsIgnoreCase("p")){
+                                        if (response.body().getAsmtdonebyasr2() != null){
+                                            if (response.body().getAsmtdonebyasr2()){
+                                                Intent intent = new Intent(HospitalListActivity.this,MainActivity.class);
+                                                startActivity(intent);
+                                                finish();
 
-                                databaseHandler.removeAll();
+                                                clearPrefers();
+
+                                                databaseHandler.removeAll();
+                                            }else {
+                                                Toast.makeText(HospitalListActivity.this,"Please coordinate with your co-assessor to submit the assessment first before you submit the assessment and mark it as complete",Toast.LENGTH_LONG).show();
+                                            }
+                                        }else {
+                                        Toast.makeText(HospitalListActivity.this,"Please coordinate with your co-assessor to submit the assessment first before you submit the assessment and mark it as complete",Toast.LENGTH_LONG).show();
+                                        }
+                                    }else {
+                                        Intent intent = new Intent(HospitalListActivity.this,MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
+
+                                        clearPrefers();
+
+                                        databaseHandler.removeAll();
+                                    }
+                                }else {
+                                    Intent intent = new Intent(HospitalListActivity.this,MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                    clearPrefers();
+
+                                    databaseHandler.removeAll();
+                                }
+
                             }
 
                         }
@@ -527,8 +604,6 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
             if (savedInstanceState.keySet().contains(LOCATION_KEY)) {
                 mCurrentLocation = savedInstanceState.getParcelable(LOCATION_KEY);
             }
-
-
         }
     }
 
@@ -685,8 +760,6 @@ public class HospitalListActivity extends BaseActivity implements View.OnClickLi
             // Within {@code onPause()}, we pause location updates, but leave the
             // connection to GoogleApiClient intact.  Here, we resume receiving
             // location updates if the user has requested them.
-
-
 
             if (mGoogleApiClient.isConnected() && mRequestingLocationUpdates) {
                 startLocationUpdates();

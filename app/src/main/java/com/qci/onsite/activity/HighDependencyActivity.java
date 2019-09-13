@@ -1412,7 +1412,7 @@ public class HighDependencyActivity extends BaseActivity implements View.OnClick
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
-
+                 pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
                 for (int i=0;i<AreStaff_imageList.size();i++){
                     String value_rail = AreStaff_imageList.get(i);

@@ -280,7 +280,27 @@ public class ScopeOfServiceActivity extends BaseActivity {
         btnSave_scope.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SaveScopeService("save");
+
+                if (clinical_anaesthesiology.isChecked() || clinical_dermatology_venereology.isChecked()  || clinical_emergency_medicine.isChecked() ||
+                        clinical_family_medicine.isChecked() || clinical_general_medicine.isChecked()  || clinical_general_surgery.isChecked() || clinical_obstetrics_gynecology.isChecked() ||
+                        clinical_ophthalmology.isChecked() || clinical_orthopaedic_surgery.isChecked() || clinical_otorhinolaryngology.isChecked()  || clinical_paediatrics.isChecked() ||
+                        clinical_Psychiatry.isChecked() || clinical_respiratory_medicine.isChecked()  || clinical_day_care_services.isChecked() || clinical_cardiac_anaesthesia.isChecked() ||
+                        clinical_cardiology.isChecked() || clinical_cardiothoracic_surgery.isChecked() || clinical_clinical_haematology.isChecked() || clinical_critical_care.isChecked() ||
+                        clinical_endocrinology.isChecked() || clinical_hepatology.isChecked() || clinical_immunology.isChecked() || clinical_medical_gastroenterology.isChecked() ||
+                        clinical_neonatology.isChecked() || clinical_nephrology.isChecked() || clinical_Neurology.isChecked() ||clinical_Neurosurgery.isChecked() || clinical_Oncology.isChecked() ||
+                        clinical_paediatric_cardiology.isChecked() || clinical_paediatric_surgery.isChecked() || clinical_plastic_reconstructive.isChecked()  || clinical_surgical_gastroenterology.isChecked() ||
+                        clinical_urology.isChecked() || clinical_transplantation_service.isChecked() || diagnostic_ct_scanning.isChecked() || diagnostic_mammography.isChecked() ||
+                        diagnostic_mri.isChecked()  || diagnostic_ultrasound.isChecked()  || diagnostic_x_ray.isChecked()  || diagnostic_2d_echo.isChecked() || diagnostic_eeg.isChecked() ||
+                        diagnostic_holter_monitoring.isChecked()  || diagnostic_spirometry.isChecked() || diagnostic_tread_mill_testing.isChecked() || diagnostic_urodynamic_studies.isChecked() ||
+                        diagnostic_bone_densitometry.isChecked()  || laboratory_clinical_bio_chemistry.isChecked() || laboratory_clinical_microbiology.isChecked() ||
+                        laboratory_clinical_pathology.isChecked()   || laboratory_cytopathology.isChecked()  || laboratory_haematology.isChecked() || laboratory_histopathology.isChecked() ||
+                        pharmacy_dispensary.isChecked()  || transfusions_blood_transfusions.isChecked()  || transfusions_blood_bank.isChecked()  || professions_allied_ambulance.isChecked() ||
+                        professions_dietetics.isChecked() || professions_physiotherapy.isChecked()  || professions_occupational_therapy.isChecked()  || professions_speech_language.isChecked() ||
+                        professions_psychology.isChecked()){
+                    SaveScopeService("save");
+                }else {
+                    Toast.makeText(ScopeOfServiceActivity.this, "Please select at least one service", Toast.LENGTH_LONG).show();
+                }
             }
 
         });
@@ -289,10 +309,26 @@ public class ScopeOfServiceActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-
-
-                SaveScopeService("sync");
-
+                if (clinical_anaesthesiology.isChecked() || clinical_dermatology_venereology.isChecked()  || clinical_emergency_medicine.isChecked() ||
+                        clinical_family_medicine.isChecked() || clinical_general_medicine.isChecked()  || clinical_general_surgery.isChecked() || clinical_obstetrics_gynecology.isChecked() ||
+                        clinical_ophthalmology.isChecked() || clinical_orthopaedic_surgery.isChecked() || clinical_otorhinolaryngology.isChecked()  || clinical_paediatrics.isChecked() ||
+                        clinical_Psychiatry.isChecked() || clinical_respiratory_medicine.isChecked()  || clinical_day_care_services.isChecked() || clinical_cardiac_anaesthesia.isChecked() ||
+                        clinical_cardiology.isChecked() || clinical_cardiothoracic_surgery.isChecked() || clinical_clinical_haematology.isChecked() || clinical_critical_care.isChecked() ||
+                        clinical_endocrinology.isChecked() || clinical_hepatology.isChecked() || clinical_immunology.isChecked() || clinical_medical_gastroenterology.isChecked() ||
+                        clinical_neonatology.isChecked() || clinical_nephrology.isChecked() || clinical_Neurology.isChecked() ||clinical_Neurosurgery.isChecked() || clinical_Oncology.isChecked() ||
+                        clinical_paediatric_cardiology.isChecked() || clinical_paediatric_surgery.isChecked() || clinical_plastic_reconstructive.isChecked()  || clinical_surgical_gastroenterology.isChecked() ||
+                        clinical_urology.isChecked() || clinical_transplantation_service.isChecked() || diagnostic_ct_scanning.isChecked() || diagnostic_mammography.isChecked() ||
+                        diagnostic_mri.isChecked()  || diagnostic_ultrasound.isChecked()  || diagnostic_x_ray.isChecked()  || diagnostic_2d_echo.isChecked() || diagnostic_eeg.isChecked() ||
+                        diagnostic_holter_monitoring.isChecked()  || diagnostic_spirometry.isChecked() || diagnostic_tread_mill_testing.isChecked() || diagnostic_urodynamic_studies.isChecked() ||
+                        diagnostic_bone_densitometry.isChecked()  || laboratory_clinical_bio_chemistry.isChecked() || laboratory_clinical_microbiology.isChecked() ||
+                        laboratory_clinical_pathology.isChecked()   || laboratory_cytopathology.isChecked()  || laboratory_haematology.isChecked() || laboratory_histopathology.isChecked() ||
+                        pharmacy_dispensary.isChecked()  || transfusions_blood_transfusions.isChecked()  || transfusions_blood_bank.isChecked()  || professions_allied_ambulance.isChecked() ||
+                        professions_dietetics.isChecked() || professions_physiotherapy.isChecked()  || professions_occupational_therapy.isChecked()  || professions_speech_language.isChecked() ||
+                        professions_psychology.isChecked()){
+                    SaveScopeService("sync");
+                }else {
+                    Toast.makeText(ScopeOfServiceActivity.this,"Please select at least one service",Toast.LENGTH_LONG).show();
+                }
 
 
 
@@ -1309,6 +1345,7 @@ public class ScopeOfServiceActivity extends BaseActivity {
             }else {
                 pojo_dataSync.setAssessment_id(0);
             }
+             pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
 
             pojo_dataSync.setScopeofservice(pojo);
@@ -1366,10 +1403,30 @@ public class ScopeOfServiceActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+   //     super.onBackPressed();
 
         if (!assessement_list.get(21).getAssessement_status().equalsIgnoreCase("Done")){
-            SaveScopeService("save");
+
+            if (clinical_anaesthesiology.isChecked() || clinical_dermatology_venereology.isChecked()  || clinical_emergency_medicine.isChecked() ||
+                    clinical_family_medicine.isChecked() || clinical_general_medicine.isChecked()  || clinical_general_surgery.isChecked() || clinical_obstetrics_gynecology.isChecked() ||
+                    clinical_ophthalmology.isChecked() || clinical_orthopaedic_surgery.isChecked() || clinical_otorhinolaryngology.isChecked()  || clinical_paediatrics.isChecked() ||
+                    clinical_Psychiatry.isChecked() || clinical_respiratory_medicine.isChecked()  || clinical_day_care_services.isChecked() || clinical_cardiac_anaesthesia.isChecked() ||
+                    clinical_cardiology.isChecked() || clinical_cardiothoracic_surgery.isChecked() || clinical_clinical_haematology.isChecked() || clinical_critical_care.isChecked() ||
+                    clinical_endocrinology.isChecked() || clinical_hepatology.isChecked() || clinical_immunology.isChecked() || clinical_medical_gastroenterology.isChecked() ||
+                    clinical_neonatology.isChecked() || clinical_nephrology.isChecked() || clinical_Neurology.isChecked() ||clinical_Neurosurgery.isChecked() || clinical_Oncology.isChecked() ||
+                    clinical_paediatric_cardiology.isChecked() || clinical_paediatric_surgery.isChecked() || clinical_plastic_reconstructive.isChecked()  || clinical_surgical_gastroenterology.isChecked() ||
+                    clinical_urology.isChecked() || clinical_transplantation_service.isChecked() || diagnostic_ct_scanning.isChecked() || diagnostic_mammography.isChecked() ||
+                    diagnostic_mri.isChecked()  || diagnostic_ultrasound.isChecked()  || diagnostic_x_ray.isChecked()  || diagnostic_2d_echo.isChecked() || diagnostic_eeg.isChecked() ||
+                    diagnostic_holter_monitoring.isChecked()  || diagnostic_spirometry.isChecked() || diagnostic_tread_mill_testing.isChecked() || diagnostic_urodynamic_studies.isChecked() ||
+                    diagnostic_bone_densitometry.isChecked()  || laboratory_clinical_bio_chemistry.isChecked() || laboratory_clinical_microbiology.isChecked() ||
+                    laboratory_clinical_pathology.isChecked()   || laboratory_cytopathology.isChecked()  || laboratory_haematology.isChecked() || laboratory_histopathology.isChecked() ||
+                    pharmacy_dispensary.isChecked()  || transfusions_blood_transfusions.isChecked()  || transfusions_blood_bank.isChecked()  || professions_allied_ambulance.isChecked() ||
+                    professions_dietetics.isChecked() || professions_physiotherapy.isChecked()  || professions_occupational_therapy.isChecked()  || professions_speech_language.isChecked() ||
+                    professions_psychology.isChecked()){
+                SaveScopeService("save");
+            }else {
+                Toast.makeText(ScopeOfServiceActivity.this, "Please select at least one service", Toast.LENGTH_LONG).show();
+            }
         }else {
             Intent intent = new Intent(ScopeOfServiceActivity.this,HospitalListActivity.class);
             startActivity(intent);

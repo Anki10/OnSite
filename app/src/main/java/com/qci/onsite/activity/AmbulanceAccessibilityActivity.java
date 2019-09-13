@@ -2088,6 +2088,8 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                   pojo_dataSync.setAssessment_id(0);
               }
 
+             pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
+
 
               for (int i=0;i<hospital_mission_present_list.size();i++){
                   String value_rail = hospital_mission_present_list.get(i);
@@ -2397,7 +2399,7 @@ public class AmbulanceAccessibilityActivity extends BaseActivity implements View
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
-
+               pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
                 for (int i=0;i<hospital_mission_present_list.size();i++){
                     String value_rail = hospital_mission_present_list.get(i);

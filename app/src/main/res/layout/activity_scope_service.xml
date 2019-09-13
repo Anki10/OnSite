@@ -63,10 +63,12 @@
 
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_anaesthesiology"
+        <CheckBox
+            android:id="@+id/clinical_anaesthesiology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -87,10 +89,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_dermatology_venereology"
+        <CheckBox
+            android:id="@+id/clinical_dermatology_venereology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
 
@@ -113,10 +117,12 @@
 
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_emergency_medicine"
+        <CheckBox
+            android:id="@+id/clinical_emergency_medicine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
 
@@ -136,13 +142,14 @@
             android:textColor="@color/black"
             android:layout_marginLeft="10dp"
             android:layout_gravity="center"
-
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_family_medicine"
+        <CheckBox
+            android:id="@+id/clinical_family_medicine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
 
@@ -162,13 +169,14 @@
             android:textColor="@color/black"
             android:layout_marginLeft="10dp"
             android:layout_gravity="center"
-
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_general_medicine"
+        <CheckBox
+            android:id="@+id/clinical_general_medicine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -187,13 +195,14 @@
             android:textColor="@color/black"
             android:layout_marginLeft="10dp"
             android:layout_gravity="center"
-
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_general_surgery"
+        <CheckBox
+            android:id="@+id/clinical_general_surgery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -214,10 +223,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_obstetrics_gynecology"
+        <CheckBox
+            android:id="@+id/clinical_obstetrics_gynecology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -238,10 +249,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_ophthalmology"
+        <CheckBox
+            android:id="@+id/clinical_ophthalmology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -263,10 +276,12 @@
 
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_orthopaedic_surgery"
+        <CheckBox
+            android:id="@+id/clinical_orthopaedic_surgery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
 
@@ -287,10 +302,13 @@
             android:layout_marginLeft="10dp"
             android:layout_gravity="center"
             android:textSize="16sp"/>
-        <CheckBox android:id="@+id/clinical_otorhinolaryngology"
+
+        <CheckBox
+            android:id="@+id/clinical_otorhinolaryngology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -311,10 +329,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_paediatrics"
+        <CheckBox
+            android:id="@+id/clinical_paediatrics"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
 
@@ -336,10 +356,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_Psychiatry"
+        <CheckBox
+            android:id="@+id/clinical_Psychiatry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
 
@@ -361,10 +383,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_respiratory_medicine"
+        <CheckBox
+            android:id="@+id/clinical_respiratory_medicine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
 
@@ -386,10 +410,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_day_care_services"
+        <CheckBox
+            android:id="@+id/clinical_day_care_services"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -411,10 +437,12 @@
 
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_cardiac_anaesthesia"
+        <CheckBox
+            android:id="@+id/clinical_cardiac_anaesthesia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -436,10 +464,12 @@
 
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_cardiology"
+        <CheckBox
+            android:id="@+id/clinical_cardiology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -460,10 +490,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_cardiothoracic_surgery"
+        <CheckBox
+            android:id="@+id/clinical_cardiothoracic_surgery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -484,10 +516,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_clinical_haematology"
+        <CheckBox
+            android:id="@+id/clinical_clinical_haematology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -509,10 +543,12 @@
 
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_critical_care"
+        <CheckBox
+            android:id="@+id/clinical_critical_care"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -533,10 +569,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_endocrinology"
+        <CheckBox
+            android:id="@+id/clinical_endocrinology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
 
@@ -558,10 +596,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_hepatology"
+        <CheckBox
+            android:id="@+id/clinical_hepatology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
 
@@ -583,10 +623,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_immunology"
+        <CheckBox
+            android:id="@+id/clinical_immunology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
 
@@ -608,10 +650,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_medical_gastroenterology"
+        <CheckBox
+            android:id="@+id/clinical_medical_gastroenterology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
 
@@ -633,10 +677,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_neonatology"
+        <CheckBox
+            android:id="@+id/clinical_neonatology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
 
@@ -658,10 +704,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_nephrology"
+        <CheckBox
+            android:id="@+id/clinical_nephrology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
 
@@ -683,10 +731,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_Neurology"
+        <CheckBox
+            android:id="@+id/clinical_Neurology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -707,10 +757,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_Neurosurgery"
+        <CheckBox
+            android:id="@+id/clinical_Neurosurgery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -731,10 +783,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_Oncology"
+        <CheckBox
+            android:id="@+id/clinical_Oncology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -755,10 +809,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_paediatric_cardiology"
+        <CheckBox
+            android:id="@+id/clinical_paediatric_cardiology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -779,10 +835,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_paediatric_surgery"
+        <CheckBox
+            android:id="@+id/clinical_paediatric_surgery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -803,10 +861,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_plastic_reconstructive"
+        <CheckBox
+            android:id="@+id/clinical_plastic_reconstructive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -827,10 +887,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_surgical_gastroenterology"
+        <CheckBox
+            android:id="@+id/clinical_surgical_gastroenterology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -851,10 +913,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_urology"
+        <CheckBox
+            android:id="@+id/clinical_urology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -875,10 +939,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/clinical_transplantation_service"
+        <CheckBox
+            android:id="@+id/clinical_transplantation_service"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
                 </LinearLayout>
@@ -916,10 +982,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/diagnostic_ct_scanning"
+        <CheckBox
+            android:id="@+id/diagnostic_ct_scanning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -940,10 +1008,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/diagnostic_mammography"
+        <CheckBox
+            android:id="@+id/diagnostic_mammography"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -964,10 +1034,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/diagnostic_mri"
+        <CheckBox
+            android:id="@+id/diagnostic_mri"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -988,10 +1060,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/diagnostic_ultrasound"
+        <CheckBox
+            android:id="@+id/diagnostic_ultrasound"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -1012,10 +1086,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/diagnostic_x_ray"
+        <CheckBox
+            android:id="@+id/diagnostic_x_ray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
 
@@ -1037,10 +1113,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/diagnostic_2d_echo"
+        <CheckBox
+            android:id="@+id/diagnostic_2d_echo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
 
@@ -1062,10 +1140,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/diagnostic_eeg"
+        <CheckBox
+            android:id="@+id/diagnostic_eeg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
 
@@ -1087,10 +1167,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/diagnostic_holter_monitoring"
+        <CheckBox
+            android:id="@+id/diagnostic_holter_monitoring"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
 
@@ -1112,10 +1194,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/diagnostic_spirometry"
+        <CheckBox
+            android:id="@+id/diagnostic_spirometry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -1136,10 +1220,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/diagnostic_tread_mill_testing"
+        <CheckBox
+            android:id="@+id/diagnostic_tread_mill_testing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -1160,10 +1246,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/diagnostic_urodynamic_studies"
+        <CheckBox
+            android:id="@+id/diagnostic_urodynamic_studies"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -1184,10 +1272,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/diagnostic_bone_densitometry"
+        <CheckBox
+            android:id="@+id/diagnostic_bone_densitometry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
         </LinearLayout>
@@ -1227,10 +1317,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/laboratory_clinical_bio_chemistry"
+        <CheckBox
+            android:id="@+id/laboratory_clinical_bio_chemistry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -1251,10 +1343,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/laboratory_clinical_microbiology"
+        <CheckBox
+            android:id="@+id/laboratory_clinical_microbiology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -1275,10 +1369,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/laboratory_clinical_pathology"
+        <CheckBox
+            android:id="@+id/laboratory_clinical_pathology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -1299,10 +1395,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/laboratory_cytopathology"
+        <CheckBox
+            android:id="@+id/laboratory_cytopathology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -1323,10 +1421,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/laboratory_haematology"
+        <CheckBox
+            android:id="@+id/laboratory_haematology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
 
@@ -1348,10 +1448,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/laboratory_histopathology"
+        <CheckBox
+            android:id="@+id/laboratory_histopathology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
         </LinearLayout>
@@ -1388,10 +1490,14 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/pharmacy_dispensary"
+
+        <CheckBox
+            android:id="@+id/pharmacy_dispensary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
+
     </LinearLayout>
 
         </LinearLayout>
@@ -1431,10 +1537,13 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/transfusions_blood_transfusions"
+        <CheckBox
+            android:id="@+id/transfusions_blood_transfusions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
+
     </LinearLayout>
 
     <LinearLayout
@@ -1455,10 +1564,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/transfusions_blood_bank"
+        <CheckBox
+            android:id="@+id/transfusions_blood_bank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
         </LinearLayout>
@@ -1497,10 +1608,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/professions_allied_ambulance"
+        <CheckBox
+            android:id="@+id/professions_allied_ambulance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -1521,10 +1634,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/professions_dietetics"
+        <CheckBox
+            android:id="@+id/professions_dietetics"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -1545,10 +1660,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/professions_physiotherapy"
+        <CheckBox
+            android:id="@+id/professions_physiotherapy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -1569,10 +1686,12 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/professions_occupational_therapy"
+        <CheckBox
+            android:id="@+id/professions_occupational_therapy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -1593,10 +1712,11 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/professions_speech_language"
+        <CheckBox
+            android:id="@+id/professions_speech_language"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
     </LinearLayout>
 
 
@@ -1618,10 +1738,11 @@
             android:layout_gravity="center"
             android:textSize="16sp"/>
 
-        <CheckBox android:id="@+id/professions_psychology"
+        <CheckBox
+            android:id="@+id/professions_psychology"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            app:buttonTint="@color/dialog_text_color"/>
     </LinearLayout>
 
         </LinearLayout>

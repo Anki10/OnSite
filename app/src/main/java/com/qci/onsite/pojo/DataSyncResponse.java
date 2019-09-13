@@ -6,6 +6,18 @@ public class DataSyncResponse {
     private String message;
     private int tabId;
     private int asmtId;
+    private Boolean asmtdonebyasr2;
+
+
+    public Boolean getAsmtdonebyasr2() {
+        return asmtdonebyasr2;
+    }
+
+    public void setAsmtdonebyasr2(Boolean asmtdonebyasr2) {
+        this.asmtdonebyasr2 = asmtdonebyasr2;
+    }
+
+
 
     public Boolean getSuccess() {
         return isSuccess;

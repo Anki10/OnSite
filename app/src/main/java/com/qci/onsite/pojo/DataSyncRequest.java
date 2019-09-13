@@ -6,6 +6,7 @@ public class DataSyncRequest {
     private int assessment_id;
     private int hospital_id;
     private int assessor_id;
+    private String assessortype;
     private LaboratoryPojo laboratory;
     private RadioLogyPojo radioLogy;
     private EmergencyPojo emergency;
@@ -26,6 +27,16 @@ public class DataSyncRequest {
     private AmbulanceAccessibilityPojo ambulanceaccessibility;
     private UniformSignagePojo uniformsignage;
     private DocumentationPojo documentation;
+
+
+    public String getAssessortype() {
+        return assessortype;
+    }
+
+    public void setAssessortype(String assessortype) {
+        this.assessortype = assessortype;
+    }
+
 
     public ScopeOfServicePojo getScopeofservice() {
         return scopeofservice;

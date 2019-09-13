@@ -1905,7 +1905,7 @@ public class UniformSignageActivity extends BaseActivity implements View.OnClick
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
-
+                 pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
                 for (int i=0;i<safety_device_lab_list.size();i++){
                     String value_rail = safety_device_lab_list.get(i);

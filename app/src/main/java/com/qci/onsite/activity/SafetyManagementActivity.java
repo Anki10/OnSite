@@ -587,8 +587,6 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
 
     }
 
-
-
     @OnClick({R.id.remark_safety_device_lab,R.id.nc_safety_device_lab,R.id.image_safety_device_lab,R.id.remark_body_parts_staff_patients,R.id.nc_body_parts_staff_patients,
             R.id.image_body_parts_staff_patients,R.id.remark_staff_member_radiation_area,R.id.nc_staff_member_radiation_area,R.id.image_staff_member_radiation_area,R.id.remark_standardised_colur_coding,
             R.id.nc_standardised_colur_coding,R.id.image_standardised_colur_coding,R.id.remark_safe_storage_medical,R.id.nc_safe_storage_medical,R.id.image_safe_storage_medical,R.id.btnSave,R.id.btnSync})
@@ -1614,7 +1612,6 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                 if (!from.equalsIgnoreCase("sync")){
                     assessement_list = databaseHandler.getAssessmentList(Hospital_id);
 
-
                     AssessmentStatusPojo pojo = new AssessmentStatusPojo();
                     pojo.setHospital_id(assessement_list.get(17).getHospital_id());
                     pojo.setAssessement_name("Safety Management");
@@ -1943,6 +1940,7 @@ public class SafetyManagementActivity extends BaseActivity implements View.OnCli
                 }else {
                     pojo_dataSync.setAssessment_id(0);
                 }
+                pojo_dataSync.setAssessortype(getFromPrefs("assessor_status"));
 
                 for (int i=0;i<safety_device_lab_list.size();i++){
                     String value_rail = safety_device_lab_list.get(i);
