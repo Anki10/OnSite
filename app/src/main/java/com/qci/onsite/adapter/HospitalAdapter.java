@@ -54,8 +54,6 @@ public class HospitalAdapter extends RecyclerView.Adapter<HospitalAdapter.ViewHo
 
         int num_bed = getINTFromPrefs("Hospital_bed");
 
-
-
         if (assessor_type.length() > 0){
             if (assessor_type.equalsIgnoreCase("P")){
                 if (pojo.getAssessement_name().equalsIgnoreCase("General Details")) {

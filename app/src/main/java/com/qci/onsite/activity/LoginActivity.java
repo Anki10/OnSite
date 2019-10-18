@@ -105,7 +105,7 @@ public class LoginActivity extends BaseActivity implements ActivityCompat.OnRequ
       /*  login_userName.setText("Kamalakar.dr@gmail.com");
         login_password.setText("Password1");*/ // Kamalakar.dr@gmail.com Password1
 
-     /*   login_userName.setText("ankitmiglani10+5@gmail.com");
+/*        login_userName.setText("drashoo_17@yahoo.com");
         login_password.setText("Password1");*/
 
         // assessordemo@gmail.com
