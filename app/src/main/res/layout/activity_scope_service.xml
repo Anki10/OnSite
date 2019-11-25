@@ -777,7 +777,7 @@
         <TextView
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="(28) Oncology (Medical and Surgical)"
+            android:text="(28) Medical Oncology"
             android:textColor="@color/black"
             android:layout_marginLeft="10dp"
             android:layout_gravity="center"
@@ -791,6 +791,32 @@
 
     </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:text="(29) Surgical Oncology"
+                        android:textColor="@color/black"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center"
+                        android:textSize="16sp"/>
+
+                    <CheckBox
+                        android:id="@+id/clinical_Oncology_Surgical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:buttonTint="@color/dialog_text_color"/>
+
+                </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -803,7 +829,7 @@
         <TextView
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="(29) Paediatric Cardiology"
+            android:text="(30) Paediatric Cardiology"
             android:textColor="@color/black"
             android:layout_marginLeft="10dp"
             android:layout_gravity="center"
@@ -829,7 +855,7 @@
         <TextView
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="(30) Paediatric Surgery"
+            android:text="(31) Paediatric Surgery"
             android:textColor="@color/black"
             android:layout_marginLeft="10dp"
             android:layout_gravity="center"
@@ -855,7 +881,7 @@
         <TextView
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="(31) Plastic and Reconstructive Surgery"
+            android:text="(32) Plastic and Reconstructive Surgery"
             android:textColor="@color/black"
             android:layout_marginLeft="10dp"
             android:layout_gravity="center"
@@ -881,7 +907,7 @@
         <TextView
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="(32) Surgical Gastroenterology"
+            android:text="(33) Surgical Gastroenterology"
             android:textColor="@color/black"
             android:layout_marginLeft="10dp"
             android:layout_gravity="center"
@@ -907,7 +933,7 @@
         <TextView
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="(33) Urology"
+            android:text="(34) Urology"
             android:textColor="@color/black"
             android:layout_marginLeft="10dp"
             android:layout_gravity="center"
@@ -933,7 +959,7 @@
         <TextView
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="(34) Transplantation Service"
+            android:text="(35) Transplantation Service"
             android:textColor="@color/black"
             android:layout_marginLeft="10dp"
             android:layout_gravity="center"
@@ -946,6 +972,292 @@
             app:buttonTint="@color/dialog_text_color"/>
 
     </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:text="(36) Dental"
+                        android:textColor="@color/black"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center"
+                        android:textSize="16sp"/>
+
+                    <CheckBox
+                        android:id="@+id/clinical_dental"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:buttonTint="@color/dialog_text_color"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:text="(37) Vascular Service"
+                        android:textColor="@color/black"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center"
+                        android:textSize="16sp"/>
+
+                    <CheckBox
+                        android:id="@+id/clinical_vascularservice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:buttonTint="@color/dialog_text_color"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:text="(38) Orthopaedic"
+                        android:textColor="@color/black"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center"
+                        android:textSize="16sp"/>
+
+                    <CheckBox
+                        android:id="@+id/clinical_orthopaedic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:buttonTint="@color/dialog_text_color"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:text="(39) Orthopaedic Including Arthroscopy"
+                        android:textColor="@color/black"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center"
+                        android:textSize="16sp"/>
+
+                    <CheckBox
+                        android:id="@+id/clinical_orthopaedic_including_arthroscopy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:buttonTint="@color/dialog_text_color"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:text="(40) Sports Medicine"
+                        android:textColor="@color/black"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center"
+                        android:textSize="16sp"/>
+
+                    <CheckBox
+                        android:id="@+id/clinical_sports_medicine"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:buttonTint="@color/dialog_text_color"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:text="(41) Laparoscopy Surgery"
+                        android:textColor="@color/black"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center"
+                        android:textSize="16sp"/>
+
+                    <CheckBox
+                        android:id="@+id/clinical_laparoscopy_surgery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:buttonTint="@color/dialog_text_color"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:text="(42) General Surgery Including Laparoscopy Surgery"
+                        android:textColor="@color/black"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center"
+                        android:textSize="16sp"/>
+
+                    <CheckBox
+                        android:id="@+id/clinical_general_surgery_including_laparoscopy_surgery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:buttonTint="@color/dialog_text_color"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:text="(43) Nephrology Including Dialysis"
+                        android:textColor="@color/black"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center"
+                        android:textSize="16sp"/>
+
+                    <CheckBox
+                        android:id="@+id/clinical_nephrology_including_dialysis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:buttonTint="@color/dialog_text_color"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:text="(44) Psychiatric Including IPD"
+                        android:textColor="@color/black"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center"
+                        android:textSize="16sp"/>
+
+                    <CheckBox
+                        android:id="@+id/clinical_psychiatric_including_ipd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:buttonTint="@color/dialog_text_color"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:text="(45) Radiation Oncology"
+                        android:textColor="@color/black"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center"
+                        android:textSize="16sp"/>
+
+                    <CheckBox
+                        android:id="@+id/clinical_radiation_oncolog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:buttonTint="@color/dialog_text_color"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:text="(46) Diabetology"
+                        android:textColor="@color/black"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center"
+                        android:textSize="16sp"/>
+
+                    <CheckBox
+                        android:id="@+id/clinical_diabetology"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:buttonTint="@color/dialog_text_color"/>
+
+                </LinearLayout>
 
                 </LinearLayout>
 

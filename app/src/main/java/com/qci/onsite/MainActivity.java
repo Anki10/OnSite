@@ -268,7 +268,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
-
     public void Accept_RejectApi(String status,int pos){
         hospitallistPojo = list_hospital.get(pos);
         hospitallistPojo.setStatuschangedby(Integer.parseInt(getFromPrefs(AppConstant.ASSESSOR_ID)));

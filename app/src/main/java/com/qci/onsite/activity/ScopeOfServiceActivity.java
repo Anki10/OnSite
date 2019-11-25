@@ -134,6 +134,39 @@ public class ScopeOfServiceActivity extends BaseActivity {
     @BindView(R.id.clinical_transplantation_service)
     CheckBox clinical_transplantation_service;
 
+    @BindView(R.id.clinical_dental)
+    CheckBox clinical_dental;
+
+    @BindView(R.id.clinical_vascularservice)
+    CheckBox clinical_vascularservice;
+
+    @BindView(R.id.clinical_orthopaedic)
+    CheckBox clinical_orthopaedic;
+
+    @BindView(R.id.clinical_orthopaedic_including_arthroscopy)
+    CheckBox clinical_orthopaedic_including_arthroscopy;
+
+    @BindView(R.id.clinical_sports_medicine)
+    CheckBox clinical_sports_medicine;
+
+    @BindView(R.id.clinical_laparoscopy_surgery)
+    CheckBox clinical_laparoscopy_surgery;
+
+    @BindView(R.id.clinical_general_surgery_including_laparoscopy_surgery)
+    CheckBox clinical_general_surgery_including_laparoscopy_surgery;
+
+    @BindView(R.id.clinical_nephrology_including_dialysis)
+    CheckBox clinical_nephrology_including_dialysis;
+
+    @BindView(R.id.clinical_psychiatric_including_ipd)
+    CheckBox clinical_psychiatric_including_ipd;
+
+    @BindView(R.id.clinical_radiation_oncolog)
+    CheckBox clinical_radiation_oncolog;
+
+    @BindView(R.id.clinical_diabetology)
+    CheckBox clinical_diabetology;
+
     @BindView(R.id.diagnostic_ct_scanning)
     CheckBox diagnostic_ct_scanning;
 
@@ -215,6 +248,9 @@ public class ScopeOfServiceActivity extends BaseActivity {
     @BindView(R.id.professions_psychology)
     CheckBox professions_psychology;
 
+    @BindView(R.id.clinical_Oncology_Surgical)
+    CheckBox clinical_Oncology_Surgical;
+
     @BindView(R.id.btnSave_scope)
     Button btnSave_scope;
 
@@ -246,13 +282,14 @@ public class ScopeOfServiceActivity extends BaseActivity {
     st_laboratory_clinical_pathology = "",st_laboratory_cytopathology = "",st_laboratory_haematology = "",st_laboratory_histopathology = "",
     st_pharmacy_dispensary = "",st_transfusions_blood_transfusions = "",st_transfusions_blood_bank = "",st_professions_allied_ambulance = "",
     st_professions_dietetics = "",st_professions_physiotherapy = "",st_professions_occupational_therapy = "",st_professions_speech_language = "",
-    st_professions_psychology = "";
+    st_professions_psychology = "",st_clinical_dental = "",st_clinical_vascularservice = "",st_clinical_orthopaedic = "",
+    st_clinical_orthopaedic_including_arthroscopy = "",st_clinical_sports_medicine = "",st_clinical_laparoscopy_surgery = "",
+    st_clinical_general_surgery_including_laparoscopy_surgery = "",st_clinical_nephrology_including_dialysis = "",
+    st_clinical_psychiatric_including_ipd = "",st_clinical_radiation_oncolog = "",st_clinical_diabetology = "",st_clinical_Oncology_Surgica = "";
 
     DataSyncRequest pojo_dataSync;
 
-
     private APIService mAPIService;
-
 
 
     @Override
@@ -296,7 +333,10 @@ public class ScopeOfServiceActivity extends BaseActivity {
                         laboratory_clinical_pathology.isChecked()   || laboratory_cytopathology.isChecked()  || laboratory_haematology.isChecked() || laboratory_histopathology.isChecked() ||
                         pharmacy_dispensary.isChecked()  || transfusions_blood_transfusions.isChecked()  || transfusions_blood_bank.isChecked()  || professions_allied_ambulance.isChecked() ||
                         professions_dietetics.isChecked() || professions_physiotherapy.isChecked()  || professions_occupational_therapy.isChecked()  || professions_speech_language.isChecked() ||
-                        professions_psychology.isChecked()){
+                        professions_psychology.isChecked() || clinical_dental.isChecked() || clinical_vascularservice.isChecked() || clinical_orthopaedic.isChecked() ||
+                        clinical_orthopaedic_including_arthroscopy.isChecked() || clinical_sports_medicine.isChecked() || clinical_laparoscopy_surgery.isChecked() ||
+                        clinical_general_surgery_including_laparoscopy_surgery.isChecked() || clinical_nephrology_including_dialysis.isChecked() || clinical_psychiatric_including_ipd.isChecked() ||
+                        clinical_radiation_oncolog.isChecked() || clinical_diabetology.isChecked() || clinical_Oncology_Surgical.isChecked()){
                     SaveScopeService("save");
                 }else {
                     Toast.makeText(ScopeOfServiceActivity.this, "Please select at least one service", Toast.LENGTH_LONG).show();
@@ -324,14 +364,14 @@ public class ScopeOfServiceActivity extends BaseActivity {
                         laboratory_clinical_pathology.isChecked()   || laboratory_cytopathology.isChecked()  || laboratory_haematology.isChecked() || laboratory_histopathology.isChecked() ||
                         pharmacy_dispensary.isChecked()  || transfusions_blood_transfusions.isChecked()  || transfusions_blood_bank.isChecked()  || professions_allied_ambulance.isChecked() ||
                         professions_dietetics.isChecked() || professions_physiotherapy.isChecked()  || professions_occupational_therapy.isChecked()  || professions_speech_language.isChecked() ||
-                        professions_psychology.isChecked()){
+                        professions_psychology.isChecked() || clinical_dental.isChecked() || clinical_vascularservice.isChecked() || clinical_orthopaedic.isChecked() ||
+                        clinical_orthopaedic_including_arthroscopy.isChecked() || clinical_sports_medicine.isChecked() || clinical_laparoscopy_surgery.isChecked() ||
+                        clinical_general_surgery_including_laparoscopy_surgery.isChecked() || clinical_nephrology_including_dialysis.isChecked() || clinical_psychiatric_including_ipd.isChecked() ||
+                        clinical_radiation_oncolog.isChecked() || clinical_diabetology.isChecked() || clinical_Oncology_Surgical.isChecked()){
                     SaveScopeService("sync");
                 }else {
                     Toast.makeText(ScopeOfServiceActivity.this,"Please select at least one service",Toast.LENGTH_LONG).show();
                 }
-
-
-
             }
         });
 
@@ -548,15 +588,16 @@ public class ScopeOfServiceActivity extends BaseActivity {
                     clinical_medical_gastroenterology.setChecked(false);
                 }
             }
-            if (pojo.getClinical_Neurology() != null){
-                st_clinical_neonatology = pojo.getClinical_Neurology();
+            if (pojo.getClinical_neonatology() != null){
+                st_clinical_neonatology = pojo.getClinical_neonatology();
 
-                if (pojo.getClinical_Neurology().equalsIgnoreCase("yes")){
+                if (pojo.getClinical_neonatology().equalsIgnoreCase("yes")){
                     clinical_neonatology.setChecked(true);
                 }else {
                     clinical_neonatology.setChecked(false);
                 }
             }
+
             if (pojo.getClinical_nephrology() != null){
                 st_clinical_nephrology = pojo.getClinical_nephrology();
 
@@ -647,6 +688,129 @@ public class ScopeOfServiceActivity extends BaseActivity {
                     clinical_transplantation_service.setChecked(false);
                 }
             }
+
+            if (pojo.getClinical_dental() != null){
+                st_clinical_dental = pojo.getClinical_dental();
+
+                if (pojo.getClinical_dental().equalsIgnoreCase("yes")){
+                    clinical_dental.setChecked(true);
+                }else {
+                    clinical_dental.setChecked(false);
+                }
+            }
+
+            if (pojo.getClinical_vascularservice() != null){
+                st_clinical_vascularservice = pojo.getClinical_vascularservice();
+
+                if (pojo.getClinical_vascularservice().equalsIgnoreCase("yes")){
+                    clinical_vascularservice.setChecked(true);
+                }else {
+                    clinical_vascularservice.setChecked(false);
+                }
+            }
+
+            if (pojo.getClinical_orthopaedic() != null){
+                st_clinical_orthopaedic = pojo.getClinical_orthopaedic() ;
+
+                if (pojo.getClinical_orthopaedic().equalsIgnoreCase("yes")){
+                    clinical_orthopaedic.setChecked(true);
+                }else {
+                    clinical_orthopaedic.setChecked(false);
+                }
+            }
+
+            if (pojo.getClinical_orthopaedic_including_arthroscopy() != null){
+                st_clinical_orthopaedic_including_arthroscopy = pojo.getClinical_orthopaedic_including_arthroscopy() ;
+
+                if (pojo.getClinical_orthopaedic_including_arthroscopy().equalsIgnoreCase("yes")){
+                    clinical_orthopaedic_including_arthroscopy.setChecked(true);
+                }else {
+                    clinical_orthopaedic_including_arthroscopy.setChecked(false);
+                }
+            }
+
+            if (pojo.getClinical_sports_medicine() != null){
+                st_clinical_sports_medicine = pojo.getClinical_sports_medicine() ;
+
+                if (pojo.getClinical_sports_medicine().equalsIgnoreCase("yes")){
+                    clinical_sports_medicine.setChecked(true);
+                }else {
+                    clinical_sports_medicine.setChecked(false);
+                }
+            }
+
+            if (pojo.getClinical_laparoscopy_surgery() != null){
+                st_clinical_laparoscopy_surgery = pojo.getClinical_laparoscopy_surgery() ;
+
+                if (pojo.getClinical_laparoscopy_surgery().equalsIgnoreCase("yes")){
+                    clinical_laparoscopy_surgery.setChecked(true);
+                }else {
+                    clinical_laparoscopy_surgery.setChecked(false);
+                }
+            }
+
+            if (pojo.getClinical_general_surgery_including_laparoscopy_surgery() != null){
+                st_clinical_general_surgery_including_laparoscopy_surgery = pojo.getClinical_general_surgery_including_laparoscopy_surgery() ;
+
+                if (pojo.getClinical_general_surgery_including_laparoscopy_surgery().equalsIgnoreCase("yes")){
+                    clinical_general_surgery_including_laparoscopy_surgery.setChecked(true);
+                }else {
+                    clinical_general_surgery_including_laparoscopy_surgery.setChecked(false);
+                }
+            }
+
+            if (pojo.getClinical_nephrology_including_dialysis() != null){
+                st_clinical_nephrology_including_dialysis = pojo.getClinical_nephrology_including_dialysis() ;
+
+                if (pojo.getClinical_nephrology_including_dialysis().equalsIgnoreCase("yes")){
+                    clinical_nephrology_including_dialysis.setChecked(true);
+                }else {
+                    clinical_nephrology_including_dialysis.setChecked(false);
+                }
+            }
+
+            if (pojo.getClinical_radiation_oncology() != null){
+                st_clinical_diabetology = pojo.getClinical_radiation_oncology();
+
+                if (pojo.getClinical_radiation_oncology().equalsIgnoreCase("yes")){
+                    clinical_radiation_oncolog.setChecked(true);
+                }else {
+                    clinical_radiation_oncolog.setChecked(false);
+                }
+            }
+
+            if (pojo.getClinical_diabetology() != null){
+                st_clinical_diabetology = pojo.getClinical_diabetology() ;
+
+                if (pojo.getClinical_diabetology().equalsIgnoreCase("yes")){
+                    clinical_diabetology.setChecked(true);
+                }else {
+                    clinical_diabetology.setChecked(false);
+                }
+            }
+
+
+
+            if (pojo.getClinical_psychiatric_including_ipd() != null){
+                st_clinical_psychiatric_including_ipd = pojo.getClinical_psychiatric_including_ipd() ;
+
+                if (pojo.getClinical_psychiatric_including_ipd().equalsIgnoreCase("yes")){
+                    clinical_psychiatric_including_ipd.setChecked(true);
+                }else {
+                    clinical_psychiatric_including_ipd.setChecked(false);
+                }
+            }
+
+            if (pojo.getClinical_surgical_oncology() != null){
+                st_clinical_Oncology_Surgica = pojo.getClinical_surgical_oncology();
+
+                if (pojo.getClinical_surgical_oncology().equalsIgnoreCase("yes")){
+                    clinical_Oncology_Surgical.setChecked(true);
+                }else {
+                    clinical_Oncology_Surgical.setChecked(false);
+                }
+            }
+
             if (pojo.getDiagnostic_ct_scanning() != null){
                 st_diagnostic_ct_scanning = pojo.getDiagnostic_ct_scanning();
 
@@ -982,9 +1146,9 @@ public class ScopeOfServiceActivity extends BaseActivity {
             st_clinical_cardiology = "no";
         }
         if (clinical_cardiothoracic_surgery.isChecked()) {
-            st_clinical_cardiology = "yes";
+            st_clinical_cardiothoracic_surgery = "yes";
         } else {
-            st_clinical_cardiology = "no";
+            st_clinical_cardiothoracic_surgery = "no";
         }
         if (clinical_clinical_haematology.isChecked()) {
             st_clinical_clinical_haematology = "yes";
@@ -1071,6 +1235,74 @@ public class ScopeOfServiceActivity extends BaseActivity {
         } else {
             st_clinical_transplantation_service = "no";
         }
+
+        if (clinical_dental.isChecked()){
+            st_clinical_dental = "yes";
+        }else {
+            st_clinical_dental = "no";
+        }
+
+        if (clinical_vascularservice.isChecked()){
+            st_clinical_vascularservice = "yes";
+        }else {
+            st_clinical_vascularservice = "no";
+        }
+
+        if (clinical_orthopaedic.isChecked()){
+            st_clinical_orthopaedic = "yes";
+        }else {
+            st_clinical_orthopaedic = "no";
+        }
+
+        if (clinical_orthopaedic_including_arthroscopy.isChecked()){
+            st_clinical_orthopaedic_including_arthroscopy = "yes";
+        }else {
+            st_clinical_orthopaedic_including_arthroscopy = "no";
+        }
+
+        if (clinical_sports_medicine.isChecked()){
+            st_clinical_sports_medicine = "yes";
+        }else {
+            st_clinical_sports_medicine = "no";
+        }
+
+        if (clinical_laparoscopy_surgery.isChecked()){
+            st_clinical_laparoscopy_surgery = "yes";
+        }else {
+            st_clinical_laparoscopy_surgery = "no";
+        }
+
+        if (clinical_general_surgery_including_laparoscopy_surgery.isChecked()){
+            st_clinical_general_surgery_including_laparoscopy_surgery  = "yes";
+        }else {
+            st_clinical_general_surgery_including_laparoscopy_surgery  = "no";
+        }
+
+        if (clinical_nephrology_including_dialysis.isChecked()){
+            st_clinical_nephrology_including_dialysis  = "yes";
+        }else {
+            st_clinical_nephrology_including_dialysis  = "no";
+        }
+
+
+        if (clinical_psychiatric_including_ipd.isChecked()){
+            st_clinical_psychiatric_including_ipd = "yes";
+        }else {
+            st_clinical_psychiatric_including_ipd = "no";
+        }
+
+        if (clinical_radiation_oncolog.isChecked()){
+            st_clinical_radiation_oncolog = "yes";
+        }else {
+            st_clinical_radiation_oncolog = "no";
+        }
+
+        if (clinical_diabetology.isChecked()){
+            st_clinical_diabetology = "yes";
+        }else {
+            st_clinical_diabetology = "no";
+        }
+
         if (diagnostic_ct_scanning.isChecked()) {
             st_diagnostic_ct_scanning = "yes";
         } else {
@@ -1213,6 +1445,12 @@ public class ScopeOfServiceActivity extends BaseActivity {
             st_professions_psychology = "no";
         }
 
+        if (clinical_Oncology_Surgical.isChecked()){
+            st_clinical_Oncology_Surgica = "yes";
+        }else {
+            st_clinical_Oncology_Surgica = "no";
+        }
+
         pojo.setHospital_name("Hospital1");
         pojo.setHospital_id(21);
         pojo.setClinical_anaesthesiology(st_clinical_anaesthesiology);
@@ -1238,7 +1476,8 @@ public class ScopeOfServiceActivity extends BaseActivity {
         pojo.setClinical_hepatology(st_clinical_hepatology);
         pojo.setClinical_immunology(st_clinical_immunology);
         pojo.setClinical_medical_gastroenterology(st_clinical_medical_gastroenterology);
-        pojo.setClinical_Neurology(st_clinical_neonatology);
+        pojo.setClinical_neonatology(st_clinical_neonatology);
+        pojo.setClinical_Neurology(st_clinical_Neurology);
         pojo.setClinical_nephrology(st_clinical_nephrology);
         pojo.setClinical_Neurosurgery(st_clinical_Neurosurgery);
         pojo.setClinical_Oncology(st_clinical_Oncology);
@@ -1248,6 +1487,19 @@ public class ScopeOfServiceActivity extends BaseActivity {
         pojo.setClinical_surgical_gastroenterology(st_clinical_surgical_gastroenterology);
         pojo.setClinical_urology(st_clinical_urology);
         pojo.setClinical_transplantation_service(st_clinical_transplantation_service);
+        pojo.setClinical_dental(st_clinical_dental);
+        pojo.setClinical_vascularservice(st_clinical_vascularservice);
+        pojo.setClinical_orthopaedic(st_clinical_orthopaedic);
+        pojo.setClinical_orthopaedic_including_arthroscopy(st_clinical_orthopaedic_including_arthroscopy);
+        pojo.setClinical_sports_medicine(st_clinical_sports_medicine);
+        pojo.setClinical_laparoscopy_surgery(st_clinical_laparoscopy_surgery);
+        pojo.setClinical_general_surgery_including_laparoscopy_surgery(st_clinical_general_surgery_including_laparoscopy_surgery);
+        pojo.setClinical_nephrology_including_dialysis(st_clinical_nephrology_including_dialysis);
+        pojo.setClinical_psychiatric_including_ipd(st_clinical_psychiatric_including_ipd);
+        pojo.setClinical_radiation_oncology(st_clinical_radiation_oncolog);
+        pojo.setClinical_diabetology(st_clinical_diabetology);
+        pojo.setClinical_surgical_oncology(st_clinical_Oncology_Surgica);
+
         pojo.setDiagnostic_ct_scanning(st_diagnostic_ct_scanning);
         pojo.setDiagnostic_mammography(st_diagnostic_mammography);
         pojo.setDiagnostic_mri(st_diagnostic_mri);
@@ -1422,7 +1674,11 @@ public class ScopeOfServiceActivity extends BaseActivity {
                     laboratory_clinical_pathology.isChecked()   || laboratory_cytopathology.isChecked()  || laboratory_haematology.isChecked() || laboratory_histopathology.isChecked() ||
                     pharmacy_dispensary.isChecked()  || transfusions_blood_transfusions.isChecked()  || transfusions_blood_bank.isChecked()  || professions_allied_ambulance.isChecked() ||
                     professions_dietetics.isChecked() || professions_physiotherapy.isChecked()  || professions_occupational_therapy.isChecked()  || professions_speech_language.isChecked() ||
-                    professions_psychology.isChecked()){
+                    professions_psychology.isChecked() || clinical_dental.isChecked() || clinical_vascularservice.isChecked() || clinical_orthopaedic.isChecked() ||
+                    clinical_orthopaedic_including_arthroscopy.isChecked() || clinical_sports_medicine.isChecked() || clinical_laparoscopy_surgery.isChecked() ||
+                    clinical_general_surgery_including_laparoscopy_surgery.isChecked() || clinical_nephrology_including_dialysis.isChecked() || clinical_psychiatric_including_ipd.isChecked() ||
+                    clinical_radiation_oncolog.isChecked() || clinical_diabetology.isChecked() || clinical_Oncology_Surgical.isChecked())
+            {
                 SaveScopeService("save");
             }else {
                 Toast.makeText(ScopeOfServiceActivity.this, "Please select at least one service", Toast.LENGTH_LONG).show();

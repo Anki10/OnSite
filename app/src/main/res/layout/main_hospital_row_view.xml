@@ -129,6 +129,13 @@
             android:padding="5dp"
             android:src="@mipmap/reject"/>
 
+        <ImageView android:id="@+id/iv_progress"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="5dp"
+            android:visibility="gone"
+            android:src="@mipmap/progress"/>
+
 
 
     </LinearLayout>

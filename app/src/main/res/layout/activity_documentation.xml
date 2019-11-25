@@ -1562,7 +1562,7 @@
                     android:padding="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="Note: 1. Document should be as per the provided format and all the operational services should be ticked in the document \n 2. Document should be properly signed by the competant authority"/>
+                    android:text="Note: 1. Document should be as per the provided format and all the operational services should be ticked in the document \n 2. Document should be properly signed by the competent authority and onsite assessor."/>
 
                 <View
                     android:layout_width="match_parent"

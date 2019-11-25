@@ -725,6 +725,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String Key_clinical_surgical_gastroenterology = "clinical_surgical_gastroenterology";
     private static final String Key_clinical_urology = "clinical_urology";
     private static final String Key_clinical_transplantation_service = "clinical_transplantation_service";
+    private static final String Key_clinical_dental= "clinical_dental";
+    private static final String Key_clinical_vascularservice = "clinical_vascularservice";
+    private static final String Key_clinical_orthopaedic = "clinical_orthopaedic";
+    private static final String Key_clinical_orthopaedic_including_arthroscopy = "clinical_orthopaedic_including_arthroscopy";
+    private static final String Key_clinical_sports_medicine = "clinical_sports_medicine";
+    private static final String Key_clinical_laparoscopy_surgery = "clinical_laparoscopy_surgery";
+    private static final String Key_clinical_general_surgery_including_laparoscopy_surgery = "clinical_general_surgery_including_laparoscopy_surgery";
+    private static final String Key_clinical_nephrology_including_dialysis = "clinical_nephrology_including_dialysis";
+    private static final String Key_clinical_psychiatric_including_ipd = "clinical_psychiatric_including_ipd";
+    private static final String Key_clinical_radiation_oncolog = "clinical_radiation_oncolog";
+    private static final String Key_clinical_diabetology = "clinical_diabetology";
+    private static final String Key_clinical_surgical_oncology = "clinical_surgical_oncology";
+
+
     private static final String Key_diagnostic_ct_scanning = "diagnostic_ct_scanning";
     private static final String Key_diagnostic_mammography = "diagnostic_mammography";
     private static final String Key_diagnostic_mri = "diagnostic_mri";
@@ -1533,6 +1547,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + Key_clinical_surgical_gastroenterology + " TEXT,"
             + Key_clinical_urology + " TEXT,"
             + Key_clinical_transplantation_service + " TEXT,"
+            + Key_clinical_dental + " TEXT,"
+            + Key_clinical_vascularservice + " TEXT,"
+            + Key_clinical_orthopaedic + " TEXT,"
+            + Key_clinical_orthopaedic_including_arthroscopy + " TEXT,"
+            + Key_clinical_sports_medicine + " TEXT,"
+            + Key_clinical_laparoscopy_surgery + " TEXT,"
+            + Key_clinical_general_surgery_including_laparoscopy_surgery + " TEXT,"
+            + Key_clinical_nephrology_including_dialysis + " TEXT,"
+            + Key_clinical_psychiatric_including_ipd + " TEXT,"
+            + Key_clinical_radiation_oncolog + " TEXT,"
+            + Key_clinical_diabetology + " TEXT,"
+            + Key_clinical_surgical_oncology + " TEXT,"
             + Key_diagnostic_ct_scanning + " TEXT,"
             + Key_diagnostic_mammography + " TEXT,"
             + Key_diagnostic_mri + " TEXT,"
@@ -3136,7 +3162,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Key_clinical_hepatology,pojo.getClinical_hepatology());
         values.put(Key_clinical_immunology,pojo.getClinical_immunology());
         values.put(Key_clinical_medical_gastroenterology,pojo.getClinical_medical_gastroenterology());
-        values.put(Key_clinical_neonatology,pojo.getClinical_Neurology());
+        values.put(Key_clinical_neonatology,pojo.getClinical_neonatology());
         values.put(Key_clinical_nephrology,pojo.getClinical_nephrology());
         values.put(Key_clinical_Neurology,pojo.getClinical_Neurology());
         values.put(Key_clinical_Neurosurgery,pojo.getClinical_Neurosurgery());
@@ -3147,6 +3173,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Key_clinical_surgical_gastroenterology,pojo.getClinical_surgical_gastroenterology());
         values.put(Key_clinical_urology,pojo.getClinical_urology());
         values.put(Key_clinical_transplantation_service,pojo.getClinical_transplantation_service());
+        values.put(Key_clinical_dental,pojo.getClinical_dental());
+        values.put(Key_clinical_vascularservice,pojo.getClinical_vascularservice());
+        values.put(Key_clinical_orthopaedic,pojo.getClinical_orthopaedic());
+        values.put(Key_clinical_orthopaedic_including_arthroscopy,pojo.getClinical_orthopaedic_including_arthroscopy());
+        values.put(Key_clinical_sports_medicine,pojo.getClinical_sports_medicine());
+        values.put(Key_clinical_laparoscopy_surgery,pojo.getClinical_laparoscopy_surgery());
+        values.put(Key_clinical_general_surgery_including_laparoscopy_surgery,pojo.getClinical_general_surgery_including_laparoscopy_surgery());
+        values.put(Key_clinical_nephrology_including_dialysis,pojo.getClinical_nephrology_including_dialysis());
+        values.put(Key_clinical_psychiatric_including_ipd,pojo.getClinical_psychiatric_including_ipd());
+        values.put(Key_clinical_radiation_oncolog,pojo.getClinical_radiation_oncology());
+        values.put(Key_clinical_diabetology,pojo.getClinical_diabetology());
+        values.put(Key_clinical_surgical_oncology,pojo.getClinical_surgical_oncology());
+
         values.put(Key_diagnostic_ct_scanning,pojo.getDiagnostic_ct_scanning());
         values.put(Key_diagnostic_mammography,pojo.getDiagnostic_mammography());
         values.put(Key_diagnostic_mri,pojo.getDiagnostic_mri());
@@ -3213,7 +3252,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Key_clinical_hepatology,pojo.getClinical_hepatology());
         values.put(Key_clinical_immunology,pojo.getClinical_immunology());
         values.put(Key_clinical_medical_gastroenterology,pojo.getClinical_medical_gastroenterology());
-        values.put(Key_clinical_neonatology,pojo.getClinical_Neurology());
+        values.put(Key_clinical_neonatology,pojo.getClinical_neonatology());
         values.put(Key_clinical_nephrology,pojo.getClinical_nephrology());
         values.put(Key_clinical_Neurology,pojo.getClinical_Neurology());
         values.put(Key_clinical_Neurosurgery,pojo.getClinical_Neurosurgery());
@@ -3224,6 +3263,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Key_clinical_surgical_gastroenterology,pojo.getClinical_surgical_gastroenterology());
         values.put(Key_clinical_urology,pojo.getClinical_urology());
         values.put(Key_clinical_transplantation_service,pojo.getClinical_transplantation_service());
+        values.put(Key_clinical_dental,pojo.getClinical_dental());
+        values.put(Key_clinical_vascularservice,pojo.getClinical_vascularservice());
+        values.put(Key_clinical_orthopaedic,pojo.getClinical_orthopaedic());
+        values.put(Key_clinical_orthopaedic_including_arthroscopy,pojo.getClinical_orthopaedic_including_arthroscopy());
+        values.put(Key_clinical_sports_medicine,pojo.getClinical_sports_medicine());
+        values.put(Key_clinical_laparoscopy_surgery,pojo.getClinical_laparoscopy_surgery());
+        values.put(Key_clinical_general_surgery_including_laparoscopy_surgery,pojo.getClinical_general_surgery_including_laparoscopy_surgery());
+        values.put(Key_clinical_nephrology_including_dialysis,pojo.getClinical_nephrology_including_dialysis());
+        values.put(Key_clinical_psychiatric_including_ipd,pojo.getClinical_psychiatric_including_ipd());
+        values.put(Key_clinical_radiation_oncolog,pojo.getClinical_radiation_oncology());
+        values.put(Key_clinical_diabetology,pojo.getClinical_diabetology());
+        values.put(Key_clinical_surgical_oncology,pojo.getClinical_surgical_oncology());
         values.put(Key_diagnostic_ct_scanning,pojo.getDiagnostic_ct_scanning());
         values.put(Key_diagnostic_mammography,pojo.getDiagnostic_mammography());
         values.put(Key_diagnostic_mri,pojo.getDiagnostic_mri());
@@ -4347,8 +4398,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 pojo.setClinical_hepatology(cursor.getString(cursor.getColumnIndex(Key_clinical_hepatology)));
                 pojo.setClinical_immunology(cursor.getString(cursor.getColumnIndex(Key_clinical_immunology)));
                 pojo.setClinical_medical_gastroenterology(cursor.getString(cursor.getColumnIndex(Key_clinical_medical_gastroenterology)));
-                pojo.setClinical_Neurology(cursor.getString(cursor.getColumnIndex(Key_clinical_neonatology)));
+                pojo.setClinical_neonatology(cursor.getString(cursor.getColumnIndex(Key_clinical_neonatology)));
                 pojo.setClinical_nephrology(cursor.getString(cursor.getColumnIndex(Key_clinical_nephrology)));
+                pojo.setClinical_Neurology(cursor.getString(cursor.getColumnIndex(Key_clinical_Neurology)));
                 pojo.setClinical_Neurosurgery(cursor.getString(cursor.getColumnIndex(Key_clinical_Neurosurgery)));
                 pojo.setClinical_Oncology(cursor.getString(cursor.getColumnIndex(Key_clinical_Oncology)));
                 pojo.setClinical_paediatric_cardiology(cursor.getString(cursor.getColumnIndex(Key_clinical_paediatric_cardiology)));
@@ -4357,6 +4409,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 pojo.setClinical_surgical_gastroenterology(cursor.getString(cursor.getColumnIndex(Key_clinical_surgical_gastroenterology)));
                 pojo.setClinical_urology(cursor.getString(cursor.getColumnIndex(Key_clinical_urology)));
                 pojo.setClinical_transplantation_service(cursor.getString(cursor.getColumnIndex(Key_clinical_transplantation_service)));
+
+                pojo.setClinical_dental(cursor.getString(cursor.getColumnIndex(Key_clinical_dental)));
+                pojo.setClinical_vascularservice(cursor.getString(cursor.getColumnIndex(Key_clinical_vascularservice)));
+                pojo.setClinical_orthopaedic(cursor.getString(cursor.getColumnIndex(Key_clinical_orthopaedic)));
+                pojo.setClinical_orthopaedic_including_arthroscopy(cursor.getString(cursor.getColumnIndex(Key_clinical_orthopaedic_including_arthroscopy)));
+                pojo.setClinical_sports_medicine(cursor.getString(cursor.getColumnIndex(Key_clinical_sports_medicine)));
+                pojo.setClinical_laparoscopy_surgery(cursor.getString(cursor.getColumnIndex(Key_clinical_laparoscopy_surgery)));
+                pojo.setClinical_general_surgery_including_laparoscopy_surgery(cursor.getString(cursor.getColumnIndex(Key_clinical_general_surgery_including_laparoscopy_surgery)));
+                pojo.setClinical_nephrology_including_dialysis(cursor.getString(cursor.getColumnIndex(Key_clinical_nephrology_including_dialysis)));
+                pojo.setClinical_psychiatric_including_ipd(cursor.getString(cursor.getColumnIndex(Key_clinical_psychiatric_including_ipd)));
+                pojo.setClinical_radiation_oncology(cursor.getString(cursor.getColumnIndex(Key_clinical_radiation_oncolog)));
+                pojo.setClinical_diabetology(cursor.getString(cursor.getColumnIndex(Key_clinical_diabetology)));
+                pojo.setClinical_surgical_oncology(cursor.getString(cursor.getColumnIndex(Key_clinical_surgical_oncology)));
+
+
                 pojo.setDiagnostic_ct_scanning(cursor.getString(cursor.getColumnIndex(Key_diagnostic_ct_scanning)));
                 pojo.setDiagnostic_mammography(cursor.getString(cursor.getColumnIndex(Key_diagnostic_mammography)));
                 pojo.setDiagnostic_mri(cursor.getString(cursor.getColumnIndex(Key_diagnostic_mri)));

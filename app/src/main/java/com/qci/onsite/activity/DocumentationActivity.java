@@ -5031,7 +5031,7 @@ public class DocumentationActivity extends BaseActivity implements View.OnClickL
             if (requestCode == 1) {
                 if (picUri != null) {
                     Uri uri = picUri;
-                    String image2 = compressImage(uri.toString());
+                    String image2 = compressDocumentImage(uri.toString());
                     //                 saveIntoPrefs(AppConstant.statutory_statePollution,image2);
 
                     SaveImage(image2,"selfie");

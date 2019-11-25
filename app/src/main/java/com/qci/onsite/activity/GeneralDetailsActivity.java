@@ -993,9 +993,6 @@ public class GeneralDetailsActivity extends BaseActivity {
         startActivity(intent);
         finish();
 
-
-
-
     }
 
     private void BackDialog(){

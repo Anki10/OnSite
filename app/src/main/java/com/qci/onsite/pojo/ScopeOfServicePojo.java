@@ -40,6 +40,21 @@ public class ScopeOfServicePojo {
     private String clinical_surgical_gastroenterology;
     private String clinical_urology;
     private String clinical_transplantation_service;
+
+    private String clinical_dental;
+    private String clinical_vascularservice;
+    private String clinical_orthopaedic;
+    private String clinical_orthopaedic_including_arthroscopy;
+    private String clinical_sports_medicine;
+    private String clinical_laparoscopy_surgery;
+    private String clinical_general_surgery_including_laparoscopy_surgery;
+    private String clinical_nephrology_including_dialysis;
+    private String clinical_psychiatric_including_ipd;
+
+    private String clinical_radiation_oncology;
+    private String clinical_diabetology;
+    private String clinical_surgical_oncology;
+
     private String diagnostic_ct_scanning;
     private String diagnostic_mammography;
     private String diagnostic_mri;
@@ -67,6 +82,110 @@ public class ScopeOfServicePojo {
     private String professions_occupational_therapy;
     private String professions_speech_language;
     private String professions_psychology;
+
+
+    public String getClinical_surgical_oncology() {
+        return clinical_surgical_oncology;
+    }
+
+    public void setClinical_surgical_oncology(String clinical_surgical_oncology) {
+        this.clinical_surgical_oncology = clinical_surgical_oncology;
+    }
+
+
+
+    public String getClinical_radiation_oncology() {
+        return clinical_radiation_oncology;
+    }
+
+    public void setClinical_radiation_oncology(String clinical_radiation_oncology) {
+        this.clinical_radiation_oncology = clinical_radiation_oncology;
+    }
+
+    public String getClinical_diabetology() {
+        return clinical_diabetology;
+    }
+
+    public void setClinical_diabetology(String clinical_diabetology) {
+        this.clinical_diabetology = clinical_diabetology;
+    }
+
+
+
+    public String getClinical_dental() {
+        return clinical_dental;
+    }
+
+    public void setClinical_dental(String clinical_dental) {
+        this.clinical_dental = clinical_dental;
+    }
+
+    public String getClinical_vascularservice() {
+        return clinical_vascularservice;
+    }
+
+    public void setClinical_vascularservice(String clinical_vascularservice) {
+        this.clinical_vascularservice = clinical_vascularservice;
+    }
+
+    public String getClinical_orthopaedic() {
+        return clinical_orthopaedic;
+    }
+
+    public void setClinical_orthopaedic(String clinical_orthopaedic) {
+        this.clinical_orthopaedic = clinical_orthopaedic;
+    }
+
+    public String getClinical_orthopaedic_including_arthroscopy() {
+        return clinical_orthopaedic_including_arthroscopy;
+    }
+
+    public void setClinical_orthopaedic_including_arthroscopy(String clinical_orthopaedic_including_arthroscopy) {
+        this.clinical_orthopaedic_including_arthroscopy = clinical_orthopaedic_including_arthroscopy;
+    }
+
+    public String getClinical_sports_medicine() {
+        return clinical_sports_medicine;
+    }
+
+    public void setClinical_sports_medicine(String clinical_sports_medicine) {
+        this.clinical_sports_medicine = clinical_sports_medicine;
+    }
+
+    public String getClinical_laparoscopy_surgery() {
+        return clinical_laparoscopy_surgery;
+    }
+
+    public void setClinical_laparoscopy_surgery(String clinical_laparoscopy_surgery) {
+        this.clinical_laparoscopy_surgery = clinical_laparoscopy_surgery;
+    }
+
+    public String getClinical_general_surgery_including_laparoscopy_surgery() {
+        return clinical_general_surgery_including_laparoscopy_surgery;
+    }
+
+    public void setClinical_general_surgery_including_laparoscopy_surgery(String clinical_general_surgery_including_laparoscopy_surgery) {
+        this.clinical_general_surgery_including_laparoscopy_surgery = clinical_general_surgery_including_laparoscopy_surgery;
+    }
+
+    public String getClinical_nephrology_including_dialysis() {
+        return clinical_nephrology_including_dialysis;
+    }
+
+    public void setClinical_nephrology_including_dialysis(String clinical_nephrology_including_dialysis) {
+        this.clinical_nephrology_including_dialysis = clinical_nephrology_including_dialysis;
+    }
+
+    public String getClinical_psychiatric_including_ipd() {
+        return clinical_psychiatric_including_ipd;
+    }
+
+    public void setClinical_psychiatric_including_ipd(String clinical_psychiatric_including_ipd) {
+        this.clinical_psychiatric_including_ipd = clinical_psychiatric_including_ipd;
+    }
+
+
+
 
     public String getClinical_anaesthesiology() {
         return clinical_anaesthesiology;

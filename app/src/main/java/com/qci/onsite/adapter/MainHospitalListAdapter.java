@@ -63,8 +63,11 @@ public class MainHospitalListAdapter extends RecyclerView.Adapter<MainHospitalLi
 
                 if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS) != null){
                     if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS).equalsIgnoreCase(String.valueOf(pojo.getHospitalid()))){
-                        holder.iv_hospital_accept.setVisibility(View.VISIBLE);
-                        holder.iv_hospital_accept.setImageResource(R.mipmap.progress);
+                        holder.iv_hospital_accept.setVisibility(View.GONE);
+                        holder.iv_hospital_reject.setVisibility(View.GONE);
+
+                        holder.iv_progress.setVisibility(View.VISIBLE);
+
                     }
                 }
             }else if (pojo.getHospitalstage().equalsIgnoreCase("Assessment accepted by Assessor")){
@@ -73,8 +76,10 @@ public class MainHospitalListAdapter extends RecyclerView.Adapter<MainHospitalLi
 
                 if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS) != null){
                     if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS).equalsIgnoreCase(String.valueOf(pojo.getHospitalid()))){
-                        holder.iv_hospital_accept.setVisibility(View.VISIBLE);
-                        holder.iv_hospital_accept.setImageResource(R.mipmap.progress);
+                        holder.iv_hospital_accept.setVisibility(View.GONE);
+                        holder.iv_hospital_reject.setVisibility(View.GONE);
+
+                        holder.iv_progress.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -84,8 +89,10 @@ public class MainHospitalListAdapter extends RecyclerView.Adapter<MainHospitalLi
 
                 if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS) != null){
                     if (getFromPrefs(AppConstant.ASSESSSMENT_STATUS).equalsIgnoreCase(String.valueOf(pojo.getHospitalid()))){
-                        holder.iv_hospital_accept.setVisibility(View.VISIBLE);
-                        holder.iv_hospital_accept.setImageResource(R.mipmap.progress);
+                        holder.iv_hospital_accept.setVisibility(View.GONE);
+                        holder.iv_hospital_reject.setVisibility(View.GONE);
+
+                        holder.iv_progress.setVisibility(View.VISIBLE);
                     }
                 }
             }else {
@@ -179,6 +186,9 @@ public class MainHospitalListAdapter extends RecyclerView.Adapter<MainHospitalLi
 
         @BindView(R.id.iv_hospital_reject)
         ImageView iv_hospital_reject;
+
+        @BindView(R.id.iv_progress)
+        ImageView iv_progress;
 
         @BindView(R.id.ll_hospital_main)
         LinearLayout ll_hospital_main;
